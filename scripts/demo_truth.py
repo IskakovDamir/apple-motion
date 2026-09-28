@@ -7,6 +7,21 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+if len(sys.argv) > 2 and sys.argv[2] == "calibration":
+    src = (ROOT / "demo" / "src" / "Calibration.tsx").read_text()
+    card = int(re.search(r"CAL_CARD = (\d+)", src).group(1))
+    weights = [int(x) for x in re.search(r"CAL_WEIGHTS = \[([^\]]+)\]", src).group(1).split(",")]
+    entries = re.findall(r"\{entry: '(\w+)', frames: (\d+)\}", src)
+    cards = [{"i": i, "start": i * card, "frames": card, "lines": [f"Weight {w}"], "weight": w, "entry": "cut",
+              "entry_frames": 0} for i, w in enumerate(weights)]
+    for j, (e, fr) in enumerate(entries):
+        i = len(weights) + j
+        cards.append({"i": i, "start": i * card, "frames": card, "entry": e, "entry_frames": int(fr),
+                      "lines": ["Every word counts"] if e == "perWord" else [f"Entry {e}"],
+                      "spring": "tokens SPRING.textIn stretched to entry_frames"})
+    Path(sys.argv[1]).write_text(json.dumps({"fps": 30, "cards": cards}, indent=1))
+    print(f"calibration truth: {len(cards)} cards")
+    sys.exit(0)
 data = json.loads((ROOT / "demo" / "src" / "cards.json").read_text())
 tokens = (ROOT / "skill" / "apple-motion" / "templates" / "remotion" / "tokens.ts").read_text()
 text_in = int(re.search(r"textInFrames:\s*(\d+)", tokens).group(1))

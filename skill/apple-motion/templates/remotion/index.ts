@@ -9,3 +9,8 @@ export {Sfx} from './Sfx';
 export type {SfxName} from './Sfx';
 export {Backdrop} from './Backdrop';
 export type {BackdropKind} from './Backdrop';
+export {DeviceFrame} from './DeviceFrame';
+export type {DeviceFrameProps} from './DeviceFrame';
+export {UICard} from './UICard';
+export type {UICardProps} from './UICard';
+export {Scrubber} from './Scrubber';
