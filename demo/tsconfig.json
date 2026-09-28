@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@apple-motion": [
+        "../skill/apple-motion/templates/remotion/index.ts"
+      ],
+      "@apple-motion/*": [
+        "../skill/apple-motion/templates/remotion/*"
+      ],
+      "@remotion/transitions/*": [
+        "node_modules/@remotion/transitions/dist/presentations/*"
+      ],
+      "*": [
+        "node_modules/@types/*",
+        "node_modules/*"
+      ]
+    },
+    "resolveJsonModule": true
+  },
+  "include": [
+    "src",
+    "../skill/apple-motion/templates/remotion"
+  ]
+}

@@ -1,0 +1,52 @@
+{
+ "slug": "sept26-event-recap",
+ "reviewer": "visual review of data/<slug>/review/*.png",
+ "rule": "typography = designer-set type over the picture; caption = small overlay pills/labels; everything else (UI screens, products, player timecodes, legal) is not labelled",
+ "typography": [
+  {
+   "id_at_review": 47,
+   "text": "Longest battery life / in iPhone history / in iPhone history / in / in / Longest battery life / Longest battery life / in iPhone history / in iPhone history / in iPhone history",
+   "ref_frame": 988,
+   "cx": 964,
+   "cy": 547
+  },
+  {
+   "id_at_review": 51,
+   "text": "Siri",
+   "ref_frame": 1089,
+   "cx": 962,
+   "cy": 775
+  },
+  {
+   "id_at_review": 91,
+   "text": "Active Noise / Cancellation",
+   "ref_frame": 1408,
+   "cx": 966,
+   "cy": 514
+  },
+  {
+   "id_at_review": 111,
+   "text": "WATCH / Most accurate heart rate / sensing in a wearable",
+   "ref_frame": 1699,
+   "cx": 970,
+   "cy": 336
+  }
+ ],
+ "caption": [
+  {
+   "id_at_review": 28,
+   "text": "TIME-LAF SE IN 4K",
+   "ref_frame": 419,
+   "cx": 958,
+   "cy": 1004
+  },
+  {
+   "id_at_review": 30,
+   "text": "24 FPS 1/48 SnUTTER SPEED",
+   "ref_frame": 452,
+   "cx": 958,
+   "cy": 1005
+  }
+ ],
+ "note": "ids 112/113 removed after re-check: their red boxes were small UI text next to the headline"
+}

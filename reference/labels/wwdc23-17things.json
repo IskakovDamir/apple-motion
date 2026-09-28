@@ -1,0 +1,92 @@
+{
+ "slug": "wwdc23-17things",
+ "reviewer": "visual review of data/<slug>/review/*.png",
+ "rule": "typography = designer-set type over the picture; caption = small overlay pills/labels; everything else (UI screens, products, player timecodes, legal) is not labelled",
+ "typography": [
+  {
+   "id_at_review": 0,
+   "text": "17 things / 77 / WWDC23",
+   "ref_frame": 17,
+   "cx": 996,
+   "cy": 464
+  },
+  {
+   "id_at_review": 2,
+   "text": "17 things",
+   "ref_frame": 10,
+   "cx": 963,
+   "cy": 858
+  },
+  {
+   "id_at_review": 4,
+   "text": "WWDC23 / 17things / 77",
+   "ref_frame": 39,
+   "cx": 986,
+   "cy": 470
+  },
+  {
+   "id_at_review": 5,
+   "text": "WWDC23",
+   "ref_frame": 33,
+   "cx": 1032,
+   "cy": 852
+  },
+  {
+   "id_at_review": 10,
+   "text": "big & little / WWDC23",
+   "ref_frame": 72,
+   "cx": 969,
+   "cy": 370
+  },
+  {
+   "id_at_review": 11,
+   "text": "17 things",
+   "ref_frame": 60,
+   "cx": 965,
+   "cy": 855
+  },
+  {
+   "id_at_review": 16,
+   "text": "17 things / 17 / big & little / WWDC23",
+   "ref_frame": 102,
+   "cx": 971,
+   "cy": 521
+  },
+  {
+   "id_at_review": 21,
+   "text": "WWDC23 / things / 17 / big & little",
+   "ref_frame": 121,
+   "cx": 971,
+   "cy": 550
+  },
+  {
+   "id_at_review": 101,
+   "text": "Journal",
+   "ref_frame": 996,
+   "cx": 960,
+   "cy": 791
+  },
+  {
+   "id_at_review": 250,
+   "text": "That's so",
+   "ref_frame": 2726,
+   "cx": 754,
+   "cy": 535
+  },
+  {
+   "id_at_review": 251,
+   "text": "That's so",
+   "ref_frame": 2778,
+   "cx": 898,
+   "cy": 546
+  },
+  {
+   "id_at_review": 252,
+   "text": "cool:",
+   "ref_frame": 2760,
+   "cx": 1244,
+   "cy": 536
+  }
+ ],
+ "caption": []
+}

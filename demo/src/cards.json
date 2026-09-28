@@ -1,0 +1,98 @@
+{
+ "bpm": 120,
+ "offsetFrames": 0,
+ "cards": [
+  {
+   "beats": 4,
+   "bg": "black",
+   "lines": [
+    "Six Apple recaps."
+   ],
+   "entry": "scaleDown",
+   "size": "headline"
+  },
+  {
+   "beats": 4,
+   "bg": "black",
+   "counter": {
+    "to": 33202,
+    "caption": "frames, measured"
+   },
+   "size": "hero",
+   "transition": "whip"
+  },
+  {
+   "beats": 2,
+   "bg": "white",
+   "lines": [
+    "Every cut."
+   ],
+   "entry": "cut",
+   "size": "headline",
+   "sfx": "click"
+  },
+  {
+   "beats": 2,
+   "bg": "white",
+   "lines": [
+    "Every word."
+   ],
+   "entry": "perWord",
+   "size": "headline"
+  },
+  {
+   "beats": 4,
+   "bg": "black",
+   "lines": [
+    "Every spring."
+   ],
+   "entry": "blurIn",
+   "size": "headline",
+   "transition": "dissolve"
+  },
+  {
+   "beats": 4,
+   "bg": "offWhite",
+   "lines": [
+    "Holds are short.",
+    "Really short."
+   ],
+   "entry": "slideUpMask",
+   "size": "title",
+   "align": "left",
+   "x": 12
+  },
+  {
+   "beats": 4,
+   "bg": "black",
+   "counter": {
+    "to": 1.5,
+    "decimals": 1,
+    "suffix": " s",
+    "caption": "median hold"
+   },
+   "size": "hero",
+   "transition": "whip"
+  },
+  {
+   "beats": 4,
+   "bg": "gradient",
+   "lines": [
+    "Type does the talking."
+   ],
+   "entry": "perLetter",
+   "size": "title"
+  },
+  {
+   "beats": 8,
+   "bg": "black",
+   "lines": [
+    "apple-motion"
+   ],
+   "entry": "scaleDown",
+   "size": "hero",
+   "transition": "scaleThrough",
+   "sfx": "hit"
+  }
+ ]
+}

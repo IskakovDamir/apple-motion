@@ -1,0 +1,978 @@
+{
+ "generated_from": [
+  "sept26-event-recap"
+ ],
+ "pooled": {
+  "videos": 1,
+  "duration_s": 95.1,
+  "frames": 2850,
+  "shot_length_frames": {
+   "p10": 5.0,
+   "p25": 7.0,
+   "p50": 22.5,
+   "p75": 38.8,
+   "p90": 75.0,
+   "n": 90,
+   "mean": 31.7
+  },
+  "cuts_per_10s": {
+   "p10": 9.36,
+   "p25": 9.36,
+   "p50": 9.36,
+   "p75": 9.36,
+   "p90": 9.36,
+   "n": 1,
+   "mean": 9.36
+  },
+  "transitions": {
+   "cut": 0.955,
+   "whip": 0.034,
+   "match cut": 0.011
+  },
+  "typography_count": 6,
+  "typography_per_10s": {
+   "p10": 0.63,
+   "p25": 0.63,
+   "p50": 0.63,
+   "p75": 0.63,
+   "p90": 0.63,
+   "n": 1,
+   "mean": 0.63
+  },
+  "cap_height_pct": {
+   "p10": 5.38,
+   "p25": 5.93,
+   "p50": 9.59,
+   "p75": 12.88,
+   "p90": 13.25,
+   "n": 6,
+   "mean": 9.4
+  },
+  "stroke_to_cap": {
+   "p10": 0.102,
+   "p25": 0.148,
+   "p50": 0.162,
+   "p75": 0.233,
+   "p90": 0.276,
+   "n": 6,
+   "mean": 0.18
+  },
+  "x_height_ratio": {
+   "p10": -0.193,
+   "p25": 0.092,
+   "p50": 0.672,
+   "p75": 0.782,
+   "p90": 0.855,
+   "n": 6,
+   "mean": 0.445
+  },
+  "line_pitch_to_cap": {
+   "p10": 0.45,
+   "p25": 1.06,
+   "p50": 1.46,
+   "p75": 2.16,
+   "p90": 3.33,
+   "n": 4,
+   "mean": 1.77
+  },
+  "line_count": {
+   "1": 0.333,
+   "2": 0.333,
+   "10": 0.167,
+   "3": 0.167
+  },
+  "alignment": {
+   "ragged": 0.333,
+   "right": 0.333,
+   "center": 0.167,
+   "left": 0.167
+  },
+  "grid_cell": {
+   "middle-center": 0.333,
+   "bottom-center": 0.167,
+   "top-center": 0.167,
+   "middle-left": 0.167,
+   "top-right": 0.167
+  },
+  "color_hex": {
+   "#dfdedf": 1,
+   "#f3f3f3": 1,
+   "#f2f3f4": 1,
+   "#e1ece1": 1,
+   "#212017": 1,
+   "#2d2c24": 1
+  },
+  "background_type": {
+   "gradient": 0.5,
+   "solid": 0.333,
+   "image": 0.167
+  },
+  "hold_frames": {
+   "p10": 0.0,
+   "p25": 4.8,
+   "p50": 28.5,
+   "p75": 40.2,
+   "p90": 46.5,
+   "n": 6,
+   "mean": 25.0
+  },
+  "on_screen_frames": {
+   "p10": 30.0,
+   "p25": 35.0,
+   "p50": 50.0,
+   "p75": 65.8,
+   "p90": 72.0,
+   "n": 6,
+   "mean": 50.7
+  },
+  "entry_frames": {
+   "p10": 1.5,
+   "p25": 5.0,
+   "p50": 15.0,
+   "p75": 24.2,
+   "p90": 33.5,
+   "n": 6,
+   "mean": 16.7
+  },
+  "entry_frames_animated": {
+   "p10": 6.2,
+   "p25": 11.0,
+   "p50": 19.0,
+   "p75": 26.0,
+   "p90": 35.0,
+   "n": 5,
+   "mean": 20.0
+  },
+  "exit_frames": {
+   "p10": 0.0,
+   "p25": 0.5,
+   "p50": 4.0,
+   "p75": 12.8,
+   "p90": 23.0,
+   "n": 6,
+   "mean": 9.0
+  },
+  "appear_kind": {
+   "cut": 0.5,
+   "animated": 0.5
+  },
+  "exit_kind": {
+   "animated_then_cut": 0.667,
+   "instant": 0.167,
+   "cut": 0.167
+  },
+  "entry_style": {
+   "other": 0.333,
+   "cut on": 0.167,
+   "per-word pop": 0.167,
+   "slide down with mask": 0.167,
+   "slide": 0.167
+  },
+  "exit_style": {
+   "blur out": 0.333,
+   "cut off": 0.333,
+   "scale out (down)": 0.333
+  },
+  "entry_spring": {
+   "damping": 23.86,
+   "stiffness": 215.1,
+   "durationInFrames": 33.0,
+   "zeta": 0.74,
+   "overshoot_pct": 3.25,
+   "rmse": 0.1,
+   "mass": 1,
+   "n": 4
+  },
+  "entry_spring_q": {
+   "damping": {
+    "p10": 2.22,
+    "p25": 4.8,
+    "p50": 23.86,
+    "p75": 43.12,
+    "p90": 46.04,
+    "n": 4,
+    "mean": 24.05
+   },
+   "stiffness": {
+    "p10": 9.38,
+    "p25": 13.7,
+    "p50": 215.1,
+    "p75": 600.75,
+    "p90": 936.72,
+    "n": 4,
+    "mean": 399.35
+   },
+   "durationInFrames": {
+    "p10": 8.2,
+    "p25": 10.0,
+    "p50": 33.0,
+    "p75": 191.75,
+    "p90": 437.9,
+    "n": 4,
+    "mean": 168.75
+   }
+  },
+  "entry_spring_idiomatic": {
+   "damping": 17.88,
+   "durationInFrames": 15.0,
+   "rmse": 0.14,
+   "stiffness": 100,
+   "mass": 1
+  },
+  "entry_bezier": [
+   0.268,
+   0.958,
+   0.669,
+   0.158
+  ],
+  "entry_bezier_named": {
+   "easeInCubic": 1,
+   "easeInExpo": 1,
+   "easeOutCubic": 1,
+   "linear": 1,
+   "easeOutExpo": 1
+  },
+  "exit_bezier": [
+   0.169,
+   2.327,
+   1.0,
+   -1.0
+  ],
+  "entry_channels": {
+   "scale": 0.2,
+   "blur_px": 0.2,
+   "reveal": 0.15,
+   "dy": 0.15,
+   "dx": 0.15,
+   "opacity": 0.15
+  },
+  "entry_start": {
+   "scale": {
+    "p10": 0.64,
+    "p25": 0.74,
+    "p50": 0.87,
+    "p75": 0.94,
+    "p90": 0.95,
+    "n": 4,
+    "mean": 0.82
+   },
+   "dy_pct_h": {
+    "p10": -27.63,
+    "p25": -19.36,
+    "p50": -5.56,
+    "p75": -2.05,
+    "p90": 0.06,
+    "n": 3,
+    "mean": -12.42
+   },
+   "blur_px": {
+    "p10": 1.97,
+    "p25": 1.97,
+    "p50": 13.49,
+    "p75": 35.18,
+    "p90": 53.51,
+    "n": 4,
+    "mean": 23.67
+   },
+   "opacity": {
+    "p10": 0.0,
+    "p25": 0.0,
+    "p50": 0.0,
+    "p75": 0.0,
+    "p90": 0.0,
+    "n": 3,
+    "mean": 0.0
+   }
+  },
+  "hold_drift_scale_pct_per_s": {
+   "p10": -63.94,
+   "p25": -26.31,
+   "p50": -1.47,
+   "p75": 5.32,
+   "p90": 10.46,
+   "n": 4,
+   "mean": -19.52
+  },
+  "bpm": {
+   "p10": 123.0,
+   "p25": 123.0,
+   "p50": 123.0,
+   "p75": 123.0,
+   "p90": 123.0,
+   "n": 1,
+   "mean": 123.0
+  },
+  "lufs": {
+   "p10": -17.0,
+   "p25": -17.0,
+   "p50": -17.0,
+   "p75": -17.0,
+   "p90": -17.0,
+   "n": 1,
+   "mean": -17.0
+  },
+  "true_peak_dbtp": {
+   "p10": -1.8,
+   "p25": -1.8,
+   "p50": -1.8,
+   "p75": -1.8,
+   "p90": -1.8,
+   "n": 1,
+   "mean": -1.8
+  },
+  "lra_lu": {
+   "p10": 2.4,
+   "p25": 2.4,
+   "p50": 2.4,
+   "p75": 2.4,
+   "p90": 2.4,
+   "n": 1,
+   "mean": 2.4
+  },
+  "vo_words_per_s_speaking": {
+   "p10": 2.59,
+   "p25": 2.59,
+   "p50": 2.59,
+   "p75": 2.59,
+   "p90": 2.59,
+   "n": 1,
+   "mean": 2.59
+  },
+  "sfx_per_10s": {
+   "p10": 4.63,
+   "p25": 4.63,
+   "p50": 4.63,
+   "p75": 4.63,
+   "p90": 4.63,
+   "n": 1,
+   "mean": 4.63
+  },
+  "cuts_on_beat": {
+   "p10": 0.38,
+   "p25": 0.38,
+   "p50": 0.38,
+   "p75": 0.38,
+   "p90": 0.38,
+   "n": 1,
+   "mean": 0.38
+  },
+  "chance_on_beat": {
+   "p10": 0.342,
+   "p25": 0.342,
+   "p50": 0.342,
+   "p75": 0.342,
+   "p90": 0.342,
+   "n": 1,
+   "mean": 0.342
+  },
+  "cuts_near_word_onset": {
+   "p10": 0.382,
+   "p25": 0.382,
+   "p50": 0.382,
+   "p75": 0.382,
+   "p90": 0.382,
+   "n": 1,
+   "mean": 0.382
+  },
+  "chance_near_word_onset": {
+   "p10": 0.361,
+   "p25": 0.361,
+   "p50": 0.361,
+   "p75": 0.361,
+   "p90": 0.361,
+   "n": 1,
+   "mean": 0.361
+  },
+  "typography_vo_offset_frames": {
+   "p10": -49.4,
+   "p25": -35.0,
+   "p50": -11.0,
+   "p75": -7.5,
+   "p90": -5.4,
+   "n": 3,
+   "mean": -24.7
+  },
+  "frame_share_by_class": {
+   "pure black": 0.164,
+   "pure white": 0.013,
+   "footage": 0.553,
+   "ui screenshot": 0.138,
+   "product": 0.122,
+   "gradient": 0.011
+  },
+  "dominant_move": {
+   "pull": 0.244,
+   "static": 0.233,
+   "push": 0.189,
+   "local": 0.178,
+   "tilt": 0.089,
+   "pan": 0.033,
+   "whip": 0.033
+  },
+  "element_entries_per_s": {
+   "p10": 3.53,
+   "p25": 3.53,
+   "p50": 3.53,
+   "p75": 3.53,
+   "p90": 3.53,
+   "n": 1,
+   "mean": 3.53
+  }
+ },
+ "videos": [
+  {
+   "slug": "sept26-event-recap",
+   "source": "https://www.youtube.com/watch?v=3fAHjTPvF1E",
+   "fps": 29.97,
+   "duration_s": 95.09,
+   "frames": 2850,
+   "shots": {
+    "count": 90,
+    "length_frames": {
+     "p10": 5.0,
+     "p25": 7.0,
+     "p50": 22.5,
+     "p75": 38.8,
+     "p90": 75.0,
+     "n": 90,
+     "mean": 31.7
+    },
+    "cuts_per_10s": 9.36,
+    "transitions": {
+     "cut": 85,
+     "whip": 3,
+     "match cut": 1
+    }
+   },
+   "text": {
+    "events_total": 200,
+    "roles": {
+     "chrome": 28,
+     "scene_text": 27,
+     "ui_text": 125,
+     "other_text": 12,
+     "caption": 2,
+     "typography": 6
+    },
+    "typography_count": 6,
+    "typography_per_10s": 0.63,
+    "caption_count": 2,
+    "all_events_per_10s": 21.03
+   },
+   "typography": {
+    "cap_height_pct": {
+     "p10": 5.38,
+     "p25": 5.93,
+     "p50": 9.59,
+     "p75": 12.88,
+     "p90": 13.25,
+     "n": 6,
+     "mean": 9.4
+    },
+    "stroke_to_cap": {
+     "p10": 0.102,
+     "p25": 0.148,
+     "p50": 0.162,
+     "p75": 0.233,
+     "p90": 0.276,
+     "n": 6,
+     "mean": 0.18
+    },
+    "x_height_ratio": {
+     "p10": -0.193,
+     "p25": 0.092,
+     "p50": 0.672,
+     "p75": 0.782,
+     "p90": 0.855,
+     "n": 6,
+     "mean": 0.445
+    },
+    "line_pitch_to_cap": {
+     "p10": 0.45,
+     "p25": 1.06,
+     "p50": 1.46,
+     "p75": 2.16,
+     "p90": 3.33,
+     "n": 4,
+     "mean": 1.77
+    },
+    "line_count": {
+     "10": 1,
+     "1": 2,
+     "2": 2,
+     "3": 1
+    },
+    "alignment": {
+     "ragged": 2,
+     "center": 1,
+     "right": 2,
+     "left": 1
+    },
+    "grid_cell": {
+     "middle-center": 2,
+     "bottom-center": 1,
+     "top-center": 1,
+     "middle-left": 1,
+     "top-right": 1
+    },
+    "center_pct": [
+     [
+      50.2,
+      50.6
+     ],
+     [
+      50.1,
+      71.8
+     ],
+     [
+      50.3,
+      47.6
+     ],
+     [
+      50.5,
+      31.1
+     ],
+     [
+      10.0,
+      47.6
+     ],
+     [
+      70.1,
+      13.7
+     ]
+    ],
+    "color_hex": {
+     "#dfdedf": 1,
+     "#f3f3f3": 1,
+     "#f2f3f4": 1,
+     "#e1ece1": 1,
+     "#212017": 1,
+     "#2d2c24": 1
+    },
+    "background_hex": {
+     "#272727": 1,
+     "#000000": 1,
+     "#1f2626": 1,
+     "#121b0c": 1,
+     "#11130b": 1,
+     "#1a1811": 1
+    },
+    "background_type": {
+     "image": 1,
+     "solid": 2,
+     "gradient": 3
+    },
+    "hold_frames": {
+     "p10": 0.0,
+     "p25": 4.8,
+     "p50": 28.5,
+     "p75": 40.2,
+     "p90": 46.5,
+     "n": 6,
+     "mean": 25.0
+    },
+    "on_screen_frames": {
+     "p10": 30.0,
+     "p25": 35.0,
+     "p50": 50.0,
+     "p75": 65.8,
+     "p90": 72.0,
+     "n": 6,
+     "mean": 50.7
+    },
+    "entry_frames": {
+     "p10": 1.5,
+     "p25": 5.0,
+     "p50": 15.0,
+     "p75": 24.2,
+     "p90": 33.5,
+     "n": 6,
+     "mean": 16.7
+    },
+    "entry_frames_animated": {
+     "p10": 6.2,
+     "p25": 11.0,
+     "p50": 19.0,
+     "p75": 26.0,
+     "p90": 35.0,
+     "n": 5,
+     "mean": 20.0
+    },
+    "exit_frames": {
+     "p10": 0.0,
+     "p25": 0.5,
+     "p50": 4.0,
+     "p75": 12.8,
+     "p90": 23.0,
+     "n": 6,
+     "mean": 9.0
+    },
+    "appear_kind": {
+     "cut": 3,
+     "animated": 3
+    },
+    "exit_kind": {
+     "animated_then_cut": 4,
+     "instant": 1,
+     "cut": 1
+    },
+    "entry_style": {
+     "other": 2,
+     "cut on": 1,
+     "per-word pop": 1,
+     "slide down with mask": 1,
+     "slide": 1
+    },
+    "exit_style": {
+     "blur out": 2,
+     "cut off": 2,
+     "scale out (down)": 2
+    },
+    "entry_spring": {
+     "damping": 23.86,
+     "stiffness": 215.1,
+     "durationInFrames": 33.0,
+     "zeta": 0.74,
+     "overshoot_pct": 3.25,
+     "rmse": 0.1,
+     "mass": 1,
+     "n": 4
+    },
+    "entry_spring_idiomatic": {
+     "damping": 17.88,
+     "durationInFrames": 15.0,
+     "rmse": 0.14,
+     "stiffness": 100,
+     "mass": 1
+    },
+    "entry_bezier": [
+     0.268,
+     0.958,
+     0.669,
+     0.158
+    ],
+    "entry_bezier_named": {
+     "easeInCubic": 1,
+     "easeInExpo": 1,
+     "easeOutCubic": 1,
+     "linear": 1,
+     "easeOutExpo": 1
+    },
+    "exit_spring": {
+     "damping": 8.42,
+     "stiffness": 10.2,
+     "durationInFrames": 78.0,
+     "rmse": 0.52,
+     "n": 4
+    },
+    "exit_bezier": [
+     0.169,
+     2.327,
+     1.0,
+     -1.0
+    ],
+    "entry_channels": {
+     "scale": 4,
+     "blur_px": 4,
+     "reveal": 3,
+     "dy": 3,
+     "dx": 3,
+     "opacity": 3
+    },
+    "entry_start": {
+     "scale": {
+      "p10": 0.64,
+      "p25": 0.74,
+      "p50": 0.87,
+      "p75": 0.94,
+      "p90": 0.95,
+      "n": 4,
+      "mean": 0.82
+     },
+     "dy_pct_h": {
+      "p10": -27.63,
+      "p25": -19.36,
+      "p50": -5.56,
+      "p75": -2.05,
+      "p90": 0.06,
+      "n": 3,
+      "mean": -12.42
+     },
+     "dx_pct_h": {
+      "p10": -0.91,
+      "p25": 1.55,
+      "p50": 5.65,
+      "p75": 18.29,
+      "p90": 25.87,
+      "n": 3,
+      "mean": 11.34
+     },
+     "blur_px": {
+      "p10": 1.97,
+      "p25": 1.97,
+      "p50": 13.49,
+      "p75": 35.18,
+      "p90": 53.51,
+      "n": 4,
+      "mean": 23.67
+     },
+     "opacity": {
+      "p10": 0.0,
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "n": 3,
+      "mean": 0.0
+     }
+    },
+    "word_stagger_frames": {
+     "p10": 28.0,
+     "p25": 28.0,
+     "p50": 28.0,
+     "p75": 28.0,
+     "p90": 28.0,
+     "n": 1,
+     "mean": 28.0
+    },
+    "hold_drift_scale_pct_per_s": {
+     "p10": -63.94,
+     "p25": -26.31,
+     "p50": -1.47,
+     "p75": 5.32,
+     "p90": 10.46,
+     "n": 4,
+     "mean": -19.52
+    },
+    "hold_drift_dy_pct_h_per_s": {
+     "p10": -2.41,
+     "p25": -0.94,
+     "p50": 0.32,
+     "p75": 0.76,
+     "p90": 0.78,
+     "n": 4,
+     "mean": -0.49
+    },
+    "examples": [
+     {
+      "text": "Longest battery life / in iPhone history / in iPhone history / in / in / Longest battery life / Longest battery life / in iPhone history / in iPhone history / in iPhone history",
+      "appear": 968,
+      "entry": "other",
+      "entry_frames": 19,
+      "hold": 52,
+      "cap_pct": 13.19,
+      "color": "#dfdedf",
+      "bg": "#272727"
+     },
+     {
+      "text": "Siri",
+      "appear": 1075,
+      "entry": "cut on",
+      "entry_frames": 0,
+      "hold": 38,
+      "cap_pct": 5.27,
+      "color": "#f3f3f3",
+      "bg": "#000000"
+     },
+     {
+      "text": "Active Noise / Cancellation",
+      "appear": 1377,
+      "entry": "other",
+      "entry_frames": 26,
+      "hold": 41,
+      "cap_pct": 11.93,
+      "color": "#f2f3f4",
+      "bg": "#1f2626"
+     },
+     {
+      "text": "WATCH / Most accurate heart rate / sensing in a wearable",
+      "appear": 1657,
+      "entry": "per-word pop",
+      "entry_frames": 41,
+      "hold": 19,
+      "cap_pct": 5.48,
+      "color": "#e1ece1",
+      "bg": "#121b0c"
+     },
+     {
+      "text": "3 / 2",
+      "appear": 1685,
+      "entry": "slide down with mask",
+      "entry_frames": 3,
+      "hold": 0,
+      "cap_pct": 13.3,
+      "color": "#212017",
+      "bg": "#11130b"
+     },
+     {
+      "text": "2",
+      "appear": 1693,
+      "entry": "slide",
+      "entry_frames": 11,
+      "hold": 0,
+      "cap_pct": 7.26,
+      "color": "#2d2c24",
+      "bg": "#1a1811"
+     }
+    ]
+   },
+   "motion": {
+    "dominant_move": {
+     "push": 17,
+     "pull": 22,
+     "static": 21,
+     "local": 16,
+     "tilt": 8,
+     "pan": 3,
+     "whip": 3
+    },
+    "camera_spring": {
+     "damping": 10.0,
+     "stiffness": 141.9,
+     "rmse": 0.02
+    },
+    "cum_zoom_pct_push_pull": {
+     "p10": -8.41,
+     "p25": -3.67,
+     "p50": -2.54,
+     "p75": 4.08,
+     "p90": 8.5,
+     "n": 39,
+     "mean": -0.47
+    },
+    "element_entries_per_s": 3.53
+   },
+   "color": {
+    "frame_share_by_class": {
+     "pure black": 0.164,
+     "footage": 0.553,
+     "ui screenshot": 0.138,
+     "product": 0.122,
+     "pure white": 0.013,
+     "gradient": 0.011
+    },
+    "shot_background_hex": {
+     "#000000": 9,
+     "#e1e1e4": 3,
+     "#dddade": 2,
+     "#e4e4e6": 2,
+     "#f2f4f3": 2,
+     "#efefef": 2,
+     "#000402": 1,
+     "#1c2e26": 1
+    },
+    "accent_hex": {
+     "#334827": 1,
+     "#502915": 1,
+     "#481c2f": 1,
+     "#253255": 1,
+     "#453020": 1,
+     "#254755": 1,
+     "#653d3a": 1,
+     "#7f5549": 1
+    }
+   },
+   "audio": {
+    "bpm": 123.05,
+    "beat_period_frames": 14.614,
+    "bar_length_frames": 58.456,
+    "downbeat_confidence": 0.026,
+    "loudness": {
+     "integrated_lufs": -17.0,
+     "lra_lu": 2.4,
+     "true_peak_dbtp": -1.8
+    },
+    "stem_rms_share": {
+     "drums": 0.378,
+     "bass": 0.192,
+     "other": 0.158,
+     "vocals": 0.857,
+     "residual": 0.0227
+    },
+    "sections": [
+     {
+      "start_s": 0.0,
+      "end_s": 42.7,
+      "energy": "high",
+      "rms_db": -26.2
+     },
+     {
+      "start_s": 42.7,
+      "end_s": 53.15,
+      "energy": "mid",
+      "rms_db": -32.3
+     },
+     {
+      "start_s": 53.15,
+      "end_s": 89.98,
+      "energy": "high",
+      "rms_db": -27.3
+     },
+     {
+      "start_s": 89.98,
+      "end_s": 95.16,
+      "energy": "low",
+      "rms_db": -63.0
+     }
+    ],
+    "voice": {
+     "present": true,
+     "n_words": 206,
+     "words_per_second_speaking": 2.59,
+     "words_per_second_overall": 2.16,
+     "speech_seconds": 79.66
+    },
+    "sfx_non_music": 44,
+    "sfx_per_10s": 4.63,
+    "sfx_classes": {
+     "hit/boom": 16,
+     "tonal hit": 27,
+     "click/tick": 1
+    }
+   },
+   "sync": {
+    "window_frames": 2,
+    "beat_period_frames": 14.614,
+    "bar_length_frames": 58.456,
+    "chance_on_beat": 0.342,
+    "chance_on_downbeat": 0.086,
+    "cuts_on_beat": 0.38,
+    "cuts_on_downbeat": 0.101,
+    "text_on_beat": 0.232,
+    "text_on_downbeat": 0.116,
+    "typography_on_beat": 0.0,
+    "typography_on_downbeat": 0.0,
+    "cuts_with_sfx": 0.079,
+    "cuts_with_any_onset": 0.348,
+    "typography_with_sfx": 0.333,
+    "median_abs_cut_beat_offset": 4.0,
+    "cuts_near_word_onset": 0.382,
+    "cuts_near_word_end": 0.348,
+    "chance_near_word_onset": 0.361,
+    "typography_vo_offsets": [
+     -4,
+     -11,
+     -59
+    ],
+    "typography_vo_median_offset": -11.0,
+    "cut_beat_offset_hist": {
+     "-7": 1,
+     "-6": 5,
+     "-5": 9,
+     "-4": 7,
+     "-3": 3,
+     "-2": 3,
+     "-1": 4,
+     "0": 7,
+     "1": 8,
+     "2": 8,
+     "3": 2,
+     "4": 2,
+     "5": 6,
+     "6": 5,
+     "7": 8
+    }
+   }
+  }
+ ]
+}
