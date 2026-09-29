@@ -1,0 +1,23 @@
+{
+ "slug": "ios26-liquid-glass",
+ "reviewer": "visual review of data/<slug>/review/*.png",
+ "rule": "typography = designer-set type over the picture; caption = small overlay pills/labels; everything else (UI screens, products, player timecodes, legal) is not labelled",
+ "typography": [
+  {
+   "id_at_review": 134,
+   "text": "Liqjuid Glass",
+   "ref_frame": 3355,
+   "cx": 967,
+   "cy": 556
+  }
+ ],
+ "caption": [
+  {
+   "id_at_review": 0,
+   "text": "Alan Dye / VP; Human Interface",
+   "ref_frame": 469,
+   "cx": 1620,
+   "cy": 930
+  }
+ ]
+}

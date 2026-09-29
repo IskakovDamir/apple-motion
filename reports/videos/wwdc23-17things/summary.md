@@ -1,0 +1,32 @@
+# wwdc23-17things - measured facts
+
+- Source: https://developer.apple.com/videos/play/wwdc2023/111486/ (hd_mp4), 1920x1080 h264, 30000/1001 = 29.970 fps, 4049 frames, 135.10 s.
+- Shots: 35; length median 66.0 fr, p10 12, p90 310, min 5, max 419 fr.
+- Cuts per 10 s: 2.5. Transitions: cut 19, whip 12, mask wipe 2, match cut 1.
+- Text events: 275 total, 11 typography (0.81 per 10 s); roles: ui_text 193, scene_text 53, typography 11, other_text 9, chrome 9.
+- Typography hold: median 20.0 fr (0.67 s), p10 12, p90 43 fr.
+- Typography entry duration (animated only, n=9): median 5.0 fr, p90 27 fr.
+- Entry styles (typography): cut on 2, slide down with mask 2, slide up with mask 2, swap in place 2, per-letter 2, fade 1.
+- Exit styles (typography): slide out 4, fade out 3, scale out (down) 2, blur out 1, cut off 1.
+- Entry spring fit (median of 9): damping 41.5, stiffness 380.3, mass 1, durationInFrames 12.0, overshoot 0.0%, rmse 0.05.
+- Entry bezier (median control points): (0.20, 0.02, 0.73, 0.84); nearest named: linear 2, ease-out 1, ease-in 1.
+- Animated channels in typography entries: opacity 9, reveal 7, dy 6, blur_px 5, scale 4, dx 4.
+- Entry start values: scale median 0.94 (n=4), y-offset median -2.38% of height (n=6), blur median 15.8 px (n=5).
+- Cap height (typography): median 11.12% of frame height, p10 5.02%, p90 14.64%.
+- Typography lines: 1 line(s) 7, 2 line(s) 1, 3 line(s) 1, 4 line(s) 2; alignment: center 5, ragged 3, right 2, left 1.
+- Typography position (3x3): middle-center 7, bottom-center 4.
+- Typography colour: #080808 4, #0b0b0b 2, #0c0c0c 1, #0a0a0a 1; background type: image 6, gradient 4, solid 1.
+- Hold drift (typography): scale median 0.07%/s (n=11).
+- Camera/global motion per shot: tilt 10, push 10, pull 9, pan 2, static 2, local 1, whip 1; element entries 3.93/s.
+- Camera move spring (median of 25): damping 13.9, stiffness 147.7; accel 3.0 fr, decel 4.0 fr.
+- Frame classes (share of frames): pure white 44%, footage 26%, pure black 20%, ui screenshot 8%, product 2%, gradient 0%.
+- Most common shot backgrounds: #f5f5f5 8, #f6f6f6 4, #fdfdfd 4, #000000 2.
+- Dominant accent per shot (top): #603433 1, #4f3528 1, #97c8fa 1, #ebc34d 1.
+- Music: 119.57 BPM (beat 15.04 fr, bar 60.158 fr, 4/4 assumed, downbeat confidence 0.026); 5 sections: 0-57s high, 57-83s mid, 83-88s low, 88-131s high, 131-135s low.
+- Loudness: -16.7 LUFS integrated, LRA 4.2 LU, true peak -2.1 dBTP.
+- Stems RMS share of mix: drums 0.305, bass 0.39, other 0.32, vocals 0.751, residual 0.0235.
+- Voice-over: 271 words, 3.51 words/s while speaking, 2.01 words/s overall, 77.12 s of speech.
+- SFX candidates (non-music, off word onsets): 30 (2.2 per 10 s); classes: tonal hit 16, hit/boom 7, click/tick 7.
+- Sync (+-2 fr): cuts on beat 0.375 vs chance 0.332; on downbeat 0.125 vs 0.083; typography on beat 0.75.
+- Cuts within 2 fr of a word onset 0.265 (chance 0.335), of a word end 0.235; typography vs same spoken word: median offset 7.0 fr (n=9).
+- Cuts with an SFX candidate within 2 fr: 0.0; typography entries with SFX: 0.182.

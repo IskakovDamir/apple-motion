@@ -1,0 +1,23 @@
+path                     realpath
+project                  /Volumes/Transcend/dev/apple-motion OK
+data                     /Volumes/Transcend/dev/apple-motion/data OK
+cache                    /Volumes/Transcend/dev/apple-motion/.cache OK
+venv                     /Volumes/Transcend/dev/apple-motion/.venv OK
+~/dev/apple-motion       /Volumes/Transcend/dev/apple-motion OK
+sys.prefix               /Volumes/Transcend/dev/apple-motion/.venv OK
+$PIP_CACHE_DIR           /Volumes/Transcend/dev/apple-motion/.cache/pip OK
+$TORCH_HOME              /Volumes/Transcend/dev/apple-motion/.cache/torch OK
+$HF_HOME                 /Volumes/Transcend/dev/apple-motion/.cache/hf OK
+$XDG_CACHE_HOME          /Volumes/Transcend/dev/apple-motion/.cache/xdg OK
+$TMPDIR                  /Volumes/Transcend/dev/apple-motion/.cache/tmp OK
+$EASYOCR_DIR             /Volumes/Transcend/dev/apple-motion/.cache/easyocr OK
+
+slug                   files    sheets shotpng entrypng events springs
+ios26-liquid-glass     OK           12     408      658    658     658
+sept26-event-recap     OK           12     540      293    289     289
+wwdc22-day1-recap      OK           12     432      556    556     556
+wwdc23-17things        OK           12     210      275    275     275
+wwdc25-welcome         OK           12     510      297    297     297
+wwdc26-sotu-recap      OK           12     336      217    217     217
+
+PASS: all acceptance checks

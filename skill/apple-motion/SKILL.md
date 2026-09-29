@@ -12,12 +12,12 @@ loudness). The pipeline itself was calibrated on renders with known springs. Not
 ## The style in numbers
 
 <!-- numbers:start -->
-- **Pace.** Median shot 41.0 frames (1.4 s); p10 7.0, p90 120.7 frames; 4.74 cuts per 10 s (median video). Transitions: cut 91%, whip 6%, mask wipe 1%, match cut 1%.
-- **Typography is an accent, not the bed.** Designer-set type appears 0.8 times per 10 s (median video); most on-screen text is UI inside product shots. Hold 20.0 frames median (p10 3.0, p90 48.8).
-- **Size.** Cap height median 9.42% of frame height (p10 3.42%, p90 20.89%). Lines: 1 79%, 2 13%, 4 6%. Alignment: center 64%, right 17%, left 11%.
-- **Entries.** slide 17%, fade 15%, cut on 13%, blur in 11%, scale up from small 8%. Animated entries are visibly done in 8.0 frames (median). Spring (calibrated): damping 14.98, stiffness 99.9, mass 1 - use it without durationInFrames.
-- **Exits.** cut off 34%, fade out 23%, slide out 17%, scale out (down) 15%; median 5.0 frames.
-- **Sound.** 109.4 BPM median (p10 89.0, p90 124.9); -16.9 LUFS integrated, -2.0 dBTP true peak; voice-over at 3.05 words/s. Cuts favour the beat: 95/278 within +-2 frames vs 82.1 expected by chance (p=0.0444).
+- **Pace.** Median shot 56.5 frames (1.9 s); p10 13.0, p90 173.5 frames; 3.24 cuts per 10 s (median video). Transitions: cut 92%, whip 5%, scale through 1%, dissolve 1%.
+- **Typography is an accent, not the bed.** Designer-set type appears 0.78 times per 10 s (median video); most on-screen text is UI inside product shots. Hold 28.5 frames median (p10 5.4, p90 80.6).
+- **Size.** Cap height median 6.67% of frame height (p10 3.25%, p90 20.23%). Lines: 1 84%, 2 10%, 4 4%. Alignment: center 60%, right 19%, left 15%.
+- **Entries.** cut on 19%, slide 19%, fade 18%, scale up from small 10%, blur in 7%. Animated entries are visibly done in 8.0 frames (median). Spring (calibrated): damping 14.0, stiffness 82.1, mass 1 - use it without durationInFrames.
+- **Exits.** cut off 47%, fade out 15%, slide out 13%, scale out (down) 12%; median 3.5 frames.
+- **Sound.** 118.8 BPM median (p10 91.9, p90 131.3); -17.4 LUFS integrated, -2.0 dBTP true peak; voice-over at 3.04 words/s. Cuts are not locked to the beat: 134/400 within +-2 frames vs 124.8 expected by chance (p=0.1586) - the edit follows the voice and picture.
 <!-- numbers:end -->
 
 ## How to build one

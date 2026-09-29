@@ -1,0 +1,98 @@
+{
+ "slug": "render-cal-ocr",
+ "reviewer": "auto: every text in our own renders is typography",
+ "typography": [
+  {
+   "id_at_review": 0,
+   "text": "Weight 400",
+   "ref_frame": 23,
+   "cx": 964.0,
+   "cy": 550.0
+  },
+  {
+   "id_at_review": 1,
+   "text": "Weight 500",
+   "ref_frame": 84,
+   "cx": 964.0,
+   "cy": 550.0
+  },
+  {
+   "id_at_review": 2,
+   "text": "Weight 600",
+   "ref_frame": 144,
+   "cx": 962.5,
+   "cy": 549.5
+  },
+  {
+   "id_at_review": 3,
+   "text": "Weight 700",
+   "ref_frame": 204,
+   "cx": 962.5,
+   "cy": 549.5
+  },
+  {
+   "id_at_review": 4,
+   "text": "Weight 800",
+   "ref_frame": 264,
+   "cx": 961.5,
+   "cy": 549.5
+  },
+  {
+   "id_at_review": 5,
+   "text": "Entry cut",
+   "ref_frame": 324,
+   "cx": 961.0,
+   "cy": 547.5
+  },
+  {
+   "id_at_review": 6,
+   "text": "Entry fade",
+   "ref_frame": 385,
+   "cx": 960.0,
+   "cy": 548.0
+  },
+  {
+   "id_at_review": 7,
+   "text": "Entry scaleDown",
+   "ref_frame": 444,
+   "cx": 961.0,
+   "cy": 548.5
+  },
+  {
+   "id_at_review": 8,
+   "text": "Entry blurln",
+   "ref_frame": 505,
+   "cx": 961.0,
+   "cy": 548.5
+  },
+  {
+   "id_at_review": 9,
+   "text": "Entry slideUp",
+   "ref_frame": 564,
+   "cx": 963.0,
+   "cy": 547.0
+  },
+  {
+   "id_at_review": 10,
+   "text": "Entry slideUpMask",
+   "ref_frame": 625,
+   "cx": 963.5,
+   "cy": 551.0
+  },
+  {
+   "id_at_review": 11,
+   "text": "Every word counts",
+   "ref_frame": 674,
+   "cx": 961.0,
+   "cy": 549.5
+  },
+  {
+   "id_at_review": 12,
+   "text": "Entry scaleUp",
+   "ref_frame": 732,
+   "cx": 962.0,
+   "cy": 545.0
+  }
+ ],
+ "caption": []
+}

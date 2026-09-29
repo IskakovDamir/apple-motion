@@ -12,6 +12,9 @@ data/
 *.png
 *.jpg
 !reference/**/*.png
+!reports/**/*.png
+!docs/**/*.png
+!docs/**/*.gif
 __pycache__/
 *.pyc
 demo/node_modules/
