@@ -120,7 +120,10 @@ export const KineticText: React.FC<KineticTextProps> = ({
     ctx.font = `${w} 100px ${TYPE.family}`;
     return Math.max(...lines.map((l) => ctx.measureText(l).width / 100 + TYPE.letterSpacingEm * l.length));
   }, [lines, w]);
-  const fontSize = widest > 0 ? Math.min(wanted, ((maxWidthPct / 100) * width) / widest) : wanted;
+  // room available from the anchor: left-aligned text at x=58 may use at most 96-58 = 38% of the width
+  const room = align === 'left' ? 96 - x : align === 'right' ? x - 4 : 2 * Math.min(x, 100 - x) - 8;
+  const fitPct = Math.max(10, Math.min(maxWidthPct, room));
+  const fontSize = widest > 0 ? Math.min(wanted, ((fitPct / 100) * width) / widest) : wanted;
   const outFrames = exit === 'cut' ? 0 : exitFrames ?? DURATION.textOutFrames;
   if (frame >= durationInFrames) return null;
 

@@ -121,11 +121,13 @@ def music(bpm=120, bars=16, seed=7):
         if i < len(buf):
             buf[i:j] += x[: j - i] * gain
 
-    # sections (bars): intro 0-1, build 2-3, main 4-11, break 12-13, final 14-15
+    # sections (0-based bar index, N = bars): intro 0-1, build 2-3, main 4..N-5, break N-4..N-3,
+    # final N-2..N-1, closing hit on beat 4N. Needs N >= 8.
+    brk0 = max(4, bars - 4)
     for bar in range(bars):
         t0 = bar * 4 * beat
         root, chord = prog[(bar // 2) % 4] if bar >= 2 else prog[0]
-        intro, build, brk = bar < 2, 2 <= bar < 4, 12 <= bar < 14
+        intro, build, brk = bar < 2, 2 <= bar < 4, brk0 <= bar < brk0 + 2
         for b in range(4):
             tb = t0 + b * beat
             if not intro and not brk:
@@ -159,7 +161,7 @@ def music(bpm=120, bars=16, seed=7):
                 add(L, x * (1 - pan), t0 + s * beat / 4)
                 add(R, x * (1 + pan), t0 + s * beat / 4)
     # riser into the final section and a closing hit
-    riser_t = 12 * 4 * beat
+    riser_t = brk0 * 4 * beat
     rn = int(8 * beat * SR)
     rsig = sfx_riser(rn, rng) * 0.5
     add(L, rsig, riser_t)
@@ -223,7 +225,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("out")
     ap.add_argument("--bpm", type=float, default=120)
-    ap.add_argument("--bars", type=int, default=16)
+    ap.add_argument("--bars", type=int, default=16, help="length in 4/4 bars (>= 8); closing hit on beat 4*bars")
     ap.add_argument("--seed", type=int, default=7)
     a = ap.parse_args()
     out = Path(a.out)

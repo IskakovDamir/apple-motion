@@ -305,7 +305,8 @@ def fmt(x, key="p50"):
 def storage():
     lines = []
     du = subprocess.run(["du", "-sh", str(ROOT)], capture_output=True, text=True).stdout.split()[0]
-    df = subprocess.run(["df", "-h", "/", "/System/Volumes/Data", "/Volumes/Transcend"], capture_output=True, text=True).stdout
+    vols = [v for v in ("/", "/System/Volumes/Data", str(ROOT)) if os.path.exists(v)]
+    df = subprocess.run(["df", "-h", *vols], capture_output=True, text=True).stdout
     lines.append(f"- Project size (du -sh {ROOT}): {du}")
     lines.append("```")
     lines += df.strip().splitlines()

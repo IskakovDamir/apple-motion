@@ -14,6 +14,8 @@ export type DeviceFrameProps = {
   pushPctPerSec?: number;
   tiltDeg?: number;
   screenColor?: string;
+  /** soft wallpaper gradient behind the UI (Apple's UI shots are never an empty grey screen) */
+  wallpaper?: readonly [string, string] | null;
 };
 
 /**
@@ -29,6 +31,7 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({
   pushPctPerSec = 1.5,
   tiltDeg = 0,
   screenColor = '#000000',
+  wallpaper = null,
 }) => {
   const frame = useCurrentFrame();
   const {fps, height} = useVideoConfig();
@@ -56,7 +59,8 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({
           opacity: interpolate(p, [0, 0.3], [0, 1], {extrapolateRight: 'clamp'}),
         }}
       >
-        <div style={{position: 'relative', width: '100%', height: '100%', borderRadius: r - bezel, overflow: 'hidden', background: screenColor}}>
+        <div style={{position: 'relative', width: '100%', height: '100%', borderRadius: r - bezel, overflow: 'hidden',
+          background: wallpaper ? `linear-gradient(160deg, ${wallpaper[0]}, ${wallpaper[1]})` : screenColor}}>
           {children}
           <div
             style={{

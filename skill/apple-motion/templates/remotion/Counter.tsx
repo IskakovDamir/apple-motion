@@ -28,6 +28,7 @@ export const Counter: React.FC<CounterProps> = ({
   y = 46,
   size = 'hero',
   capHeightPct,
+  gradient,
   ...rest
 }) => {
   const frame = useCurrentFrame();
@@ -46,6 +47,7 @@ export const Counter: React.FC<CounterProps> = ({
         capHeightPct={cap}
         y={y}
         lines={[text]}
+        gradient={gradient}
         entry="fade"
         entryFrames={4}
         style={{fontVariantNumeric: 'tabular-nums', ...style}}

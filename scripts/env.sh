@@ -1,8 +1,14 @@
 # Source at the top of every script / shell session in this project.
 # Everything heavy stays on the external Transcend drive.
-export PROJECT_ROOT=/Volumes/Transcend/dev/apple-motion
-if [ ! -d /Volumes/Transcend ] || [ ! -w "$PROJECT_ROOT" ]; then
-  echo "env.sh: /Volumes/Transcend not mounted or project not writable" >&2
+# PROJECT_ROOT = the repository folder (resolved through symlinks). Every cache and temp dir below
+# lives inside it, so the whole project can sit on an external drive.
+_am_src="${BASH_SOURCE[0]:-${(%):-%x}}"
+export PROJECT_ROOT="${APPLE_MOTION_ROOT:-$(cd "$(dirname "$_am_src")/.." && pwd -P)}"
+# Optional hard rule: refuse to run unless the project resolves under this prefix (the original run
+# required the external drive: AM_REQUIRE_PREFIX=/Volumes/Transcend/).
+case "$PROJECT_ROOT" in /Volumes/Transcend/*) export AM_REQUIRE_PREFIX="${AM_REQUIRE_PREFIX-/Volumes/Transcend/}";; esac
+if [ -n "${AM_REQUIRE_PREFIX:-}" ] && { [ "${PROJECT_ROOT#$AM_REQUIRE_PREFIX}" = "$PROJECT_ROOT" ] || [ ! -w "$PROJECT_ROOT" ]; }; then
+  echo "env.sh: project not under $AM_REQUIRE_PREFIX or not writable (drive unmounted?)" >&2
   return 1 2>/dev/null || exit 1
 fi
 export CACHE_ROOT="$PROJECT_ROOT/.cache"

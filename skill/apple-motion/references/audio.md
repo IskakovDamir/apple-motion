@@ -13,9 +13,9 @@ Numbers: `measurements.md` (BPM per video, integrated LUFS, true peak, LRA, VO w
 
 ## Bed layout of `synth_audio.py`
 
-`--bars N` (default 16): bars 1-2 intro (pads, hats), 3-4 build (bass, kick), 5-(N-4) main (full
-drums, arp), N-3..N-2 break (drums out, riser), N-1..N final, and a closing hit exactly on beat 4N
-(the bar line after the last bar). Plan cards so the logo starts on beat 4N; the bed already has the
+`--bars N` (default 16): bars 1-2 intro (pads, hats), 3-4 build (bass, kick), then main (full drums,
+arp) up to the break, a 2-bar break with the drums out and a riser (bars N-3..N-2), the last 2 bars
+final, and a closing hit exactly on beat 4N (the bar line after the last bar). Beat 0 is t = 0. Plan cards so the logo starts on beat 4N; the bed already has the
 hit, so don't add `sfx: 'hit'` there.
 
 ## Voice-over
@@ -31,9 +31,9 @@ hit, so don't add `sfx: 'hit'` there.
 
 ## Loudness
 
-Master to the measured integrated loudness and true-peak ceiling (see measurements.md; the Apple
-videos sit around -16 to -22 LUFS with -1 to -4 dBTP true peak):
+Master to the measured integrated loudness and true-peak ceiling (`AUDIO.lufs` / `AUDIO.truePeakDb`
+in tokens.ts, the medians of the six videos; the corpus spans about -16.5 to -21.6 LUFS):
 
 ```bash
-ffmpeg -i out.mp4 -af loudnorm=I=-16:TP=-1.5:LRA=7 -c:v copy out_mastered.mp4
+scripts/master.sh out.mp4 final.mp4          # two-pass loudnorm to the token targets, video copied
 ```

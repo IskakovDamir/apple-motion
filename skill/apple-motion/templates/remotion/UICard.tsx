@@ -14,7 +14,8 @@ export type UICardProps = {
   y?: number;
   /** frame (local) at which the card pops in */
   at?: number;
-  /** title size in % of frame height (UI inside a device needs ~2.5-4.5 to read in a recap) */
+  /** title size in % of frame height. Recap uses 4.2 inside a phone (titles fit ~17 characters there);
+   *  the default 2.6 suits free-floating cards */
   fontPct?: number;
 };
 

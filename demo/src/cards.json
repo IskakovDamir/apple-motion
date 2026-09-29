@@ -284,12 +284,16 @@
   },
   {
    "beats": 4,
-   "bg": "black",
+   "bg": "gradient",
    "counter": {
     "to": 33187,
     "caption": "frames, one by one"
    },
-   "transition": "whip"
+   "transition": "whip",
+   "gradient": [
+    "#1d1d1f",
+    "#3a3a3c"
+   ]
   },
   {
    "beats": 4,
@@ -552,7 +556,7 @@
   },
   {
    "beats": 4,
-   "bg": "black",
+   "bg": "gradient",
    "device": {
     "tone": "dark",
     "cards": [
@@ -567,7 +571,11 @@
       "icon": "✂️"
      }
     ]
-   }
+   },
+   "gradient": [
+    "#1d1d1f",
+    "#2c2c2e"
+   ]
   },
   {
    "beats": 4,
@@ -593,7 +601,7 @@
   },
   {
    "beats": 4,
-   "bg": "black",
+   "bg": "offWhite",
    "lines": [
     "Every cut.",
     "Every word."
@@ -884,7 +892,7 @@
   },
   {
    "beats": 1,
-   "bg": "black",
+   "bg": "offWhite",
    "icon": {
     "glyph": "Aa",
     "from": "#64d2ff",
@@ -902,7 +910,7 @@
   },
   {
    "beats": 1,
-   "bg": "black",
+   "bg": "offWhite",
    "icon": {
     "glyph": "☼",
     "from": "#64d2ff",
@@ -920,7 +928,7 @@
   },
   {
    "beats": 1,
-   "bg": "black",
+   "bg": "offWhite",
    "icon": {
     "glyph": "✦",
     "from": "#64d2ff",
@@ -938,7 +946,7 @@
   },
   {
    "beats": 1,
-   "bg": "black",
+   "bg": "offWhite",
    "icon": {
     "glyph": "♥",
     "from": "#64d2ff",

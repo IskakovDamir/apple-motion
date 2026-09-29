@@ -12,10 +12,11 @@ ROOT = Path(os.environ.get("PROJECT_ROOT", Path(__file__).resolve().parents[1]))
 DATA = ROOT / "data"
 SRC = DATA / "_src"
 
-if not str(ROOT).startswith("/Volumes/Transcend/"):
-    sys.exit(f"PROJECT_ROOT must live on /Volumes/Transcend, got {ROOT}")
-if not os.environ.get("TMPDIR", "").startswith("/Volumes/Transcend/"):
-    sys.exit("source scripts/env.sh first (TMPDIR is not on Transcend)")
+_req = os.environ.get("AM_REQUIRE_PREFIX", "")
+if _req and not str(ROOT).startswith(_req):
+    sys.exit(f"PROJECT_ROOT must live under {_req}, got {ROOT}")
+if not os.environ.get("TMPDIR", "").startswith(str(ROOT)):
+    sys.exit("source scripts/env.sh first (TMPDIR is not inside the project)")
 
 cv2.setNumThreads(int(os.environ.get("CV_THREADS", 3)))
 

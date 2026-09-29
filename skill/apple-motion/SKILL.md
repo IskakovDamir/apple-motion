@@ -25,11 +25,15 @@ Not affiliated with Apple.
 
 1. **Copy the library.** `templates/remotion/` -> `src/apple-motion/` in the user's Remotion project
    (needs `remotion` and `@remotion/transitions`). `tokens.ts` is the measured style - don't edit it.
-2. **Fix the length on the music first.** Pick BPM (numbers block), then the number of bars. At 30 fps
-   and 120 BPM: 1 beat = 15 frames, 1 bar = 60, 16 bars = 32 s. A "30-second recap" = 16 bars.
-   With `scripts/synth_audio.py` the bed is laid out as: intro bars 1-2, build 3-4, main 5-12,
-   break 13-14 (drums out), final 15-16, and a closing **hit exactly on the last bar line**
-   (beat 64 for 16 bars). Land the logo card on that beat and don't add another `sfx: 'hit'`.
+2. **Fix the length on the music first.** Pick BPM (numbers block), then bars. At 30 fps and 120 BPM:
+   1 beat = 15 frames, 1 bar = 60 frames = 2 s. Beat 0 is t = 0 (`offsetFrames` 0) unless the music has
+   a pickup. Total length = (beats before the logo + logo beats) x beat + `tailFrames` (default 45; the
+   last card holds through it). For a "30-second recap" at 120 BPM: 13 bars of cards (52 beats) +
+   a 4-beat logo = 28 s + 1.5 s tail. Generate the bed to match: `synth_audio.py OUT --bpm 120
+   --bars 13` puts its closing **hit exactly on the bar line after the last bar** (beat 52 here) -
+   start the logo card on that beat and don't add `sfx: 'hit'`. Bed layout: intro bars 1-2, build
+   3-4, main, break (last 4-3 bars, drums out), final 2 bars, hit. If you must use a longer bed, set
+   `musicFadeOutFrames` (e.g. 30) and add `sfx: 'hit'` on the logo.
 3. **Write the video as cards** (`Card[]`, see `Recap.tsx`). Each card lasts a number of beats
    (half beats allow) and is one of: footage/still (`media`), claim or word (`lines`), feature title
    (`icon` + `lines` on white), spec (`spec`: gradient numerals + label), number roll (`counter`),
@@ -39,11 +43,16 @@ Not affiliated with Apple.
    start on something that moves, not on a title). Runs of very short (<= 10 frame) shots are rare in
    the corpus - don't build a flash montage unless the brief asks for one.
 5. **Type is punctuation.** 1-4 words per line, 1 line (84% of measured type), at most 2. Name a
-   feature, state a claim, show a number. With a voice-over, type is rare (numbers block); without
-   one, type has to name the features - still keep it to about one type card per 5-7 s.
+   feature, state a claim, show a number. Every card with `lines`, `spec` or `counter` counts as a
+   type moment, the final name too. With a voice-over type is rare (numbers block); without one it has
+   to name the features - aim for one type moment per 5-7 s, and when the brief has more features
+   than that allows, name some inside the UI (`device` cards) instead of on their own cards. Type
+   does not have to last the whole card: `typeBeats` lets it leave while the picture continues
+   (measured type on-screen time is ~1 s median, ~3 s p90). Leaving `entry` out gives a cut-on, the
+   most common measured entry.
 6. **Transitions:** leave `transition` empty (hard cut) on >90% of cards; `whip` is the common
    accent, `dissolve` / `maskWipe` / `scaleThrough` are rare. Put accents on musical moments.
-7. **Mix and master:** SFX only on whips (automatic), UI taps, the final hit. Render, then
+7. **Mix and master:** SFX only on whips (automatic), UI taps (`device.tapSfx`), the final hit. Render, then
    `scripts/master.sh out.mp4 final.mp4` (two-pass loudnorm to `AUDIO.lufs` / `AUDIO.truePeakDb`).
 8. **Check:** `python scripts/check_render.py final.mp4` prints your pace and loudness next to
    Apple's p10-p90 ranges. Fix anything marked OUTSIDE.
@@ -78,8 +87,8 @@ in the middle of each whip.
 ## No footage?
 
 About half of Apple's frames are footage. Without it, carry the picture with: `device` cards (UI
-inside a phone; set `device.x` to ~30 and put `lines` at `x` ~62, `align: 'left'` to have a claim
-beside the phone), `grid` icon walls, `spec` numerals, gradient fields (`bg: 'gradient'` +
+inside a phone; beside the phone - `device.x: 30` with `lines` at `x: 58`, `align: 'left'`; left-aligned text is
+auto-shrunk to fit between its x and the right edge), `grid` icon walls, `spec` numerals, gradient fields (`bg: 'gradient'` +
 `gradient: [from, to]`), and single `icon` cards. Avoid long stretches of plain black or white: the
 corpus is ~8% pure black and ~21% pure white frames.
 

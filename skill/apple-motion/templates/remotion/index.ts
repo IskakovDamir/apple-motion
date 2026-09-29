@@ -15,7 +15,7 @@ export {UICard} from './UICard';
 export type {UICardProps} from './UICard';
 export {Scrubber} from './Scrubber';
 export {AppIcon} from './AppIcon';
-export {Recap, recapDuration, cardFrames} from './Recap';
+export {Recap, recapDuration, cardFrames, cardStarts} from './Recap';
 export type {Card, RecapProps} from './Recap';
 export {IconGrid} from './IconGrid';
 export type {GridIcon} from './IconGrid';

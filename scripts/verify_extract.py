@@ -13,9 +13,9 @@ from pathlib import Path
 
 from PIL import Image
 
-ROOT = Path(os.environ.get("PROJECT_ROOT", "/Volumes/Transcend/dev/apple-motion"))
+ROOT = Path(os.environ.get("PROJECT_ROOT", Path(__file__).resolve().parents[1]))
 DATA = ROOT / "data"
-EXT = "/Volumes/Transcend/"
+EXT = os.environ.get("AM_REQUIRE_PREFIX") or (os.path.realpath(ROOT) + "/")
 REQUIRED = ["meta.json", "shots.csv", "text_events.json", "text_anim.json", "motion.json", "color_layout.json",
             "audio.json", "sync.json", "summary.md", "audio/spectrogram.png", "contact_sheets/index.json"]
 fails, rows = [], []

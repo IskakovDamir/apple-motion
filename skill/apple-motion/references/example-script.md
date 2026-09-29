@@ -27,7 +27,7 @@ const cards: Card[] = [
   {beats: 3, bg: 'white', icon: {glyph: '▦', from: '#30d158', to: '#00a86b'}, lines: ['Widgets'], entry: 'fade', size: 'title'},
   {beats: 9, bg: 'black', grid: {icons: [{glyph: '▦', from: '#30d158', to: '#00a86b'}, {glyph: '☼', from: '#ffd60a', to: '#ff9f0a'}, {glyph: '✎', from: '#64d2ff', to: '#0a84ff'}], columns: 6, rows: 3}},
   {beats: 4, bg: 'white', spec: {value: '2x', label: 'faster to open', gradient: ['#b150e2', '#e0417b']}},
-  // break (44-55): drums drop out - one calm hold
+  // calm hold from beat 44 into the break (drums drop out at beat 48)
   {beats: 12, bg: 'gradient', gradient: ['#0a84ff', '#5e5ce6'], lines: ['Your notes. Everywhere.'], entry: 'perWord', size: 'headline'},
   // final (56-63): four 2-beat picture cards building to the hit
   {beats: 2, bg: 'white', icon: {glyph: '↻', from: '#64d2ff', to: '#0a84ff'}},

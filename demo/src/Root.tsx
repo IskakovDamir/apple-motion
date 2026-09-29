@@ -6,6 +6,7 @@ import {exampleProps} from './Example';
 import {bpm, cards, offsetFrames} from './script';
 import {Recap as AppleRecap, recapDuration as appleRecapDuration} from '@apple-motion';
 import {agentProps} from './agent/AgentRecap';
+import {strideProps} from './agent2/StrideRecap';
 
 const props: RecapProps = {bpm, offsetFrames, cards, music: 'music.wav'};
 
@@ -30,6 +31,15 @@ export const RemotionRoot: React.FC = () => (
     width={1920}
     height={1080}
     defaultProps={agentProps}
+  />
+  <Composition
+    id="StrideRecap"
+    component={AppleRecap}
+    durationInFrames={appleRecapDuration(strideProps, 30)}
+    fps={30}
+    width={1920}
+    height={1080}
+    defaultProps={strideProps}
   />
   </>
 );
