@@ -161,8 +161,33 @@ def split_swaps(t, min_run=6):
     return pieces
 
 
+def dedupe_tracks(tr):
+    """OCR sometimes reports a line twice (whole line + a fragment of it). Drop a track whose box is
+    >= 70% inside a longer-text track's box on their common frames."""
+    drop = set()
+    for i, a in enumerate(tr):
+        for j, b in enumerate(tr):
+            if i == j or j in drop or len(key(a["text"])) > len(key(b["text"])):
+                continue
+            fa, fb = dict(a["boxes"]), dict(b["boxes"])
+            common = sorted(set(fa) & set(fb))
+            if len(common) < max(3, 0.5 * len(fa)):
+                continue
+            inside = []
+            for f in common[:: max(1, len(common) // 10)]:
+                A, B = fa[f], fb[f]
+                ix = max(0, min(A[2], B[2]) - max(A[0], B[0]))
+                iy = max(0, min(A[3], B[3]) - max(A[1], B[1]))
+                inside.append(ix * iy / max(1, (A[2] - A[0]) * (A[3] - A[1])))
+            if np.median(inside) >= 0.7 and (len(key(a["text"])) < len(key(b["text"])) or i > j):
+                drop.add(i)
+                break
+    return [t for k, t in enumerate(tr) if k not in drop]
+
+
 def group_lines(tr):
     """Union-find line tracks into blocks (multi-line phrases)."""
+    tr[:] = dedupe_tracks(tr)
     parent = list(range(len(tr)))
 
     def find(i):
@@ -224,14 +249,23 @@ def block_box_at(block, f):
 def plan_event(block, shots, n, W, H):
     first = min(t["first"] for t in block)
     last = max(t["last"] for t in block)
-    # reference frame: best-confidence frame in the middle 60% of the span
+    # reference frame: a frame inside a STABLE part of the hold (box unchanged over +-3 OCR frames),
+    # highest confidence, preferring the first half of the span (after the entry, before the exit)
     conf_at = defaultdict(float)
     for t in block:
         for f, _, c in t["texts"]:
             conf_at[f] += c
+    main = max(block, key=lambda t: len(t["boxes"]))
+    bx = dict(main["boxes"])
+    fs_ = sorted(bx)
+
+    def stability(f):
+        near = [g for g in fs_ if 0 < abs(g - f) <= 3]
+        return min((iou(bx[f], bx[g]) for g in near), default=0.0)
     span = last - first
-    mids = [f for f in conf_at if first + 0.2 * span <= f <= last - 0.2 * span] or list(conf_at)
-    fref = max(mids, key=lambda f: (conf_at[f], -abs(f - (first + last) / 2)))
+    cand = [f for f in fs_ if first + 0.15 * span <= f <= last - 0.15 * span] or fs_
+    stable = [f for f in cand if stability(f) >= 0.9] or cand
+    fref = max(stable, key=lambda f: (round(conf_at[f], 1), -abs(f - (first + 0.4 * span))))
     box, line_boxes = block_box_at(block, fref)
     bw, bh = box[2] - box[0], box[3] - box[1]
     # search region
@@ -421,6 +455,13 @@ def settle_distance(series, fref, cap_px, first, last):
     sig = {"scale": 0.04, "pos": 0.005, "opacity": 0.15, "blur_px": max(1.5, 0.04 * cap_px), "reveal": 0.15}
     span = last - first
     mid = (fs >= first + 0.2 * span) & (fs <= last - 0.2 * span)
+    # over live footage the photometric estimates move with the background: widen their tolerance to
+    # 3x the jitter seen while the text is certainly held (middle of the OCR span)
+    for k in ("opacity", "blur_px", "reveal"):
+        v = sm[k][mid]
+        v = v[np.isfinite(v)]
+        if len(v) >= 5:
+            sig[k] = max(sig[k], 3 * float(np.std(v)))
     trend = {}
     for k in ("scale", "dx", "dy"):
         ok = mid & np.isfinite(sm[k])
@@ -564,7 +605,12 @@ def run(slug):
         box = p["box"]
         line_texts = [t["text"] for t in block]
         caps = info["cap_px"]
-        cap_px = float(np.median(caps)) if caps else (box[3] - box[1]) * 0.7
+        line_h = float(np.median([b[3] - b[1] for b in p["line_boxes"]]))
+        cap_px = float(np.median(caps)) if caps else 0.64 * line_h
+        # glow / tight leading can merge lines in the glyph mask; fall back to the OCR line height
+        # (cap = 0.64 x EasyOCR line box height, median over clean wwdc22 typography)
+        if not 0.4 * line_h <= cap_px <= 0.9 * line_h:
+            cap_px = 0.64 * line_h
         appear, full, exit_start, gone, ak, ek = timing(series, p["fref"], shots, p, cap_px)
         xh = float(np.median(info["xh_px"])) if info["xh_px"] else None
         bb_time, last_bb = [], None

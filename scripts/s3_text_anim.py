@@ -26,7 +26,7 @@ def channel_values(pts, ch):
     return np.array([p[ch] if p[ch] is not None else np.nan for p in pts], np.float64)
 
 
-def analyse_window(series, a, b, direction, fps, cap_px=None):
+def analyse_window(series, a, b, direction, fps, cap_px=None, limit=None):
     """direction +1 entry: progress 0 at appear -> 1 when settled, time = f - appear.
     direction -1 exit:  progress 0 at exit start (settled) -> 1 when gone, time = f - exit_start."""
     sig = dict(SIG)
@@ -36,6 +36,9 @@ def analyse_window(series, a, b, direction, fps, cap_px=None):
     # (calibration on our own renders: a 12-frame Remotion spring looks settled after ~3-5 frames)
     tail = max(12, 2 * (b - a))
     lo, hi = (a - 3, b + tail) if direction > 0 else (a - tail // 2, b + 3)
+    if limit is not None:   # never let the entry window run into the exit (or the exit into the entry)
+        hi = min(hi, limit) if direction > 0 else hi
+        lo = max(lo, limit) if direction < 0 else lo
     pts = [p for p in series if lo <= p["f"] <= hi]
     if len(pts) < 2:
         return None
@@ -199,8 +202,8 @@ def run(slug):
         series = ms[str(ev["id"])]["series"]
         a, full, xs, g = ev["appear_frame"], ev["full_frame"], ev["exit_start_frame"], ev["gone_frame"]
         cap = ev.get("cap_height_px")
-        ent = analyse_window(series, a, full, +1, fps, cap)
-        ext = analyse_window(series, xs, g, -1, fps, cap) if ev["exit_frames"] > 1 else None
+        ent = analyse_window(series, a, full, +1, fps, cap, limit=xs)
+        ext = analyse_window(series, xs, g, -1, fps, cap, limit=full) if ev["exit_frames"] > 1 else None
         words = stagger(series, a, full, "word_mass")
         letters = stagger(series, a, full, "letter_mass")
         rec = {"id": ev["id"], "text": ev["text"], "role": ev.get("role"),

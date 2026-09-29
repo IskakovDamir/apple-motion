@@ -83,7 +83,8 @@ def video(slug):
                   "transitions": dict(Counter(s["transition"] for s in shots[1:]))},
         "text": {"events_total": len(te), "roles": dict(Counter(e.get("role") for e in te)),
                  "typography_count": len(typo), "typography_per_10s": round(len(typo) / dur * 10, 2),
-                 "caption_count": len(capt), "all_events_per_10s": round(len(te) / dur * 10, 2)},
+                 "caption_count": len(capt), "all_events_per_10s": round(len(te) / dur * 10, 2),
+                 "hold_frames_all": q([e["hold_frames"] for e in te], nd=1)},
         "typography": {
             "cap_height_pct": q([e["cap_height_pct"] for e in typo]),
             "stroke_to_cap": q([e.get("stroke_to_cap") for e in typo], nd=3),
@@ -173,6 +174,28 @@ def calibration():
             "note": "fitted springs are this much faster than the truth; calibrated = fitted / c (damping), / c^2 (stiffness)"}
 
 
+def weight_calibration():
+    """stroke/cap measured on our render of SF Pro Display at known weights -> interpolation table."""
+    p = DATA / "render-cal" / "text_events.json"
+    if not p.exists():
+        return None
+    import re
+    pts = []
+    for e in load_json(p)["events"]:
+        m = re.match(r"Weight (\d+)", e["text"])
+        if m and e.get("stroke_to_cap"):
+            pts.append((e["stroke_to_cap"], int(m.group(1))))
+    pts.sort()
+    return pts if len(pts) >= 3 else None
+
+
+def to_weight(sc, table):
+    if sc is None or not table:
+        return None
+    xs, ys = [p[0] for p in table], [p[1] for p in table]
+    return int(round(float(np.interp(sc, xs, ys)) / 50) * 50)
+
+
 def pool(videos, slugs):
     """Pooled distributions over all videos (typography events pooled, not averaged)."""
     allty, allan, alllen = [], [], []
@@ -222,6 +245,8 @@ def pool(videos, slugs):
         "typography_per_10s": q([v["text"]["typography_per_10s"] for v in videos]),
         "cap_height_pct": q([e["cap_height_pct"] for e in allty]),
         "stroke_to_cap": q([e.get("stroke_to_cap") for e in allty], nd=3),
+        "weight_calibration": weight_calibration(),
+        "font_weight_estimate": q([to_weight(e.get("stroke_to_cap"), weight_calibration()) for e in allty], nd=0),
         "x_height_ratio": q([e.get("x_height_ratio") for e in allty], nd=3),
         "line_pitch_to_cap": q([e.get("line_pitch_to_cap") for e in allty]),
         "line_count": shares(Counter(e["line_count"] for e in allty)),
@@ -294,8 +319,11 @@ def storage():
 
 def report(videos, P):
     L = ["# apple-motion extraction report", "",
-         f"{P['videos']} videos, {P['duration_s']} s, {P['frames']} frames. All numbers measured by scripts/ (see README).", "",
-         "| video | fps | dur s | shots | median shot fr | BPM | text ev /10s | typo /10s | median typo hold fr | most common typo entry | median entry spring d/k/m | cuts on beat (chance) | typo on beat | LUFS |",
+         f"{P['videos']} videos, {P['duration_s']} s, {P['frames']} frames. All numbers measured by `scripts/` "
+         "(see README). 'text' = every tracked text block (UI, products, chrome, legal included); 'typo' = "
+         "reviewed designer typography only. 'On beat' = within +-2 frames of a tracked beat; chance = 5 / beat period.", "",
+         "| video | fps | dur s | shots | median shot fr | BPM | text ev /10s | typo /10s | median hold fr text / typo | "
+         "most common typo entry | median entry spring d/k/m (n) | cuts on beat (chance) | text / typo on beat | LUFS |",
          "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for v in videos:
         t = v["typography"]
@@ -303,11 +331,18 @@ def report(videos, P):
         top = max(es, key=es.get) if es else "n/a"
         sp = t["entry_spring"]
         L.append(f"| {v['slug']} | {v['fps']} | {v['duration_s']} | {v['shots']['count']} | {fmt(v['shots']['length_frames'])} | "
-                 f"{v['audio']['bpm']} | {v['text']['all_events_per_10s']} | {v['text']['typography_per_10s']} | {fmt(t['hold_frames'])} | "
-                 f"{top} | {sp['damping']}/{sp['stiffness']}/1 (n={sp['n']}) | {v['sync']['cuts_on_beat']} ({v['sync']['chance_on_beat']}) | "
-                 f"{v['sync']['typography_on_beat']} | {v['audio']['loudness']['integrated_lufs']} |")
-    L += ["", "Notes: 'text ev' counts every tracked text block (UI, products, chrome, legal); 'typo' counts reviewed "
-          "designer typography only. 'On beat' = within +-2 frames; chance = 5 / beat period.", ""]
+                 f"{v['audio']['bpm']} | {v['text']['all_events_per_10s']} | {v['text']['typography_per_10s']} | "
+                 f"{fmt(v['text'].get('hold_frames_all'))} / {fmt(t['hold_frames'])} | {top} | "
+                 f"{sp['damping']}/{sp['stiffness']}/1 ({sp['n']}) | {v['sync']['cuts_on_beat']} ({v['sync']['chance_on_beat']}) | "
+                 f"{v['sync']['text_on_beat']} / {v['sync']['typography_on_beat']} | {v['audio']['loudness']['integrated_lufs']} |")
+    cal = P.get("calibration") or {}
+    pb = P.get("cuts_on_beat_pooled") or {}
+    L += ["", f"Pooled cuts on beat: {pb.get('hits')}/{pb.get('cuts')} vs {pb.get('expected_by_chance')} expected by chance "
+          f"(z={pb.get('z')}, p={pb.get('p_one_sided')}).",
+          f"Spring-fit calibration (known springs rendered and measured back): fitted springs are {cal.get('time_scale')}x too fast "
+          f"(n={cal.get('n')}, damping ratio preserved x{cal.get('zeta_ratio')}); calibrated pooled entry spring: "
+          f"{P.get('entry_spring_calibrated')}.",
+          f"Font weight calibration (stroke/cap of SF Pro Display rendered at known weights): {P.get('weight_calibration')}.", ""]
     L += ["## Storage", ""] + storage()
     return "\n".join(L) + "\n"
 
