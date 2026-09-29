@@ -11,7 +11,7 @@
 Usage: synth_audio.py OUT_DIR [--bpm 120] [--bars 16] [--seed 7] [--lufs -17.4] [--tp -2]
 Write OUT_DIR = your Remotion project's public/ folder: the card engine loads SFX from public/sfx/.
 Layout (N = bars, >= 8; >= 12 for a real main section): intro 2 bars, build 2, main, break 2 (drums
-out), final 2, closing hit on beat 4N, then ~4 s of ring-out (enough for a 3 s logo hold + tail).
+out), final 2, closing hit on beat 4N that decays over ~3 s (enough for a 3 s logo hold + tail).
 Needs numpy; ffmpeg on PATH for the mastered music.wav.
 """
 import argparse
@@ -216,12 +216,12 @@ def sfx_click():
 
 
 def sfx_hit(rng):
-    n = int(1.6 * SR)
+    n = int(3.5 * SR)  # decays over ~3 s (room for a ~3 s logo hold)
     t = np.arange(n) / SR
     f = 40 + 80 * np.exp(-t / 0.05)
-    sub = np.sin(2 * np.pi * np.cumsum(f) / SR) * env_exp(n, 0.45)
+    sub = np.sin(2 * np.pi * np.cumsum(f) / SR) * env_exp(n, 0.6)
     crack = hp(rng.standard_normal(n), 1500) * env_exp(n, 0.03) * 0.5
-    tail = onepole_lp(rng.standard_normal(n), 2500) * env_exp(n, 0.5) * 0.15
+    tail = onepole_lp(rng.standard_normal(n), 2500) * env_exp(n, 0.9) * 0.15
     return sub * 0.9 + crack + tail
 
 

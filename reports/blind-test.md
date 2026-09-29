@@ -65,3 +65,30 @@ been pre-normalised before the SFX were mixed).
 | type density presented as measured although it is a recommendation for music-only pieces | labelled as a recommendation, measured value given separately |
 | calibrated spring listed with `durationInFrames: 20` next to "use without durationInFrames" | labelled as Remotion's natural settle length, reference only |
 | emoji vs monochrome glyphs | documented |
+
+# Blind test round 4 (voice-over)
+
+Brief: voice-over given as text for a 25-second recap of a password manager ('Harbor'); the agent made the
+voice with macOS `say`, used `vo_cards.py`, chose 122 BPM so both spoken "Harbor"s sit 5 bars apart and the
+bed's drop and hit land on them. 9 cards, 750 frames; typecheck passed first try. Rendered + mastered: every
+self-check metric inside Apple's range, and pure black / white shares 0.03 / 0.23 (Apple 0.08 / 0.21).
+
+| finding | fix |
+|---|---|
+| ASR misheard "Passkeys" ("Pasquis"), word ends 0.1-0.27 s early, missed pauses | fuzzy word matching; word starts and pauses refined on the voice waveform; clear error with the words heard next |
+| `afterPhrase` could only take the next pause; type lead applied to picture cuts | `afterWord`; picture-only cards cut in the pause before their word, type cards 2 frames before it |
+| no help lining the bed up with the voice | vo_cards.py prints a `--bpm/--bars` pair that puts the bed's closing hit on the last anchored card |
+| music ducked for the whole video, even with no voice | `voiceSpan`: ducking only while the voice speaks, 6-frame ramps |
+| bed "rings out ~4 s" but the hit sample was 1.6 s | hit decays over ~3 s; wording fixed |
+| emoji-capable glyphs render in colour | `︎` text-presentation guidance; example fixed |
+| missing guidance for short voice-overs, lead-in, type density with VO | measured: voice starts median ~1.5 s in, picture holds median ~6.7 s after the last word, ~3 words/s, type ~0.8 per 10 s with VO |
+| printed length omitted the tail; JSON import typing; WHISPER_DIR undocumented; crash on exit after an error | fixed / documented |
+
+# Training loop additions (this round)
+
+- Camera moves: 38% of Apple shots are static, 35% push/pull (median 4.5%/s), 19% pan/tilt (2.6%/s) -
+  now applied automatically to picture cards (`MOTION` tokens, `Move.tsx`).
+- Entry speed training (`scripts/train_entries.py`, `reports/eval/entry-training.md`): each entry rendered at
+  4 spring speeds, measured back, and set to the speed that matches Apple's median length for that type.
+  Demo "entry frames" moved from 4.5 (outside Apple's range) to 5.5 (inside).
+- New type devices seen in the corpus: LowerThird, Pill, WordSwap, Typing (autocorrect gag).

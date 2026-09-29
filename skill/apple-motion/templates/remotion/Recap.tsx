@@ -95,6 +95,9 @@ export type RecapProps = {
   voice?: string;
   /** frame at which the voice-over starts (vo_cards.py prints it as voiceFromFrames). Default 0. */
   voiceFrom?: number;
+  /** [first, last] frame of speech on the composition timeline (vo_cards.py: voiceSpanFrames). The music is
+   *  ducked only inside it (6-frame ramps); without it the music is ducked for the whole video. */
+  voiceSpan?: [number, number];
 };
 
 const isLight = (bg?: BackdropKind) => bg === 'white' || bg === 'offWhite';
@@ -166,7 +169,7 @@ const CardView: React.FC<{c: Card; dur: number; beat: number; move: CameraMove}>
           wallpaper={c.device.wallpaper === undefined ? (c.device.tone === 'dark' ? ['#1c1c3a', '#3a1c32'] : ['#dbe8ff', '#fde2ef']) : c.device.wallpaper}>
           {c.device.cards.slice(0, 3).map((u, k) => (
             <UICard key={k} title={u.title} subtitle={u.subtitle} icon={u.icon} tone={c.device?.tone === 'dark' ? 'dark' : 'light'}
-              widthPct={33} fontPct={4.2} x={50} y={17 + k * 15} at={Math.round(beat * (c.device?.everyBeats ?? 1) * (k + 1))} />
+              widthPct={33} fontPct={4.2} x={50} y={17 + k * 15} at={Math.round(beat * (0.25 + (c.device?.everyBeats ?? 1) * k))} />
           ))}
         </DeviceFrame>
       ) : null}
@@ -200,7 +203,7 @@ const CardView: React.FC<{c: Card; dur: number; beat: number; move: CameraMove}>
 };
 
 export const Recap: React.FC<RecapProps> = ({bpm, offsetFrames = 0, cards, music, sfxVolume = 0.3, tailFrames = 45,
-  musicFadeOutFrames = 0, sfxDir = 'sfx', autoMove: auto = true, voice, voiceFrom = 0}) => {
+  musicFadeOutFrames = 0, sfxDir = 'sfx', autoMove: auto = true, voice, voiceFrom = 0, voiceSpan}) => {
   const {fps, durationInFrames} = useVideoConfig();
   const g = beatGrid(bpm, fps, offsetFrames);
   const durs = cardFrames(cards, bpm, fps, offsetFrames, tailFrames);
@@ -217,7 +220,7 @@ export const Recap: React.FC<RecapProps> = ({bpm, offsetFrames = 0, cards, music
     }
     if (c.device?.tapSfx) {
       c.device.cards.slice(0, 3).forEach((_, k) => {
-        sfx.push(<Sfx dir={sfxDir} key={`tap${i}-${k}`} name="click" at={cursor + Math.round(g.beat * (c.device?.everyBeats ?? 1) * (k + 1))} volume={sfxVolume * 0.8} />);
+        sfx.push(<Sfx dir={sfxDir} key={`tap${i}-${k}`} name="click" at={cursor + Math.round(g.beat * (0.25 + (c.device?.everyBeats ?? 1) * k))} volume={sfxVolume * 0.8} />);
       });
     }
     if (c.sfx) sfx.push(<Sfx dir={sfxDir} key={`s${i}`} name={c.sfx} at={cursor} volume={sfxVolume * (c.sfx === 'hit' ? 1.4 : 1)} />);
@@ -233,7 +236,16 @@ export const Recap: React.FC<RecapProps> = ({bpm, offsetFrames = 0, cards, music
         <Html5Audio
           src={staticFile(music)}
           volume={(f) =>
-            (voice ? Math.pow(10, AUDIO.musicUnderVoiceDb / 20) : 1) *
+            (voice
+              ? interpolate(
+                  voiceSpan
+                    ? Math.min(interpolate(f, [voiceSpan[0] - 6, voiceSpan[0]], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}),
+                        interpolate(f, [voiceSpan[1], voiceSpan[1] + 6], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}))
+                    : 1,
+                  [0, 1],
+                  [1, Math.pow(10, AUDIO.musicUnderVoiceDb / 20)],
+                )
+              : 1) *
             (musicFadeOutFrames > 0
               ? interpolate(f, [durationInFrames - musicFadeOutFrames, durationInFrames], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})
               : 1)

@@ -66,6 +66,11 @@ export const COLOR = {
   measured: ["#080808", "#0b0b0b", "#0e0e0e", "#1a1a1a", "#0f0f0f", "#0c0c0d"],
 };
 
+/** Per-entry spring time scale, trained: calibration renders at several speeds were measured with the
+ *  extraction pipeline and each entry type was set to the speed whose measured entry length matches
+ *  Apple's median for that type (scripts/train_entries.py, reports/eval/entry-training.md). */
+export const ENTRY_TIME = {fade: 1.07, slideUp: 1.63, slideUpMask: 1.67, scaleDown: 2.0, scaleUp: 2.0, blurIn: 2.0} as const;
+
 export const MOTION = {
   /** share of Apple shots by dominant global move (the rest: local-only motion, whips) */
   mix: {static: 0.384, push: 0.155, pull: 0.197, pan: 0.091, tilt: 0.096},

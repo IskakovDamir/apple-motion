@@ -34,7 +34,7 @@ Not affiliated with Apple.
    27 s + 1.5 s tail = 28.5 s.
    Generate the bed to match: `scripts/synth_audio.py <project>/public --bpm 120 --bars 12` writes a
    mastered `music.wav` (+ `sfx/`) whose closing **hit lands exactly on beat 4 x bars** (beat 48 here,
-   printed with its frame) and rings out ~4 s. Start the logo card on that beat and don't add
+   printed with its frame); the hit decays over ~3 s. Start the logo card on that beat and don't add
    `sfx: 'hit'`. Beds shorter than 12 bars have almost no main section (intro, build, break and final
    take 8 bars). If you must use a longer bed, set `musicFadeOutFrames` (e.g. 30) and add `sfx: 'hit'`.
 3. **Write the video as cards** (`Card[]`, see `Recap.tsx`). Each card lasts a number of beats
@@ -97,25 +97,33 @@ in the middle of each whip.
 38% of Apple's shots are static, 35% push or pull (median 4.5% scale per second), 19% pan or tilt
 (median 2.6% of the frame per second). `Recap` assigns that mix to picture cards (`media`, `grid`,
 `device`, icon-only, `scrubber`) in a fixed cycle; type-only cards stay still, and type never moves
-with the picture. Override per card with `move: 'static' | 'push' | 'pull' | 'pan' | 'panRight' |
+with the picture. A move only reads (to the eye and to the measurement) on a textured picture - a single
+icon on a flat background looks static whatever the camera does - so reach Apple's ~62% moving shots by
+giving most cards texture (footage, UI, icon walls), not by moving flat cards harder. Override per card with `move: 'static' | 'push' | 'pull' | 'pan' | 'panRight' |
 'tilt' | 'tiltDown'`, or switch it off with `autoMove: false`.
 
 ## With a voice-over
 
-All six measured recaps are voice-led: cuts follow phrases, not beats, and designer type appears about
-2 frames before the same spoken word (`VO.typeLeadFrames`). To build one:
+All six measured recaps are voice-led: cuts follow phrases, not beats; designer type is rare (~0.8
+moments per 10 s - the voice names things, type shows names and numbers) and appears ~2 frames before
+the same spoken word (`VO.typeLeadFrames`). Apple's voice starts 0-12.6 s in (median ~1.5 s), the
+picture holds 1.4-8.5 s after the last word (median ~6.7 s), and the voice runs ~3 words per second,
+so a 25 s recap carries ~50-65 words. If the voice is much shorter than the requested length, say so
+and propose a shorter cut rather than padding.
 
-1. Write the cards as usual, and mark the cards that should land on a word with `"onWord": "search"`
-   (or `"afterPhrase": true` to cut in the next pause). Put the cards in a JSON file:
-   `{"bpm": 120, "cards": [...]}`.
+1. Write the cards and give the ones that should land on the voice ONE anchor: `"onWord": "search"`
+   (start on that word; fuzzy-matched), `"afterWord": "password"` (cut in the pause after it) or
+   `"afterPhrase": true` (next pause). Save `{"bpm": 120, "cards": [...]}` as JSON.
 2. `python scripts/vo_cards.py cards.json --voice public/vo.wav -o cards_timed.json` - transcribes the
-   voice (faster-whisper; or pass `--words words.json`), moves every anchored card to its word, spreads
-   the others between anchors, and prints `voiceFromFrames` (a lead-in of picture + music before the
-   voice) and the `--bars` to generate the bed with.
-3. `RecapProps`: `cards` from the output, `voice: 'vo.wav'`, `voiceFrom: voiceFromFrames`. The music is
-   ducked by `AUDIO.musicUnderVoiceDb` automatically; set `musicFadeOutFrames` if the bed runs long.
-
-Measured voice-over rate is ~3 words per second while speaking - a 30 s recap holds about 70-80 words.
+   voice with faster-whisper (`WHISPER_DIR` sets the model folder; or pass `--words words.json` with
+   corrected timings), refines word starts and pauses on the waveform, places anchored cards (type 2
+   frames before the word; picture-only cards in the pause before it), spreads the rest, and prints
+   `voiceFromFrames`, `voiceSpanFrames` and a `--bpm/--bars` pair that puts the bed's closing hit on
+   the last anchored card. Re-run it with that `--bpm`, then generate the bed.
+3. In TSX: `import data from './cards_timed.json'`, then `cards: data.cards as Card[]`,
+   `voice: 'vo.wav'`, `voiceFrom: data.voiceFromFrames`, `voiceSpan: data.voiceSpanFrames as [number, number]`.
+   The music is ducked by `AUDIO.musicUnderVoiceDb` only while the voice speaks. Bring the voice to
+   about the bed's loudness first (`scripts/master.sh vo_raw.wav vo.wav`), then master the render.
 
 ## No footage?
 
@@ -131,11 +139,15 @@ corpus is ~8% pure black and ~21% pure white frames.
   calibrated stroke measurement (`TYPE.weight`), tight tracking, leading from `TYPE.lineHeight`.
   White on black/footage; near-black (#080808-#1d1d1f) on white or #f5f5f7. Flat colour - except spec
   numerals (vertical gradient). No outlines, shadows, boxes behind text, rotation.
-- **Glyphs:** icon glyphs render with the system fonts: plain symbols (↻ ⌕ ▦ ✦ { }) stay monochrome
-  white, emoji render in colour - pick one style per video.
+- **Glyphs:** icon glyphs render with the system fonts. Symbols that also exist as emoji (⚡ ☁ ✈ ♥ ⚓ ☀)
+  render in colour unless you append the text-presentation selector `\uFE0E` (`'⚡\uFE0E'`); plain
+  symbols (↻ ⌕ ▦ ✦ ⎈ ⚿ { }) stay monochrome. Pick one style per video.
 - **Sizes:** `size` maps to measured cap-height percentiles: caption (p10), title (p25), headline
   (median), display (p75), hero (p90, event wordmarks). `KineticText` shrinks a line that would exceed
   88% of the frame width.
+- **Entry speed (trained):** each entry type has its own spring time scale (`ENTRY_TIME` in tokens.ts),
+  fitted so that its length measured by the extraction pipeline matches Apple's measured median for
+  that type (fade ~7 frames, slides ~8 frames; scale/blur entries are slower).
 - **Motion:** the calibrated type spring is slightly under-damped (a ~2% overshoot, no visible
   bounce). Remotion detail: `spring({durationInFrames})` stretches the spring and the visible move
   ends ~3x earlier than `durationInFrames`; the components therefore use `SPRING.textIn` unstretched,

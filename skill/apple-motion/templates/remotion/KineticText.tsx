@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import {AbsoluteFill, Easing, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
-import {COLOR, DURATION, EASE, SPRING, START, TYPE} from './tokens';
+import {COLOR, DURATION, EASE, ENTRY_TIME, SPRING, START, TYPE} from './tokens';
 
 export type Entry =
   | 'cut'
@@ -38,6 +38,9 @@ export type KineticTextProps = {
   gradient?: readonly [string, string];
   /** shrink the font so the widest line fits this % of frame width (default 88) */
   maxWidthPct?: number;
+  /** slow the entry spring down by this factor (default: ENTRY_TIME[entry], trained so the measured
+   *  entry length matches Apple's for that entry type) */
+  timeScale?: number;
   style?: React.CSSProperties;
 };
 
@@ -105,6 +108,7 @@ export const KineticText: React.FC<KineticTextProps> = ({
   staggerFrames,
   gradient,
   maxWidthPct = 88,
+  timeScale,
   style,
 }) => {
   const frame = useCurrentFrame();
@@ -127,7 +131,9 @@ export const KineticText: React.FC<KineticTextProps> = ({
   const outFrames = exit === 'cut' ? 0 : exitFrames ?? DURATION.textOutFrames;
   if (frame >= durationInFrames) return null;
 
-  const p = entry === 'cut' ? 1 : entryProgress(frame, fps, entryFrames);
+  const ts = timeScale ?? (ENTRY_TIME as Record<string, number>)[entry] ?? 1;
+  const f = frame / ts; // time-scaled spring: same shape, slower
+  const p = entry === 'cut' ? 1 : entryProgress(f, fps, entryFrames);
   const q = exitProgress(frame, durationInFrames, outFrames);
 
   // block-level transform for entry + exit
@@ -193,7 +199,7 @@ export const KineticText: React.FC<KineticTextProps> = ({
   let unitIndex = 0;
   const renderLine = (line: string, li: number) => {
     if (entry === 'slideUpMask') {
-      const lp = entryProgress(frame - li * stagger, fps, entryFrames);
+      const lp = entryProgress(f - (li * stagger) / ts, fps, entryFrames);
       return (
         <span key={li} style={{...lineStyle, overflow: 'hidden', paddingBottom: '0.12em', marginBottom: '-0.12em'}}>
           <span style={{display: 'inline-block', transform: `translateY(${interpolate(lp, [0, 1], [105, 0])}%)`}}>
@@ -209,7 +215,7 @@ export const KineticText: React.FC<KineticTextProps> = ({
           {parts.map((part, pi) => {
             if (/^\s+$/.test(part)) return <span key={pi}>{part}</span>;
             const i = unitIndex++;
-            const up = entryProgress(frame - i * stagger, fps, entry === 'perLetter' ? 2 : entryFrames);
+            const up = entryProgress(f - (i * stagger) / ts, fps, entry === 'perLetter' ? 2 : entryFrames);
             const st: React.CSSProperties =
               entry === 'perWord'
                 ? {

@@ -39,6 +39,13 @@ def clamp(x, lo, hi):
     return max(lo, min(hi, x))
 
 
+def entry_time():
+    p = ROOT / "skill" / "apple-motion" / "references" / "entry_time.json"
+    d = json.loads(p.read_text())["time_scale"] if p.exists() else {}
+    items = ", ".join(f"{k}: {round(float(v), 2)}" for k, v in d.items())
+    return "{" + items + "}"
+
+
 def tokens():
     sp = P.get("entry_spring_calibrated") or P["entry_spring"]
     damping = sp.get("damping") or 20
@@ -127,6 +134,11 @@ export const COLOR = {{
   /** most frequent measured typography colours */
   measured: {json.dumps(colors[:6])},
 }};
+
+/** Per-entry spring time scale, trained: calibration renders at several speeds were measured with the
+ *  extraction pipeline and each entry type was set to the speed whose measured entry length matches
+ *  Apple's median for that type (scripts/train_entries.py, reports/eval/entry-training.md). */
+export const ENTRY_TIME = {entry_time()} as const;
 
 export const MOTION = {{
   /** share of Apple shots by dominant global move (the rest: local-only motion, whips) */

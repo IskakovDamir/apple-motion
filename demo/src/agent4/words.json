@@ -1,0 +1,182 @@
+[
+ {
+  "word": "Say",
+  "start": 0.0,
+  "end": 0.22
+ },
+ {
+  "word": "hello",
+  "start": 0.22,
+  "end": 0.5
+ },
+ {
+  "word": "to",
+  "start": 0.5,
+  "end": 0.76
+ },
+ {
+  "word": "Harbor,",
+  "start": 0.76,
+  "end": 1.16
+ },
+ {
+  "word": "every",
+  "start": 1.38,
+  "end": 1.62
+ },
+ {
+  "word": "password,",
+  "start": 1.62,
+  "end": 2.26
+ },
+ {
+  "word": "on",
+  "start": 2.47,
+  "end": 2.6
+ },
+ {
+  "word": "every",
+  "start": 2.6,
+  "end": 2.86
+ },
+ {
+  "word": "device.",
+  "start": 2.86,
+  "end": 3.49
+ },
+ {
+  "word": "It",
+  "start": 3.71,
+  "end": 3.82
+ },
+ {
+  "word": "fills",
+  "start": 3.82,
+  "end": 4.08
+ },
+ {
+  "word": "in",
+  "start": 4.08,
+  "end": 4.28
+ },
+ {
+  "word": "for",
+  "start": 4.28,
+  "end": 4.42
+ },
+ {
+  "word": "you,",
+  "start": 4.42,
+  "end": 4.72
+ },
+ {
+  "word": "before",
+  "start": 4.93,
+  "end": 5.2
+ },
+ {
+  "word": "you",
+  "start": 5.2,
+  "end": 5.44
+ },
+ {
+  "word": "even",
+  "start": 5.44,
+  "end": 5.7
+ },
+ {
+  "word": "ask.",
+  "start": 5.7,
+  "end": 6.16
+ },
+ {
+  "word": "Passkeys",
+  "start": 6.41,
+  "end": 6.82
+ },
+ {
+  "word": "are",
+  "start": 6.82,
+  "end": 7.0
+ },
+ {
+  "word": "built",
+  "start": 7.0,
+  "end": 7.22
+ },
+ {
+  "word": "in,",
+  "start": 7.22,
+  "end": 7.6
+ },
+ {
+  "word": "your",
+  "start": 7.83,
+  "end": 7.96
+ },
+ {
+  "word": "vault",
+  "start": 7.96,
+  "end": 8.2
+ },
+ {
+  "word": "is",
+  "start": 8.2,
+  "end": 8.42
+ },
+ {
+  "word": "end",
+  "start": 8.42,
+  "end": 8.58
+ },
+ {
+  "word": "-to",
+  "start": 8.58,
+  "end": 8.72
+ },
+ {
+  "word": "-end",
+  "start": 8.72,
+  "end": 8.88
+ },
+ {
+  "word": "encrypted.",
+  "start": 8.88,
+  "end": 9.61
+ },
+ {
+  "word": "Always",
+  "start": 9.81,
+  "end": 10.34
+ },
+ {
+  "word": "Harbor,",
+  "start": 10.58,
+  "end": 11.03
+ },
+ {
+  "word": "free",
+  "start": 11.28,
+  "end": 11.46
+ },
+ {
+  "word": "on",
+  "start": 11.46,
+  "end": 11.66
+ },
+ {
+  "word": "the",
+  "start": 11.66,
+  "end": 11.8
+ },
+ {
+  "word": "App",
+  "start": 11.8,
+  "end": 11.98
+ },
+ {
+  "word": "Store.",
+  "start": 11.98,
+  "end": 12.4
+ }
+]

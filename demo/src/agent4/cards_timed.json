@@ -1,0 +1,215 @@
+{
+ "bpm": 122,
+ "cards": [
+  {
+   "beats": 8.0249,
+   "bg": "black",
+   "grid": {
+    "columns": 9,
+    "rows": 5,
+    "icons": [
+     {
+      "glyph": "✉",
+      "from": "#64d2ff",
+      "to": "#0a84ff"
+     },
+     {
+      "glyph": "♫",
+      "from": "#ff6b81",
+      "to": "#ff2d55"
+     },
+     {
+      "glyph": "$",
+      "from": "#4cd964",
+      "to": "#28a745"
+     },
+     {
+      "glyph": "✈",
+      "from": "#5ac8fa",
+      "to": "#007aff"
+     },
+     {
+      "glyph": "☼",
+      "from": "#ffd60a",
+      "to": "#ff9f0a"
+     },
+     {
+      "glyph": "⚙",
+      "from": "#8e8e93",
+      "to": "#48484a"
+     },
+     {
+      "glyph": "♥",
+      "from": "#ff375f",
+      "to": "#d70015"
+     },
+     {
+      "glyph": "☁",
+      "from": "#8ec5ff",
+      "to": "#3a7bd5"
+     },
+     {
+      "glyph": "✎",
+      "from": "#ff9f0a",
+      "to": "#ff453a"
+     },
+     {
+      "glyph": "⌂",
+      "from": "#30d158",
+      "to": "#00a86b"
+     },
+     {
+      "glyph": "▶",
+      "from": "#ff453a",
+      "to": "#c9302c"
+     },
+     {
+      "glyph": "★",
+      "from": "#ffe066",
+      "to": "#ffb300"
+     }
+    ]
+   }
+  },
+  {
+   "beats": 8.0249,
+   "bg": "offWhite",
+   "device": {
+    "everyBeats": 2,
+    "tapSfx": true,
+    "cards": [
+     {
+      "title": "Forgot password?",
+      "subtitle": "Reset link sent",
+      "icon": "?"
+     },
+     {
+      "title": "Wrong password",
+      "subtitle": "Try again",
+      "icon": "!"
+     },
+     {
+      "title": "Password expired",
+      "subtitle": "Choose a new one",
+      "icon": "×"
+     }
+    ]
+   }
+  },
+  {
+   "beats": 3.477,
+   "bg": "white",
+   "icon": {
+    "glyph": "⎈",
+    "from": "#3a8dff",
+    "to": "#0b3d91"
+   },
+   "lines": [
+    "Harbor"
+   ],
+   "entry": "fade",
+   "size": "title"
+  },
+  {
+   "beats": 2.4332,
+   "bg": "black",
+   "device": {
+    "tone": "dark",
+    "everyBeats": 0.5,
+    "cards": [
+     {
+      "title": "Mac",
+      "subtitle": "Synced · just now",
+      "icon": "⇄"
+     },
+     {
+      "title": "iPad",
+      "subtitle": "Synced · just now",
+      "icon": "⇄"
+     },
+     {
+      "title": "Apple Watch",
+      "subtitle": "Synced · just now",
+      "icon": "⇄"
+     }
+    ]
+   }
+  },
+  {
+   "beats": 2.4908,
+   "bg": "white",
+   "typing": {
+    "text": "••••••••••••",
+    "cps": 36
+   }
+  },
+  {
+   "beats": 3.0873,
+   "bg": "offWhite",
+   "device": {
+    "entry": "none",
+    "everyBeats": 1,
+    "cards": [
+     {
+      "title": "Harbor",
+      "subtitle": "Password filled",
+      "icon": "⎈"
+     },
+     {
+      "title": "Signed in",
+      "subtitle": "Online banking",
+      "icon": "✓"
+     }
+    ]
+   }
+  },
+  {
+   "beats": 2.7891,
+   "bg": "white",
+   "icon": {
+    "glyph": "⚿",
+    "from": "#ffd60a",
+    "to": "#ff9f0a"
+   },
+   "lines": [
+    "Passkeys"
+   ],
+   "entry": "fade",
+   "size": "title"
+  },
+  {
+   "beats": 5.6899,
+   "bg": "black",
+   "device": {
+    "tone": "dark",
+    "everyBeats": 2,
+    "cards": [
+     {
+      "title": "Vault locked",
+      "subtitle": "End-to-end encrypted",
+      "icon": "⚿"
+     },
+     {
+      "title": "Encryption",
+      "subtitle": "Always on",
+      "icon": "✓"
+     }
+    ]
+   }
+  },
+  {
+   "beats": 11.766,
+   "bg": "gradient",
+   "gradient": [
+    "#06142e",
+    "#0b3d91"
+   ],
+   "lines": [
+    "Harbor"
+   ],
+   "entry": "scaleDown",
+   "size": "display"
+  }
+ ],
+ "voiceFromFrames": 216
+}

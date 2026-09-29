@@ -891,75 +891,548 @@
    "transition": "dissolve"
   },
   {
-   "beats": 1,
+   "beats": 2,
+   "bg": "black",
+   "grid": {
+    "icons": [
+     {
+      "glyph": "⌘",
+      "from": "#ffd60a",
+      "to": "#ff9f0a"
+     },
+     {
+      "glyph": "≋",
+      "from": "#5ac8fa",
+      "to": "#007aff"
+     },
+     {
+      "glyph": "⇄",
+      "from": "#66d4cf",
+      "to": "#30b0c7"
+     },
+     {
+      "glyph": "✎",
+      "from": "#ac8e68",
+      "to": "#8e6e4e"
+     },
+     {
+      "glyph": "◎",
+      "from": "#8e8e93",
+      "to": "#48484a"
+     },
+     {
+      "glyph": "☼",
+      "from": "#64d2ff",
+      "to": "#0a84ff"
+     },
+     {
+      "glyph": "✉",
+      "from": "#ff9f0a",
+      "to": "#ff375f"
+     },
+     {
+      "glyph": "⌂",
+      "from": "#30d158",
+      "to": "#00a86b"
+     },
+     {
+      "glyph": "☁",
+      "from": "#bf5af2",
+      "to": "#5e5ce6"
+     },
+     {
+      "glyph": "♥",
+      "from": "#ff453a",
+      "to": "#ff2d55"
+     },
+     {
+      "glyph": "✂",
+      "from": "#ffd60a",
+      "to": "#ff9f0a"
+     },
+     {
+      "glyph": "Aa",
+      "from": "#5ac8fa",
+      "to": "#007aff"
+     },
+     {
+      "glyph": "♩",
+      "from": "#66d4cf",
+      "to": "#30b0c7"
+     },
+     {
+      "glyph": "↗",
+      "from": "#ac8e68",
+      "to": "#8e6e4e"
+     },
+     {
+      "glyph": "◐",
+      "from": "#8e8e93",
+      "to": "#48484a"
+     },
+     {
+      "glyph": "✦",
+      "from": "#64d2ff",
+      "to": "#0a84ff"
+     },
+     {
+      "glyph": "⌘",
+      "from": "#ff9f0a",
+      "to": "#ff375f"
+     },
+     {
+      "glyph": "≋",
+      "from": "#30d158",
+      "to": "#00a86b"
+     },
+     {
+      "glyph": "⇄",
+      "from": "#bf5af2",
+      "to": "#5e5ce6"
+     },
+     {
+      "glyph": "✎",
+      "from": "#ff453a",
+      "to": "#ff2d55"
+     },
+     {
+      "glyph": "◎",
+      "from": "#ffd60a",
+      "to": "#ff9f0a"
+     },
+     {
+      "glyph": "☼",
+      "from": "#5ac8fa",
+      "to": "#007aff"
+     },
+     {
+      "glyph": "✉",
+      "from": "#66d4cf",
+      "to": "#30b0c7"
+     },
+     {
+      "glyph": "⌂",
+      "from": "#ac8e68",
+      "to": "#8e6e4e"
+     },
+     {
+      "glyph": "☁",
+      "from": "#8e8e93",
+      "to": "#48484a"
+     },
+     {
+      "glyph": "♥",
+      "from": "#64d2ff",
+      "to": "#0a84ff"
+     },
+     {
+      "glyph": "✂",
+      "from": "#ff9f0a",
+      "to": "#ff375f"
+     },
+     {
+      "glyph": "Aa",
+      "from": "#30d158",
+      "to": "#00a86b"
+     },
+     {
+      "glyph": "♩",
+      "from": "#bf5af2",
+      "to": "#5e5ce6"
+     },
+     {
+      "glyph": "↗",
+      "from": "#ff453a",
+      "to": "#ff2d55"
+     },
+     {
+      "glyph": "◐",
+      "from": "#ffd60a",
+      "to": "#ff9f0a"
+     },
+     {
+      "glyph": "✦",
+      "from": "#5ac8fa",
+      "to": "#007aff"
+     },
+     {
+      "glyph": "⌘",
+      "from": "#66d4cf",
+      "to": "#30b0c7"
+     },
+     {
+      "glyph": "≋",
+      "from": "#ac8e68",
+      "to": "#8e6e4e"
+     },
+     {
+      "glyph": "⇄",
+      "from": "#8e8e93",
+      "to": "#48484a"
+     },
+     {
+      "glyph": "✎",
+      "from": "#64d2ff",
+      "to": "#0a84ff"
+     },
+     {
+      "glyph": "◎",
+      "from": "#ff9f0a",
+      "to": "#ff375f"
+     },
+     {
+      "glyph": "☼",
+      "from": "#30d158",
+      "to": "#00a86b"
+     },
+     {
+      "glyph": "✉",
+      "from": "#bf5af2",
+      "to": "#5e5ce6"
+     },
+     {
+      "glyph": "⌂",
+      "from": "#ff453a",
+      "to": "#ff2d55"
+     },
+     {
+      "glyph": "☁",
+      "from": "#ffd60a",
+      "to": "#ff9f0a"
+     },
+     {
+      "glyph": "♥",
+      "from": "#5ac8fa",
+      "to": "#007aff"
+     },
+     {
+      "glyph": "✂",
+      "from": "#66d4cf",
+      "to": "#30b0c7"
+     },
+     {
+      "glyph": "Aa",
+      "from": "#64d2ff",
+      "to": "#0a84ff"
+     },
+     {
+      "glyph": "♩",
+      "from": "#ff9f0a",
+      "to": "#ff375f"
+     },
+     {
+      "glyph": "↗",
+      "from": "#30d158",
+      "to": "#00a86b"
+     },
+     {
+      "glyph": "◐",
+      "from": "#bf5af2",
+      "to": "#5e5ce6"
+     },
+     {
+      "glyph": "✦",
+      "from": "#ff453a",
+      "to": "#ff2d55"
+     }
+    ],
+    "columns": 9,
+    "rows": 5
+   }
+  },
+  {
+   "beats": 2,
    "bg": "offWhite",
-   "icon": {
-    "glyph": "Aa",
-    "from": "#64d2ff",
-    "to": "#0a84ff"
+   "device": {
+    "entry": "none",
+    "cards": [
+     {
+      "title": "Pace",
+      "subtitle": "56.5 fr median shot",
+      "icon": "⏱"
+     },
+     {
+      "title": "Type",
+      "subtitle": "6.7% cap height",
+      "icon": "Aa"
+     }
+    ],
+    "everyBeats": 0.5
    }
   },
   {
-   "beats": 1,
+   "beats": 2,
    "bg": "white",
-   "icon": {
-    "glyph": "⌘",
-    "from": "#ffd60a",
-    "to": "#ff9f0a"
+   "grid": {
+    "icons": [
+     {
+      "glyph": "✉",
+      "from": "#ff9f0a",
+      "to": "#ff375f"
+     },
+     {
+      "glyph": "⌂",
+      "from": "#30d158",
+      "to": "#00a86b"
+     },
+     {
+      "glyph": "☁",
+      "from": "#bf5af2",
+      "to": "#5e5ce6"
+     },
+     {
+      "glyph": "♥",
+      "from": "#ff453a",
+      "to": "#ff2d55"
+     },
+     {
+      "glyph": "✂",
+      "from": "#ffd60a",
+      "to": "#ff9f0a"
+     },
+     {
+      "glyph": "Aa",
+      "from": "#5ac8fa",
+      "to": "#007aff"
+     },
+     {
+      "glyph": "♩",
+      "from": "#66d4cf",
+      "to": "#30b0c7"
+     },
+     {
+      "glyph": "↗",
+      "from": "#ac8e68",
+      "to": "#8e6e4e"
+     },
+     {
+      "glyph": "◐",
+      "from": "#8e8e93",
+      "to": "#48484a"
+     },
+     {
+      "glyph": "✦",
+      "from": "#64d2ff",
+      "to": "#0a84ff"
+     },
+     {
+      "glyph": "⌘",
+      "from": "#ff9f0a",
+      "to": "#ff375f"
+     },
+     {
+      "glyph": "≋",
+      "from": "#30d158",
+      "to": "#00a86b"
+     },
+     {
+      "glyph": "⇄",
+      "from": "#bf5af2",
+      "to": "#5e5ce6"
+     },
+     {
+      "glyph": "✎",
+      "from": "#ff453a",
+      "to": "#ff2d55"
+     },
+     {
+      "glyph": "◎",
+      "from": "#ffd60a",
+      "to": "#ff9f0a"
+     },
+     {
+      "glyph": "☼",
+      "from": "#5ac8fa",
+      "to": "#007aff"
+     },
+     {
+      "glyph": "✉",
+      "from": "#66d4cf",
+      "to": "#30b0c7"
+     },
+     {
+      "glyph": "⌂",
+      "from": "#ac8e68",
+      "to": "#8e6e4e"
+     },
+     {
+      "glyph": "☁",
+      "from": "#8e8e93",
+      "to": "#48484a"
+     },
+     {
+      "glyph": "♥",
+      "from": "#64d2ff",
+      "to": "#0a84ff"
+     },
+     {
+      "glyph": "✂",
+      "from": "#ff9f0a",
+      "to": "#ff375f"
+     },
+     {
+      "glyph": "Aa",
+      "from": "#30d158",
+      "to": "#00a86b"
+     },
+     {
+      "glyph": "♩",
+      "from": "#bf5af2",
+      "to": "#5e5ce6"
+     },
+     {
+      "glyph": "↗",
+      "from": "#ff453a",
+      "to": "#ff2d55"
+     },
+     {
+      "glyph": "◐",
+      "from": "#ffd60a",
+      "to": "#ff9f0a"
+     },
+     {
+      "glyph": "✦",
+      "from": "#5ac8fa",
+      "to": "#007aff"
+     },
+     {
+      "glyph": "⌘",
+      "from": "#66d4cf",
+      "to": "#30b0c7"
+     },
+     {
+      "glyph": "≋",
+      "from": "#ac8e68",
+      "to": "#8e6e4e"
+     },
+     {
+      "glyph": "⇄",
+      "from": "#8e8e93",
+      "to": "#48484a"
+     },
+     {
+      "glyph": "✎",
+      "from": "#64d2ff",
+      "to": "#0a84ff"
+     },
+     {
+      "glyph": "◎",
+      "from": "#ff9f0a",
+      "to": "#ff375f"
+     },
+     {
+      "glyph": "☼",
+      "from": "#30d158",
+      "to": "#00a86b"
+     },
+     {
+      "glyph": "✉",
+      "from": "#bf5af2",
+      "to": "#5e5ce6"
+     },
+     {
+      "glyph": "⌂",
+      "from": "#ff453a",
+      "to": "#ff2d55"
+     },
+     {
+      "glyph": "☁",
+      "from": "#ffd60a",
+      "to": "#ff9f0a"
+     },
+     {
+      "glyph": "♥",
+      "from": "#5ac8fa",
+      "to": "#007aff"
+     },
+     {
+      "glyph": "✂",
+      "from": "#66d4cf",
+      "to": "#30b0c7"
+     },
+     {
+      "glyph": "Aa",
+      "from": "#64d2ff",
+      "to": "#0a84ff"
+     },
+     {
+      "glyph": "♩",
+      "from": "#ff9f0a",
+      "to": "#ff375f"
+     },
+     {
+      "glyph": "↗",
+      "from": "#30d158",
+      "to": "#00a86b"
+     },
+     {
+      "glyph": "◐",
+      "from": "#bf5af2",
+      "to": "#5e5ce6"
+     },
+     {
+      "glyph": "✦",
+      "from": "#ff453a",
+      "to": "#ff2d55"
+     },
+     {
+      "glyph": "⌘",
+      "from": "#ffd60a",
+      "to": "#ff9f0a"
+     },
+     {
+      "glyph": "≋",
+      "from": "#5ac8fa",
+      "to": "#007aff"
+     },
+     {
+      "glyph": "⇄",
+      "from": "#66d4cf",
+      "to": "#30b0c7"
+     },
+     {
+      "glyph": "✎",
+      "from": "#ac8e68",
+      "to": "#8e6e4e"
+     },
+     {
+      "glyph": "◎",
+      "from": "#8e8e93",
+      "to": "#48484a"
+     },
+     {
+      "glyph": "☼",
+      "from": "#64d2ff",
+      "to": "#0a84ff"
+     }
+    ],
+    "columns": 8,
+    "rows": 4
    }
   },
   {
-   "beats": 1,
-   "bg": "offWhite",
-   "icon": {
-    "glyph": "☼",
-    "from": "#64d2ff",
-    "to": "#0a84ff"
-   }
-  },
-  {
-   "beats": 1,
-   "bg": "white",
-   "icon": {
-    "glyph": "✂",
-    "from": "#ffd60a",
-    "to": "#ff9f0a"
-   }
-  },
-  {
-   "beats": 1,
-   "bg": "offWhite",
-   "icon": {
-    "glyph": "✦",
-    "from": "#64d2ff",
-    "to": "#0a84ff"
-   }
-  },
-  {
-   "beats": 1,
-   "bg": "white",
-   "icon": {
-    "glyph": "◎",
-    "from": "#ffd60a",
-    "to": "#ff9f0a"
-   }
-  },
-  {
-   "beats": 1,
-   "bg": "offWhite",
-   "icon": {
-    "glyph": "♥",
-    "from": "#64d2ff",
-    "to": "#0a84ff"
-   }
-  },
-  {
-   "beats": 1,
-   "bg": "white",
-   "icon": {
-    "glyph": "◐",
-    "from": "#ffd60a",
-    "to": "#ff9f0a"
+   "beats": 2,
+   "bg": "gradient",
+   "gradient": [
+    "#1d1d1f",
+    "#2c2c2e"
+   ],
+   "device": {
+    "tone": "dark",
+    "entry": "none",
+    "cards": [
+     {
+      "title": "Springs",
+      "subtitle": "calibrated",
+      "icon": "〰"
+     },
+     {
+      "title": "Loudness",
+      "subtitle": "-17.4 LUFS",
+      "icon": "🔊"
+     }
+    ],
+    "everyBeats": 0.5
    }
   },
   {

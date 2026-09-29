@@ -1,0 +1,270 @@
+{
+ "fps": 30,
+ "card": 45,
+ "cards": [
+  {
+   "i": 0,
+   "start": 0,
+   "frames": 45,
+   "entry": "fade",
+   "timeScale": 1.0,
+   "lines": [
+    "fade 1"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 1,
+   "start": 45,
+   "frames": 45,
+   "entry": "fade",
+   "timeScale": 1.5,
+   "lines": [
+    "fade 1.5"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 2,
+   "start": 90,
+   "frames": 45,
+   "entry": "fade",
+   "timeScale": 2.0,
+   "lines": [
+    "fade 2"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 3,
+   "start": 135,
+   "frames": 45,
+   "entry": "fade",
+   "timeScale": 2.75,
+   "lines": [
+    "fade 2.75"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 4,
+   "start": 180,
+   "frames": 45,
+   "entry": "slideUp",
+   "timeScale": 1.0,
+   "lines": [
+    "slideUp 1"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 5,
+   "start": 225,
+   "frames": 45,
+   "entry": "slideUp",
+   "timeScale": 1.5,
+   "lines": [
+    "slideUp 1.5"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 6,
+   "start": 270,
+   "frames": 45,
+   "entry": "slideUp",
+   "timeScale": 2.0,
+   "lines": [
+    "slideUp 2"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 7,
+   "start": 315,
+   "frames": 45,
+   "entry": "slideUp",
+   "timeScale": 2.75,
+   "lines": [
+    "slideUp 2.75"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 8,
+   "start": 360,
+   "frames": 45,
+   "entry": "slideUpMask",
+   "timeScale": 1.0,
+   "lines": [
+    "slideUpMask 1"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 9,
+   "start": 405,
+   "frames": 45,
+   "entry": "slideUpMask",
+   "timeScale": 1.5,
+   "lines": [
+    "slideUpMask 1.5"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 10,
+   "start": 450,
+   "frames": 45,
+   "entry": "slideUpMask",
+   "timeScale": 2.0,
+   "lines": [
+    "slideUpMask 2"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 11,
+   "start": 495,
+   "frames": 45,
+   "entry": "slideUpMask",
+   "timeScale": 2.75,
+   "lines": [
+    "slideUpMask 2.75"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 12,
+   "start": 540,
+   "frames": 45,
+   "entry": "scaleDown",
+   "timeScale": 1.0,
+   "lines": [
+    "scaleDown 1"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 13,
+   "start": 585,
+   "frames": 45,
+   "entry": "scaleDown",
+   "timeScale": 1.5,
+   "lines": [
+    "scaleDown 1.5"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 14,
+   "start": 630,
+   "frames": 45,
+   "entry": "scaleDown",
+   "timeScale": 2.0,
+   "lines": [
+    "scaleDown 2"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 15,
+   "start": 675,
+   "frames": 45,
+   "entry": "scaleDown",
+   "timeScale": 2.75,
+   "lines": [
+    "scaleDown 2.75"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 16,
+   "start": 720,
+   "frames": 45,
+   "entry": "scaleUp",
+   "timeScale": 1.0,
+   "lines": [
+    "scaleUp 1"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 17,
+   "start": 765,
+   "frames": 45,
+   "entry": "scaleUp",
+   "timeScale": 1.5,
+   "lines": [
+    "scaleUp 1.5"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 18,
+   "start": 810,
+   "frames": 45,
+   "entry": "scaleUp",
+   "timeScale": 2.0,
+   "lines": [
+    "scaleUp 2"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 19,
+   "start": 855,
+   "frames": 45,
+   "entry": "scaleUp",
+   "timeScale": 2.75,
+   "lines": [
+    "scaleUp 2.75"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 20,
+   "start": 900,
+   "frames": 45,
+   "entry": "blurIn",
+   "timeScale": 1.0,
+   "lines": [
+    "blurIn 1"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 21,
+   "start": 945,
+   "frames": 45,
+   "entry": "blurIn",
+   "timeScale": 1.5,
+   "lines": [
+    "blurIn 1.5"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 22,
+   "start": 990,
+   "frames": 45,
+   "entry": "blurIn",
+   "timeScale": 2.0,
+   "lines": [
+    "blurIn 2"
+   ],
+   "entry_frames": 0
+  },
+  {
+   "i": 23,
+   "start": 1035,
+   "frames": 45,
+   "entry": "blurIn",
+   "timeScale": 2.75,
+   "lines": [
+    "blurIn 2.75"
+   ],
+   "entry_frames": 0
+  }
+ ]
+}

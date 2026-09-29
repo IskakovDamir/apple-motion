@@ -39,8 +39,12 @@ export const Move: React.FC<{move?: CameraMove; durationInFrames: number; intens
   return <AbsoluteFill style={{transform, transformOrigin: '50% 50%'}}>{children}</AbsoluteFill>;
 };
 
-/** Deterministic move for card i following the measured mix (static ~38%, pull ~20%, push ~16%, pan/tilt ~19%). */
+/**
+ * Deterministic move for picture card i. Apple's shots are 38% static overall, but that includes the
+ * type-only shots (which stay still here too), so picture cards cycle with ~25% static:
+ * push/pull ~50%, pan/tilt ~25% (trained on demo renders measured with the extraction pipeline).
+ */
 export const autoMove = (i: number): CameraMove => {
-  const cycle: CameraMove[] = ['push', 'static', 'pull', 'static', 'pan', 'push', 'static', 'pull', 'tilt', 'static'];
+  const cycle: CameraMove[] = ['push', 'pull', 'static', 'pan', 'push', 'pull', 'tilt', 'static'];
   return cycle[i % cycle.length] ?? 'static';
 };

@@ -8,6 +8,7 @@ export const voProps: RecapProps = {
   music: 'vo/music.wav',
   voice: 'vo/vo.wav',
   voiceFrom: data.voiceFromFrames,
+  voiceSpan: data.voiceSpanFrames as [number, number],
   sfxDir: 'vo/sfx',
   musicFadeOutFrames: 30,
 };

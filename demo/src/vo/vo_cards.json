@@ -15,7 +15,7 @@
    }
   },
   {
-   "beats": 4.72,
+   "beats": 4.8533,
    "bg": "black",
    "lines": [
     "Northwind Notes 3"
@@ -23,7 +23,7 @@
    "size": "headline"
   },
   {
-   "beats": 5.84,
+   "beats": 5.4267,
    "bg": "gradient",
    "gradient": [
     "#1d1d1f",
@@ -46,7 +46,7 @@
    }
   },
   {
-   "beats": 1.8,
+   "beats": 2.08,
    "bg": "white",
    "icon": {
     "glyph": "⌕",
@@ -69,7 +69,7 @@
    }
   },
   {
-   "beats": 3.16,
+   "beats": 2.4833,
    "bg": "white",
    "spec": {
     "value": "2x",
@@ -82,7 +82,7 @@
    "transition": "whip"
   },
   {
-   "beats": 4.48,
+   "beats": 5.0967,
    "bg": "black",
    "grid": {
     "icons": [
@@ -120,5 +120,9 @@
    }
   }
  ],
- "voiceFromFrames": 60
+ "voiceFromFrames": 60,
+ "voiceSpanFrames": [
+  60,
+  502
+ ]
 }

@@ -34,7 +34,7 @@ const cards: Card[] = [
   {beats: 2, bg: 'white', icon: {glyph: '↻', from: '#64d2ff', to: '#0a84ff'}},
   {beats: 2, bg: 'black', icon: {glyph: '⌕', from: '#ff9f0a', to: '#ff375f'}},
   {beats: 2, bg: 'white', icon: {glyph: '▦', from: '#30d158', to: '#00a86b'}},
-  {beats: 2, bg: 'black', icon: {glyph: '⚡', from: '#ffd60a', to: '#ff9f0a'}},
+  {beats: 2, bg: 'black', icon: {glyph: '⚡\uFE0E', from: '#ffd60a', to: '#ff9f0a'}},
   // beat 64 = the bed's closing hit: logo, no extra sfx
   {beats: 8, bg: 'black', lines: ['Northwind Notes'], entry: 'scaleDown', size: 'display'},
 ];

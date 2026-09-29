@@ -1,0 +1,175 @@
+{
+ "slug": "render-entry-lab",
+ "reviewer": "auto: text matching a card's `lines` (ground truth) is typography; UI text is not",
+ "typography": [
+  {
+   "id_at_review": 0,
+   "text": "fade 1",
+   "ref_frame": 19,
+   "cx": 955.5,
+   "cy": 542.0
+  },
+  {
+   "id_at_review": 1,
+   "text": "fade 1.5",
+   "ref_frame": 65,
+   "cx": 960.0,
+   "cy": 542.0
+  },
+  {
+   "id_at_review": 2,
+   "text": "fade 2",
+   "ref_frame": 111,
+   "cx": 959.0,
+   "cy": 542.0
+  },
+  {
+   "id_at_review": 3,
+   "text": "fade 2.75",
+   "ref_frame": 157,
+   "cx": 959.5,
+   "cy": 542.0
+  },
+  {
+   "id_at_review": 4,
+   "text": "slideUp 1",
+   "ref_frame": 199,
+   "cx": 956.5,
+   "cy": 550.5
+  },
+  {
+   "id_at_review": 5,
+   "text": "slideUp 1.5",
+   "ref_frame": 244,
+   "cx": 960.5,
+   "cy": 549.5
+  },
+  {
+   "id_at_review": 6,
+   "text": "slideUp 2",
+   "ref_frame": 292,
+   "cx": 960.0,
+   "cy": 549.5
+  },
+  {
+   "id_at_review": 7,
+   "text": "slideUp 2.75",
+   "ref_frame": 336,
+   "cx": 961.0,
+   "cy": 552.5
+  },
+  {
+   "id_at_review": 8,
+   "text": "slideUpMask 1",
+   "ref_frame": 379,
+   "cx": 956.5,
+   "cy": 549.5
+  },
+  {
+   "id_at_review": 9,
+   "text": "slideUpMask 1.5",
+   "ref_frame": 426,
+   "cx": 960.5,
+   "cy": 546.5
+  },
+  {
+   "id_at_review": 10,
+   "text": "slideUpMask 2",
+   "ref_frame": 471,
+   "cx": 960.0,
+   "cy": 547.5
+  },
+  {
+   "id_at_review": 11,
+   "text": "slideUpMask 2.75",
+   "ref_frame": 522,
+   "cx": 961.0,
+   "cy": 549.5
+  },
+  {
+   "id_at_review": 12,
+   "text": "scaleDown 1",
+   "ref_frame": 559,
+   "cx": 956.5,
+   "cy": 542.5
+  },
+  {
+   "id_at_review": 13,
+   "text": "scaleDown 1.5",
+   "ref_frame": 604,
+   "cx": 960.5,
+   "cy": 543.0
+  },
+  {
+   "id_at_review": 14,
+   "text": "scaleDown 2",
+   "ref_frame": 650,
+   "cx": 960.0,
+   "cy": 542.0
+  },
+  {
+   "id_at_review": 15,
+   "text": "scaleDown 2.75",
+   "ref_frame": 696,
+   "cx": 960.5,
+   "cy": 543.0
+  },
+  {
+   "id_at_review": 16,
+   "text": "scaleUp 1",
+   "ref_frame": 739,
+   "cx": 956.0,
+   "cy": 551.5
+  },
+  {
+   "id_at_review": 17,
+   "text": "scaleUp 1.5",
+   "ref_frame": 784,
+   "cx": 961.0,
+   "cy": 551.5
+  },
+  {
+   "id_at_review": 18,
+   "text": "scaleUp 2",
+   "ref_frame": 830,
+   "cx": 960.0,
+   "cy": 551.0
+  },
+  {
+   "id_at_review": 19,
+   "text": "scaleUp 2.75",
+   "ref_frame": 876,
+   "cx": 960.5,
+   "cy": 550.0
+  },
+  {
+   "id_at_review": 20,
+   "text": "blurIn 1",
+   "ref_frame": 921,
+   "cx": 957.5,
+   "cy": 542.5
+  },
+  {
+   "id_at_review": 21,
+   "text": "blurIn 1.5",
+   "ref_frame": 966,
+   "cx": 962.0,
+   "cy": 542.5
+  },
+  {
+   "id_at_review": 22,
+   "text": "blurIn 2",
+   "ref_frame": 1011,
+   "cx": 961.5,
+   "cy": 542.0
+  },
+  {
+   "id_at_review": 23,
+   "text": "blurIn 2.75",
+   "ref_frame": 1057,
+   "cx": 962.0,
+   "cy": 542.0
+  }
+ ],
+ "caption": []
+}
