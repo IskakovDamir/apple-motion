@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, Html5Audio, Img, interpolate, OffthreadVideo, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Html5Audio, Img, interpolate, OffthreadVideo, Sequence, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {TransitionSeries} from '@remotion/transitions';
 import {AppIcon} from './AppIcon';
 import {Backdrop, type BackdropKind} from './Backdrop';
@@ -12,7 +12,9 @@ import {Scrubber} from './Scrubber';
 import {Sfx, type SfxName} from './Sfx';
 import {appleTransition, transitionFrames, type AppleTransition} from './transitions';
 import {UICard} from './UICard';
-import {COLOR} from './tokens';
+import {autoMove, Move, type CameraMove} from './Move';
+import {LowerThird, Pill, Typing, WordSwap} from './TypeDevices';
+import {AUDIO, COLOR} from './tokens';
 
 /**
  * A recap is DATA: a list of cards, each lasting a whole number of beats. The engine keeps every
@@ -56,6 +58,17 @@ export type Card = {
   grid?: {icons: GridIcon[]; columns?: number; rows?: number};
   /** player-chrome framing + optional caption pill */
   scrubber?: {from: number; to: number; pill?: string};
+  /** global camera move on the picture (type stays put). Default: the measured mix is assigned to
+   *  picture cards automatically (RecapProps.autoMove); type-only cards stay static. */
+  move?: CameraMove;
+  /** presenter name + title, caption size, bottom-left (or right) */
+  lowerThird?: {name: string; title?: string; side?: 'left' | 'right'};
+  /** uppercase caption pill ("TIME-LAPSE IN 4K") */
+  pill?: string;
+  /** one word swapped in place every `everyBeats` (default 1) under a mask; prefix holds */
+  swap?: {prefix?: string; words: string[]; everyBeats?: number; accent?: string};
+  /** text typed into a field with a cursor; `correctTo` = auto-corrected full text shown after typing */
+  typing?: {text: string; cps?: number; correctTo?: string};
   /** transition INTO this card (default: cut) */
   transition?: AppleTransition;
   sfx?: SfxName;
@@ -75,6 +88,13 @@ export type RecapProps = {
   sfxVolume?: number;
   /** folder under public/ holding whoosh/swish/click/hit/riser .wav (default 'sfx') */
   sfxDir?: string;
+  /** assign measured camera moves to picture cards that don't set `move` (default true) */
+  autoMove?: boolean;
+  /** voice-over file in public/. When set, the music is ducked by AUDIO.musicUnderVoiceDb. Time the
+   *  cards to the words with scripts/vo_cards.py. */
+  voice?: string;
+  /** frame at which the voice-over starts (vo_cards.py prints it as voiceFromFrames). Default 0. */
+  voiceFrom?: number;
 };
 
 const isLight = (bg?: BackdropKind) => bg === 'white' || bg === 'offWhite';
@@ -129,16 +149,19 @@ const Media: React.FC<NonNullable<Card['media']>> = ({src, type, pushPctPerSec =
   );
 };
 
-const CardView: React.FC<{c: Card; dur: number; beat: number}> = ({c, dur: cardDur, beat}) => {
+const hasPicture = (c: Card) => Boolean(c.media || c.grid || c.device || (c.icon && !c.lines) || c.scrubber);
+
+const CardView: React.FC<{c: Card; dur: number; beat: number; move: CameraMove}> = ({c, dur: cardDur, beat, move}) => {
   const dur = c.typeBeats ? Math.min(cardDur, Math.round(c.typeBeats * beat)) : cardDur;
   const color = c.color ?? (isLight(c.bg) ? COLOR.graphite : COLOR.white);
   return (
     <Backdrop kind={c.bg ?? 'black'} from={c.gradient?.[0]} to={c.gradient?.[1]}>
-      {c.media ? <Media {...c.media} /> : null}
+      <Move move={move} durationInFrames={cardDur}>
+      {c.media ? <Media {...c.media} pushPctPerSec={c.media.pushPctPerSec ?? 0} /> : null}
       {c.grid ? <IconGrid icons={c.grid.icons} columns={c.grid.columns} rows={c.grid.rows} bg={isLight(c.bg) ? '#f5f5f7' : '#000'} /> : null}
       {c.icon ? <AppIcon glyph={c.icon.glyph} from={c.icon.from} to={c.icon.to} y={c.lines ? 40 : 50} sizePct={20} /> : null}
       {c.device ? (
-        <DeviceFrame heightPct={150} y={78} x={c.device.x ?? 50} entry={c.device.entry ?? 'rise'} pushPctPerSec={1.2}
+        <DeviceFrame heightPct={150} y={78} x={c.device.x ?? 50} entry={c.device.entry ?? 'rise'} pushPctPerSec={0}
           screenColor={c.device.tone === 'dark' ? '#000' : '#f2f2f7'}
           wallpaper={c.device.wallpaper === undefined ? (c.device.tone === 'dark' ? ['#1c1c3a', '#3a1c32'] : ['#dbe8ff', '#fde2ef']) : c.device.wallpaper}>
           {c.device.cards.slice(0, 3).map((u, k) => (
@@ -147,6 +170,7 @@ const CardView: React.FC<{c: Card; dur: number; beat: number}> = ({c, dur: cardD
           ))}
         </DeviceFrame>
       ) : null}
+      </Move>
       {c.scrubber ? <Scrubber from={c.scrubber.from} to={c.scrubber.to} tone={isLight(c.bg) ? 'light' : 'dark'} /> : null}
       {c.scrubber?.pill ? <Pill text={c.scrubber.pill} /> : null}
       {c.spec ? (
@@ -164,24 +188,19 @@ const CardView: React.FC<{c: Card; dur: number; beat: number}> = ({c, dur: cardD
         <KineticText lines={c.lines} durationInFrames={dur} entry={c.entry ?? 'cut'} exit={c.exit ?? (c.typeBeats ? 'fade' : 'cut')} size={c.size} color={color} align={c.align}
           x={c.x} y={c.y ?? (c.icon ? 67 : undefined)} />
       ) : null}
+      {c.swap ? (
+        <WordSwap prefix={c.swap.prefix} words={c.swap.words} everyFrames={Math.round(beat * (c.swap.everyBeats ?? 1))} color={color}
+          accent={c.swap.accent} y={c.y ?? 50} />
+      ) : null}
+      {c.typing ? <Typing text={c.typing.text} cps={c.typing.cps} correctTo={c.typing.correctTo} color={color} y={c.y ?? 50} /> : null}
+      {c.pill ? <Pill text={c.pill} tone={isLight(c.bg) ? 'light' : 'dark'} /> : null}
+      {c.lowerThird ? <LowerThird name={c.lowerThird.name} title={c.lowerThird.title} side={c.lowerThird.side} color={color} at={Math.round(beat / 2)} /> : null}
     </Backdrop>
   );
 };
 
-const Pill: React.FC<{text: string}> = ({text}) => {
-  const {height} = useVideoConfig();
-  const frame = useCurrentFrame();
-  return (
-    <div style={{position: 'absolute', left: '50%', top: '69%', transform: 'translateX(-50%)', padding: `${height * 0.009}px ${height * 0.02}px`,
-      borderRadius: 999, background: 'rgba(40,40,42,0.72)', color: '#fff', fontFamily: '"SF Pro Text", -apple-system, Inter, sans-serif',
-      fontSize: height * 0.024, letterSpacing: '0.04em', fontWeight: 500, opacity: interpolate(frame, [0, 4], [0, 1], {extrapolateRight: 'clamp'})}}>
-      {text}
-    </div>
-  );
-};
-
 export const Recap: React.FC<RecapProps> = ({bpm, offsetFrames = 0, cards, music, sfxVolume = 0.3, tailFrames = 45,
-  musicFadeOutFrames = 0, sfxDir = 'sfx'}) => {
+  musicFadeOutFrames = 0, sfxDir = 'sfx', autoMove: auto = true, voice, voiceFrom = 0}) => {
   const {fps, durationInFrames} = useVideoConfig();
   const g = beatGrid(bpm, fps, offsetFrames);
   const durs = cardFrames(cards, bpm, fps, offsetFrames, tailFrames);
@@ -204,7 +223,7 @@ export const Recap: React.FC<RecapProps> = ({bpm, offsetFrames = 0, cards, music
     if (c.sfx) sfx.push(<Sfx dir={sfxDir} key={`s${i}`} name={c.sfx} at={cursor} volume={sfxVolume * (c.sfx === 'hit' ? 1.4 : 1)} />);
     items.push(
       <TransitionSeries.Sequence key={`c${i}`} durationInFrames={durs[i] ?? 1}>
-        <CardView c={c} dur={durs[i] ?? 1} beat={g.beat} />
+        <CardView c={c} dur={durs[i] ?? 1} beat={g.beat} move={c.move ?? (auto && hasPicture(c) ? autoMove(i) : 'static')} />
       </TransitionSeries.Sequence>,
     );
   });
@@ -214,11 +233,17 @@ export const Recap: React.FC<RecapProps> = ({bpm, offsetFrames = 0, cards, music
         <Html5Audio
           src={staticFile(music)}
           volume={(f) =>
-            musicFadeOutFrames > 0
+            (voice ? Math.pow(10, AUDIO.musicUnderVoiceDb / 20) : 1) *
+            (musicFadeOutFrames > 0
               ? interpolate(f, [durationInFrames - musicFadeOutFrames, durationInFrames], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})
-              : 1
+              : 1)
           }
         />
+      ) : null}
+      {voice ? (
+        <Sequence from={voiceFrom} layout="none">
+          <Html5Audio src={staticFile(voice)} />
+        </Sequence>
       ) : null}
       <TransitionSeries from={offsetFrames}>{items}</TransitionSeries>
       {sfx}

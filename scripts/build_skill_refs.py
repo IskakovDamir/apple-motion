@@ -128,6 +128,22 @@ export const COLOR = {{
   measured: {json.dumps(colors[:6])},
 }};
 
+export const MOTION = {{
+  /** share of Apple shots by dominant global move (the rest: local-only motion, whips) */
+  mix: {{static: {P['dominant_move'].get('static', 0.38)}, push: {P['dominant_move'].get('push', 0.16)}, pull: {P['dominant_move'].get('pull', 0.2)}, pan: {P['dominant_move'].get('pan', 0.09)}, tilt: {P['dominant_move'].get('tilt', 0.1)}}},
+  /** median |zoom| rate of push/pull shots, % scale per second (p25..p75 {g(P['camera']['zoom_pct_per_s'], 'p25')}..{g(P['camera']['zoom_pct_per_s'], 'p75')}) */
+  zoomPctPerSec: {g(P['camera']['zoom_pct_per_s'], default=4.5)},
+  /** median translation rate of pan/tilt shots, % of frame per second (p25..p75 {g(P['camera']['pan_pct_per_s'], 'p25')}..{g(P['camera']['pan_pct_per_s'], 'p75')}) */
+  panPctPerSec: {g(P['camera']['pan_pct_per_s'], default=2.6)},
+}};
+
+export const VO = {{
+  /** designer type appears this many frames relative to the same spoken word (median; negative = before) */
+  typeLeadFrames: {g(P['typography_vo_offset_frames'], default=-2)},
+  /** voice-over speaking rate, words per second while speaking (median of the six videos) */
+  wordsPerSecond: {g(P['vo_words_per_s_speaking'], default=3.0)},
+}};
+
 export const AUDIO = {{
   /** median integrated loudness of the Apple recaps (p10..p90 {g(P['lufs'], 'p10')}..{g(P['lufs'], 'p90')}) */
   lufs: {lufs},
@@ -174,6 +190,8 @@ def measurements():
          qrow("chance near a word onset", P["chance_near_word_onset"]),
          qrow("typography appear - same spoken word (frames)", P["typography_vo_offset_frames"]),
          qrow("UI/graphic element entries per s", P["element_entries_per_s"]),
+         qrow("camera zoom rate, push/pull shots (%/s)", P["camera"]["zoom_pct_per_s"]),
+         qrow("camera pan/tilt rate (% of frame/s)", P["camera"]["pan_pct_per_s"]),
          qrow("first shot (frames)", P.get("first_shot_frames")),
          qrow("last shot (frames)", P.get("last_shot_frames")),
          qrow("montage runs (>=4 shots of <=10 fr) per minute", P.get("montage_runs_per_minute")),

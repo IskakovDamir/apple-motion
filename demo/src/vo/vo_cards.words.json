@@ -1,0 +1,232 @@
+[
+ {
+  "word": "Meet",
+  "start": 0.0,
+  "end": 0.18
+ },
+ {
+  "word": "Northwind",
+  "start": 0.18,
+  "end": 0.66
+ },
+ {
+  "word": "Notes",
+  "start": 0.66,
+  "end": 0.92
+ },
+ {
+  "word": "3.",
+  "start": 0.92,
+  "end": 1.3
+ },
+ {
+  "word": "Your",
+  "start": 1.62,
+  "end": 1.72
+ },
+ {
+  "word": "notes",
+  "start": 1.72,
+  "end": 1.98
+ },
+ {
+  "word": "now",
+  "start": 1.98,
+  "end": 2.24
+ },
+ {
+  "word": "sync",
+  "start": 2.24,
+  "end": 2.54
+ },
+ {
+  "word": "offline,",
+  "start": 2.54,
+  "end": 3.04
+ },
+ {
+  "word": "and",
+  "start": 3.38,
+  "end": 3.58
+ },
+ {
+  "word": "catch",
+  "start": 3.58,
+  "end": 3.82
+ },
+ {
+  "word": "up",
+  "start": 3.82,
+  "end": 4.02
+ },
+ {
+  "word": "the",
+  "start": 4.02,
+  "end": 4.16
+ },
+ {
+  "word": "moment",
+  "start": 4.16,
+  "end": 4.42
+ },
+ {
+  "word": "you're",
+  "start": 4.42,
+  "end": 4.74
+ },
+ {
+  "word": "back.",
+  "start": 4.74,
+  "end": 5.0
+ },
+ {
+  "word": "Search",
+  "start": 5.46,
+  "end": 5.56
+ },
+ {
+  "word": "finds",
+  "start": 5.56,
+  "end": 5.96
+ },
+ {
+  "word": "what",
+  "start": 5.96,
+  "end": 6.16
+ },
+ {
+  "word": "you",
+  "start": 6.16,
+  "end": 6.36
+ },
+ {
+  "word": "meant,",
+  "start": 6.36,
+  "end": 6.66
+ },
+ {
+  "word": "not",
+  "start": 6.92,
+  "end": 7.1
+ },
+ {
+  "word": "just",
+  "start": 7.1,
+  "end": 7.32
+ },
+ {
+  "word": "what",
+  "start": 7.32,
+  "end": 7.56
+ },
+ {
+  "word": "you",
+  "start": 7.56,
+  "end": 7.76
+ },
+ {
+  "word": "typed.",
+  "start": 7.76,
+  "end": 8.08
+ },
+ {
+  "word": "It",
+  "start": 8.4,
+  "end": 8.52
+ },
+ {
+  "word": "opens",
+  "start": 8.52,
+  "end": 8.8
+ },
+ {
+  "word": "twice",
+  "start": 8.8,
+  "end": 9.12
+ },
+ {
+  "word": "as",
+  "start": 9.12,
+  "end": 9.38
+ },
+ {
+  "word": "fast,",
+  "start": 9.38,
+  "end": 9.74
+ },
+ {
+  "word": "and",
+  "start": 10.1,
+  "end": 10.22
+ },
+ {
+  "word": "new",
+  "start": 10.22,
+  "end": 10.38
+ },
+ {
+  "word": "widgets",
+  "start": 10.38,
+  "end": 10.68
+ },
+ {
+  "word": "put",
+  "start": 10.68,
+  "end": 10.94
+ },
+ {
+  "word": "your",
+  "start": 10.94,
+  "end": 11.12
+ },
+ {
+  "word": "day",
+  "start": 11.12,
+  "end": 11.34
+ },
+ {
+  "word": "on",
+  "start": 11.34,
+  "end": 11.52
+ },
+ {
+  "word": "the",
+  "start": 11.52,
+  "end": 11.64
+ },
+ {
+  "word": "home",
+  "start": 11.64,
+  "end": 11.84
+ },
+ {
+  "word": "screen.",
+  "start": 11.84,
+  "end": 12.22
+ },
+ {
+  "word": "Northwind",
+  "start": 12.62,
+  "end": 13.04
+ },
+ {
+  "word": "Notes",
+  "start": 13.04,
+  "end": 13.32
+ },
+ {
+  "word": "3,",
+  "start": 13.32,
+  "end": 13.7
+ },
+ {
+  "word": "available",
+  "start": 14.02,
+  "end": 14.2
+ },
+ {
+  "word": "today.",
+  "start": 14.2,
+  "end": 14.74
+ }
+]

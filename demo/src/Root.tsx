@@ -3,6 +3,7 @@ import {Composition} from 'remotion';
 import {Recap, recapDuration, type RecapProps} from './Recap';
 import {Calibration, calibrationDuration} from './Calibration';
 import {exampleProps} from './Example';
+import {voProps} from './vo/VoRecap';
 import {bpm, cards, offsetFrames} from './script';
 import {Recap as AppleRecap, recapDuration as appleRecapDuration} from '@apple-motion';
 import {agentProps} from './agent/AgentRecap';
@@ -23,6 +24,7 @@ export const RemotionRoot: React.FC = () => (
     defaultProps={props}
   />
   <Composition id="ExampleScript" component={Recap} durationInFrames={recapDuration(exampleProps, 30)} fps={30} width={1920} height={1080} defaultProps={exampleProps} />
+  <Composition id="VoRecap" component={Recap} durationInFrames={recapDuration(voProps, 30)} fps={30} width={1920} height={1080} defaultProps={voProps} />
   <Composition id="Calibration" component={Calibration} durationInFrames={calibrationDuration} fps={30} width={1920} height={1080} />
   <Composition
     id="AgentRecap"

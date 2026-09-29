@@ -197,6 +197,23 @@ def to_weight(sc, table):
     return int(round(float(np.interp(sc, xs, ys)) / 50) * 50)
 
 
+def camera(slugs):
+    """Per-shot camera/global motion rates from motion.json (pooled)."""
+    zoom, pan, fps_ = [], [], 30.0
+    for s in slugs:
+        mo = load_json(DATA / s / "motion.json")
+        fps_ = mo.get("fps", 30.0)
+        for r in mo["shots"]:
+            n = r["end_frame"] - r["start_frame"] + 1
+            if n < 6:
+                continue
+            if r["dominant_move"] in ("push", "pull"):
+                zoom.append(abs(r["cum_zoom_pct"]) / (n / fps_))
+            if r["dominant_move"] in ("pan", "tilt"):
+                pan.append(float(np.hypot(*r["cum_translation_pct"])) / (n / fps_))
+    return {"zoom_pct_per_s": q(zoom), "pan_pct_per_s": q(pan)}
+
+
 def pool(videos, slugs):
     """Pooled distributions over all videos (typography events pooled, not averaged)."""
     allty, allan, alllen = [], [], []
@@ -290,6 +307,7 @@ def pool(videos, slugs):
         "frame_share_by_class": {k: round(float(np.mean([v["color"]["frame_share_by_class"].get(k, 0) for v in videos])), 3)
                                  for k in {k for v in videos for k in v["color"]["frame_share_by_class"]}},
         "dominant_move": shares(sum((Counter(v["motion"]["dominant_move"]) for v in videos), Counter())),
+        "camera": camera(slugs),
         "element_entries_per_s": q([v["motion"]["element_entries_per_s"] for v in videos]),
     }
 

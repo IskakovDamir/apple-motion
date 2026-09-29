@@ -72,7 +72,8 @@ def main():
         if v is None or not q:
             print(f"{name:24} {'n/a':>9}")
             continue
-        ok = q["p10"] <= v <= q["p90"]
+        # true peak is a ceiling: quieter peaks than Apple's are fine, hotter ones are not
+        ok = v <= q["p90"] if name.startswith("true peak") else q["p10"] <= v <= q["p90"]
         print(f"{name:24} {v:9.2f}   {q['p10']:>6} .. {q['p90']:<6}  {'ok' if ok else 'OUTSIDE'}")
     print(f"{'pure black share':24} {s['black_share']:9.2f}   apple mean {fs.get('pure black', 0):.2f}")
     print(f"{'pure white share':24} {s['white_share']:9.2f}   apple mean {fs.get('pure white', 0):.2f}")

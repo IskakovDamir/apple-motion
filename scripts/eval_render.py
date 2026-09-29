@@ -79,6 +79,20 @@ def inside(v, q):
     return q["p10"] <= v <= q["p90"]
 
 
+def _share(v, moves):
+    dm = v["motion"]["dominant_move"]
+    tot = sum(dm.values())
+    return round(sum(dm.get(m, 0) for m in moves) / tot, 3) if tot else None
+
+
+def _q_share(moves):
+    F = load_json(ROOT / "skill" / "apple-motion" / "references" / "fingerprint.json")
+    xs = [_share(v, moves) for v in F["videos"]]
+    xs = [x for x in xs if x is not None]
+    return {"p10": round(float(np.percentile(xs, 10)), 3), "p50": round(float(np.percentile(xs, 50)), 3),
+            "p90": round(float(np.percentile(xs, 90)), 3)} if xs else None
+
+
 def scorecard(slug, truth):
     sys.path.insert(0, str(ROOT / "scripts"))
     from build_fingerprint import video
@@ -99,6 +113,8 @@ def scorecard(slug, truth):
         ("BPM", V["audio"]["bpm"], P["bpm"]),
         ("integrated LUFS", V["audio"]["loudness"]["integrated_lufs"], P["lufs"]),
         ("true peak dBTP", V["audio"]["loudness"]["true_peak_dbtp"], P["true_peak_dbtp"]),
+        ("static shot share", _share(V, ("static",)), _q_share(("static",))),
+        ("push/pull shot share", _share(V, ("push", "pull")), _q_share(("push", "pull"))),
     ]
     info = [("cuts on beat (share; Apple's VO-led edits sit at chance level - informational)", V["sync"]["cuts_on_beat"], P["cuts_on_beat"])]
     L = [f"# eval: {slug}", "", f"Measured with the extraction pipeline; Apple = pooled over {P['videos']} videos.", "",

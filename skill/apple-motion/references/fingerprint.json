@@ -540,12 +540,12 @@
    "mean": -0.2
   },
   "frame_share_by_class": {
-   "pure white": 0.211,
-   "product": 0.056,
    "footage": 0.442,
+   "ui screenshot": 0.196,
+   "product": 0.056,
    "gradient": 0.014,
    "pure black": 0.083,
-   "ui screenshot": 0.196
+   "pure white": 0.211
   },
   "dominant_move": {
    "static": 0.384,
@@ -555,6 +555,26 @@
    "pan": 0.091,
    "local": 0.049,
    "whip": 0.027
+  },
+  "camera": {
+   "zoom_pct_per_s": {
+    "p10": 1.1,
+    "p25": 1.82,
+    "p50": 4.54,
+    "p75": 10.24,
+    "p90": 18.29,
+    "n": 140,
+    "mean": 8.14
+   },
+   "pan_pct_per_s": {
+    "p10": 0.62,
+    "p25": 1.18,
+    "p50": 2.61,
+    "p75": 6.73,
+    "p90": 12.41,
+    "n": 76,
+    "mean": 5.07
+   }
   },
   "element_entries_per_s": {
    "p10": 2.3,

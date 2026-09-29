@@ -19,3 +19,6 @@ export {Recap, recapDuration, cardFrames, cardStarts} from './Recap';
 export type {Card, RecapProps} from './Recap';
 export {IconGrid} from './IconGrid';
 export type {GridIcon} from './IconGrid';
+export {Move, autoMove} from './Move';
+export type {CameraMove} from './Move';
+export {LowerThird, Pill, WordSwap, Typing} from './TypeDevices';

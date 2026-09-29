@@ -1,0 +1,124 @@
+{
+ "bpm": 120,
+ "cards": [
+  {
+   "beats": 4.2267,
+   "bg": "offWhite",
+   "device": {
+    "cards": [
+     {
+      "title": "Northwind 3",
+      "subtitle": "What's new",
+      "icon": "📝"
+     }
+    ]
+   }
+  },
+  {
+   "beats": 4.72,
+   "bg": "black",
+   "lines": [
+    "Northwind Notes 3"
+   ],
+   "size": "headline"
+  },
+  {
+   "beats": 5.84,
+   "bg": "gradient",
+   "gradient": [
+    "#1d1d1f",
+    "#2c2c2e"
+   ],
+   "device": {
+    "tone": "dark",
+    "cards": [
+     {
+      "title": "Offline",
+      "subtitle": "3 edits saved",
+      "icon": "✈️"
+     },
+     {
+      "title": "Back online",
+      "subtitle": "all synced",
+      "icon": "✓"
+     }
+    ]
+   }
+  },
+  {
+   "beats": 1.8,
+   "bg": "white",
+   "icon": {
+    "glyph": "⌕",
+    "from": "#ff9f0a",
+    "to": "#ff375f"
+   },
+   "lines": [
+    "Smart search"
+   ],
+   "entry": "fade",
+   "size": "title"
+  },
+  {
+   "beats": 4.88,
+   "bg": "offWhite",
+   "typing": {
+    "text": "reciept",
+    "cps": 12,
+    "correctTo": "receipt"
+   }
+  },
+  {
+   "beats": 3.16,
+   "bg": "white",
+   "spec": {
+    "value": "2x",
+    "label": "faster to open",
+    "gradient": [
+     "#b150e2",
+     "#e0417b"
+    ]
+   },
+   "transition": "whip"
+  },
+  {
+   "beats": 4.48,
+   "bg": "black",
+   "grid": {
+    "icons": [
+     {
+      "glyph": "▦",
+      "from": "#30d158",
+      "to": "#00a86b"
+     },
+     {
+      "glyph": "☼",
+      "from": "#ffd60a",
+      "to": "#ff9f0a"
+     },
+     {
+      "glyph": "✎",
+      "from": "#64d2ff",
+      "to": "#0a84ff"
+     }
+    ],
+    "columns": 7,
+    "rows": 4
+   },
+   "pill": "New widgets"
+  },
+  {
+   "beats": 6.0,
+   "bg": "black",
+   "swap": {
+    "prefix": "Northwind",
+    "words": [
+     "Notes 3.",
+     "today."
+    ],
+    "everyBeats": 3
+   }
+  }
+ ],
+ "voiceFromFrames": 60
+}

@@ -38,6 +38,8 @@ Pooled over 6 videos, 1107.1 s, 33187 frames. Generated from fingerprint.json - 
 | chance near a word onset | 0.348 | 0.367 | 0.393 | 0.433 | 0.455 (n=6) |
 | typography appear - same spoken word (frames) | -16.2 | -10.0 | -2.0 | 13.0 | 27.2 (n=45) |
 | UI/graphic element entries per s | 2.3 | 3.36 | 3.54 | 3.84 | 4.75 (n=6) |
+| camera zoom rate, push/pull shots (%/s) | 1.1 | 1.82 | 4.54 | 10.24 | 18.29 (n=140) |
+| camera pan/tilt rate (% of frame/s) | 0.62 | 1.18 | 2.61 | 6.73 | 12.41 (n=76) |
 | first shot (frames) | 53.0 | 83.0 | 130.0 | 202.0 | 232.0 (n=6) |
 | last shot (frames) | 12.0 | 27.0 | 94.0 | 195.0 | 280.0 (n=6) |
 | montage runs (>=4 shots of <=10 fr) per minute | 0.0 | 0.0 | 0.0 | 0.0 | 0.63 (n=6) |

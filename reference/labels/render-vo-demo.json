@@ -1,0 +1,63 @@
+{
+ "slug": "render-vo-demo",
+ "reviewer": "auto: text matching a card's `lines` (ground truth) is typography; UI text is not",
+ "typography": [
+  {
+   "id_at_review": 0,
+   "text": "Northwind 3 / What's new",
+   "ref_frame": 39,
+   "cx": 921.0,
+   "cy": 312.5
+  },
+  {
+   "id_at_review": 1,
+   "text": "Northwind Notes 3",
+   "ref_frame": 91,
+   "cx": 960.0,
+   "cy": 541.5
+  },
+  {
+   "id_at_review": 4,
+   "text": "Smart search",
+   "ref_frame": 234,
+   "cx": 961.0,
+   "cy": 727.0
+  },
+  {
+   "id_at_review": 5,
+   "text": "reciept",
+   "ref_frame": 270,
+   "cx": 957.0,
+   "cy": 547.5
+  },
+  {
+   "id_at_review": 6,
+   "text": "receipt",
+   "ref_frame": 300,
+   "cx": 958.0,
+   "cy": 549.0
+  },
+  {
+   "id_at_review": 7,
+   "text": "2x",
+   "ref_frame": 342,
+   "cx": 967.5,
+   "cy": 481.5
+  },
+  {
+   "id_at_review": 8,
+   "text": "faster to open",
+   "ref_frame": 344,
+   "cx": 960.0,
+   "cy": 696.0
+  },
+  {
+   "id_at_review": 10,
+   "text": "Northwind Notes 3.",
+   "ref_frame": 456,
+   "cx": 962.5,
+   "cy": 540.0
+  }
+ ],
+ "caption": []
+}

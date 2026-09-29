@@ -20,13 +20,12 @@ Font weight calibration (stroke/cap of SF Pro Display rendered at known weights)
 - Project size (du -sh /Volumes/Transcend/dev/apple-motion): 19G
 ```
 Filesystem        Size    Used   Avail Capacity iused ifree %iused  Mounted on
-/dev/disk3s1s1   228Gi    11Gi    25Gi    32%    453k  257M    0%   /
-/dev/disk3s5     228Gi   176Gi    25Gi    88%    2.5M  257M    1%   /System/Volumes/Data
+/dev/disk3s1s1   228Gi    11Gi    24Gi    32%    453k  256M    0%   /
+/dev/disk3s5     228Gi   176Gi    24Gi    88%    2.5M  256M    1%   /System/Volumes/Data
 /dev/disk4s1     931Gi   131Gi   800Gi    15%       1     0  100%   /Volumes/Transcend
 ```
-- Internal Data volume used: 178.57 GB at baseline (Mon Sep 28 23:30:52 +05 2026) -> 184.12 GB now: +5419 MB. This counts everything on the Mac (other apps, browsers, other Claude sessions, caches), not just this project.
-  - this project's files on the internal disk: /Users/damir/.claude/projects/-Volumes-Transcend-dev-apple-motion 60.6 MB
+- Internal Data volume used: 178.57 GB at baseline (Mon Sep 28 23:30:52 +05 2026) -> 184.24 GB now: +5537 MB. This counts everything on the Mac (other apps, browsers, other Claude sessions, caches), not just this project.
+  - this project's files on the internal disk: /Users/damir/.claude/projects/-Volumes-Transcend-dev-apple-motion 63.8 MB
   - this project's files on the internal disk: /Users/damir/.claude/projects/-Users-damir-dev-apple-motion 2.1 MB
-  - this project's files on the internal disk: /private/tmp/claude-501/-Volumes-Transcend-dev-apple-motion 4.9 MB
-- This project's own internal-disk footprint (session transcript + scratchpad + the ~/dev symlink): 68 MB (<= 200 MB: OK)
-- Left on the internal disk from the earlier aborted attempt (moved aside, not deleted): /Users/damir/dev/apple-motion.internal-old-20260928 (1.5 GB; safe to delete by hand)
+  - this project's files on the internal disk: /private/tmp/claude-501/-Volumes-Transcend-dev-apple-motion 6.4 MB
+- This project's own internal-disk footprint (session transcript + scratchpad + the ~/dev symlink): 72 MB (<= 200 MB: OK)

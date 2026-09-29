@@ -38,9 +38,11 @@ Not affiliated with Apple.
    `sfx: 'hit'`. Beds shorter than 12 bars have almost no main section (intro, build, break and final
    take 8 bars). If you must use a longer bed, set `musicFadeOutFrames` (e.g. 30) and add `sfx: 'hit'`.
 3. **Write the video as cards** (`Card[]`, see `Recap.tsx`). Each card lasts a number of beats
-   (half beats allow) and is one of: footage/still (`media`), claim or word (`lines`), feature title
+   (fractions allowed) and is one of: footage/still (`media`), claim or word (`lines`), feature title
    (`icon` + `lines` on white), spec (`spec`: gradient numerals + label), number roll (`counter`),
-   device with UI (`device`), icon wall (`grid`), player-chrome moment (`scrubber`).
+   device with UI (`device`), icon wall (`grid`), player-chrome moment (`scrubber`), word swapped in
+   place (`swap`), typing gag (`typing`). Small overlays: `pill` (uppercase caption) and `lowerThird`
+   (presenter name + title). Picture cards get a slow camera move automatically (below).
 4. **Pace to the measurements.** Median card ~1.9 s (about 4 beats at 120 BPM); most cards 1-7
    beats; a few long holds (8-12 beats) on product or UI. The opening shot is long (median ~4 s:
    start on something that moves, not on a title). Runs of very short (<= 10 frame) shots are rare in
@@ -90,6 +92,31 @@ The engine computes every card's start from the running total of beats (no drift
 transition into the outgoing card so the incoming card still starts on its beat, and peaks the whoosh
 in the middle of each whip.
 
+## Camera motion (measured, automatic)
+
+38% of Apple's shots are static, 35% push or pull (median 4.5% scale per second), 19% pan or tilt
+(median 2.6% of the frame per second). `Recap` assigns that mix to picture cards (`media`, `grid`,
+`device`, icon-only, `scrubber`) in a fixed cycle; type-only cards stay still, and type never moves
+with the picture. Override per card with `move: 'static' | 'push' | 'pull' | 'pan' | 'panRight' |
+'tilt' | 'tiltDown'`, or switch it off with `autoMove: false`.
+
+## With a voice-over
+
+All six measured recaps are voice-led: cuts follow phrases, not beats, and designer type appears about
+2 frames before the same spoken word (`VO.typeLeadFrames`). To build one:
+
+1. Write the cards as usual, and mark the cards that should land on a word with `"onWord": "search"`
+   (or `"afterPhrase": true` to cut in the next pause). Put the cards in a JSON file:
+   `{"bpm": 120, "cards": [...]}`.
+2. `python scripts/vo_cards.py cards.json --voice public/vo.wav -o cards_timed.json` - transcribes the
+   voice (faster-whisper; or pass `--words words.json`), moves every anchored card to its word, spreads
+   the others between anchors, and prints `voiceFromFrames` (a lead-in of picture + music before the
+   voice) and the `--bars` to generate the bed with.
+3. `RecapProps`: `cards` from the output, `voice: 'vo.wav'`, `voiceFrom: voiceFromFrames`. The music is
+   ducked by `AUDIO.musicUnderVoiceDb` automatically; set `musicFadeOutFrames` if the bed runs long.
+
+Measured voice-over rate is ~3 words per second while speaking - a 30 s recap holds about 70-80 words.
+
 ## No footage?
 
 About half of Apple's frames are footage. Without it, carry the picture with: `device` cards (UI
@@ -128,6 +155,8 @@ corpus is ~8% pure black and ~21% pure white frames.
 | `Counter.tsx` | number roll with tabular figures and a caption line |
 | `DeviceFrame.tsx`, `UICard.tsx` | phone mock-up and notification/widget card (max 3 per phone; titles up to ~17 characters at the default size) |
 | `AppIcon.tsx`, `IconGrid.tsx`, `Scrubber.tsx`, `Backdrop.tsx` | feature-title icon, icon wall, player chrome, flat/gradient backgrounds |
+| `TypeDevices.tsx` | `LowerThird`, `Pill`, `WordSwap`, `Typing` - the small type devices seen in the corpus |
+| `Move.tsx` | measured camera moves (`Move`, `autoMove`) |
 | `transitions.tsx` | `appleTransition('whip' / 'dissolve' / 'maskWipe' / 'scaleThrough', key)` |
 | `beat.ts`, `Sfx.tsx` | beat grid helpers, pre-rolled SFX |
 
@@ -139,4 +168,5 @@ corpus is ~8% pure black and ~21% pure white frames.
 - `references/audio.md` - music, voice-over, SFX, loudness, the synth bed's layout
 - `references/example-script.md` - a complete 16-bar card script with the reasoning
 - `references/fingerprint.json` - machine-readable fingerprint
-- `scripts/synth_audio.py` (CC0 bed + SFX), `scripts/master.sh` (loudness), `scripts/check_render.py` (self-check)
+- `scripts/synth_audio.py` (CC0 bed + SFX), `scripts/vo_cards.py` (time cards to a voice-over),
+  `scripts/master.sh` (loudness), `scripts/check_render.py` (self-check)

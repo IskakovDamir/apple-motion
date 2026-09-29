@@ -66,6 +66,22 @@ export const COLOR = {
   measured: ["#080808", "#0b0b0b", "#0e0e0e", "#1a1a1a", "#0f0f0f", "#0c0c0d"],
 };
 
+export const MOTION = {
+  /** share of Apple shots by dominant global move (the rest: local-only motion, whips) */
+  mix: {static: 0.384, push: 0.155, pull: 0.197, pan: 0.091, tilt: 0.096},
+  /** median |zoom| rate of push/pull shots, % scale per second (p25..p75 1.82..10.24) */
+  zoomPctPerSec: 4.54,
+  /** median translation rate of pan/tilt shots, % of frame per second (p25..p75 1.18..6.73) */
+  panPctPerSec: 2.61,
+};
+
+export const VO = {
+  /** designer type appears this many frames relative to the same spoken word (median; negative = before) */
+  typeLeadFrames: -2.0,
+  /** voice-over speaking rate, words per second while speaking (median of the six videos) */
+  wordsPerSecond: 3.04,
+};
+
 export const AUDIO = {
   /** median integrated loudness of the Apple recaps (p10..p90 -20.4..-16.6) */
   lufs: -17.4,
