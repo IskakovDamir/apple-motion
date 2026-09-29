@@ -112,9 +112,12 @@ def scorecard(slug, truth):
               "|---|---|---|---|---|---|---|---|---|---|---|"]
         import re as _re
         import motionfit as mf
-        tok = (ROOT / "skill" / "apple-motion" / "templates" / "remotion" / "tokens.ts").read_text()
-        m_ = _re.search(r"textIn: \{damping: ([\d.]+), stiffness: ([\d.]+)", tok)
-        td, tk = float(m_.group(1)), float(m_.group(2))
+        if "text_in_spring" in T:
+            td, tk = T["text_in_spring"]["damping"], T["text_in_spring"]["stiffness"]
+        else:
+            tok = (ROOT / "skill" / "apple-motion" / "templates" / "remotion" / "tokens.ts").read_text()
+            m_ = _re.search(r"textIn: \{damping: ([\d.]+), stiffness: ([\d.]+)", tok)
+            td, tk = float(m_.group(1)), float(m_.group(2))
         errs = []
         for c in T["cards"]:
             if not c.get("lines"):

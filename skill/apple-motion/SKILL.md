@@ -6,7 +6,7 @@ description: Write Remotion (React) video compositions in the style of Apple's s
 # apple-motion
 
 Measured, not guessed: every number below comes from frame-accurate extraction of six Apple recap
-videos (1107 s, 33,202 frames; pipeline and raw report in the repo). Use the numbers as defaults and
+videos (1107 s, 33,187 frames; pipeline and raw report in the repo). Use the numbers as defaults and
 the component library in `templates/remotion/` as the starting point. Not affiliated with Apple.
 
 ## What the style actually is (measured facts that change how you write code)

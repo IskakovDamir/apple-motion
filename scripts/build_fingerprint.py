@@ -60,8 +60,25 @@ def video(slug):
         return [a["entry"]["channels"][ch][key] for a in anim if a["entry"]["channels"].get(ch, {}).get("animated")]
 
     lens = [s["length_frames"] for s in shots]
+    # structure: pace across the video, montage runs, where type sits in time
+    q4 = [[s["length_frames"] for s in shots if k * n / 4 <= s["start_frame"] < (k + 1) * n / 4] for k in range(4)]
+    runs, cur = [], 0
+    for L_ in lens:
+        if L_ <= 10:
+            cur += 1
+        else:
+            if cur >= 4:
+                runs.append(cur)
+            cur = 0
+    if cur >= 4:
+        runs.append(cur)
+    structure = {"first_shot_frames": lens[0], "last_shot_frames": lens[-1],
+                 "median_shot_by_quarter": [med(x, 1) for x in q4],
+                 "montage_runs": len(runs), "montage_run_lengths": runs,
+                 "typography_by_quarter": [sum(1 for e in typo if k * n / 4 <= e["appear_frame"] < (k + 1) * n / 4) for k in range(4)]}
     v = {
         "slug": slug, "source": m["source"], "fps": round(fps, 3), "duration_s": round(dur, 2), "frames": n,
+        "structure": structure,
         "shots": {"count": len(shots), "length_frames": q(lens, nd=1), "cuts_per_10s": round((len(shots) - 1) / dur * 10, 2),
                   "transitions": dict(Counter(s["transition"] for s in shots[1:]))},
         "text": {"events_total": len(te), "roles": dict(Counter(e.get("role") for e in te)),
@@ -124,6 +141,38 @@ def video(slug):
     return v
 
 
+def calibration():
+    """Speed bias of the spring fit, from our own calibration render (known springs measured back).
+    Returns {'time_scale': c, 'n': n} with fitted stiffness ~ true * c^2, damping ~ true * c."""
+    import re
+    import motionfit as mf
+    tr = ROOT / "demo" / "out" / "calibration.truth.json"
+    an = DATA / "render-cal" / "text_anim.json"
+    if not (tr.exists() and an.exists()):
+        return None
+    TT = load_json(tr)
+    T = TT["cards"]
+    A = load_json(an)["events"]
+    td, tk = TT["text_in_spring"]["damping"], TT["text_in_spring"]["stiffness"]  # spring used at render time
+    ratios, zetas = [], []
+    for c in T:
+        if c["entry"] not in ("scaleDown", "scaleUp", "slideUp", "slideUpMask", "fade") or not c["entry_frames"]:
+            continue
+        cand = [a for a in A if abs(a["appear_frame"] - c["start"]) <= 6 and a["entry"].get("spring")]
+        if not cand:
+            continue
+        a = min(cand, key=lambda a: abs(a["appear_frame"] - c["start"]))
+        ed, ek = mf.effective_spring(td, tk, 1, c["entry_frames"], 30)
+        sp = a["entry"]["spring"]
+        ratios.append(float(np.sqrt(sp["stiffness"] / ek)))
+        zetas.append((sp["damping"] / (2 * np.sqrt(sp["stiffness"]))) / (ed / (2 * np.sqrt(ek))))
+    if len(ratios) < 3:
+        return None
+    return {"time_scale": round(float(np.median(ratios)), 3), "zeta_ratio": round(float(np.median(zetas)), 3),
+            "n": len(ratios), "ratios": [round(r, 3) for r in ratios],
+            "note": "fitted springs are this much faster than the truth; calibrated = fitted / c (damping), / c^2 (stiffness)"}
+
+
 def pool(videos, slugs):
     """Pooled distributions over all videos (typography events pooled, not averaged)."""
     allty, allan, alllen = [], [], []
@@ -139,10 +188,34 @@ def pool(videos, slugs):
 
     def cs(ch, key="start"):
         return [a["entry"]["channels"][ch][key] for a in anim if a["entry"]["channels"].get(ch, {}).get("animated")]
+    cal = calibration()
+    esp = {k: med([a["entry"]["spring"][k] for a in good]) for k in ("damping", "stiffness", "durationInFrames", "zeta", "overshoot_pct", "rmse")} | {"mass": 1, "n": len(good)}
+    esp_cal = None
+    if cal and esp["damping"] and esp["stiffness"]:
+        import motionfit as mf
+        c = cal["time_scale"]
+        esp_cal = {"damping": round(esp["damping"] / c, 2), "stiffness": round(esp["stiffness"] / c ** 2, 1), "mass": 1}
+        esp_cal["durationInFrames"] = mf.measure_spring(30, esp_cal["damping"], esp_cal["stiffness"], 1)
+    # pooled on-beat test: observed hits vs expected hits under each video's chance rate
+    k_hit = sum(round(v["sync"]["cuts_on_beat"] * n) for v, n in ((v, v["shots"]["count"] - 1) for v in videos) if v["sync"]["cuts_on_beat"] is not None)
+    n_tot = sum(v["shots"]["count"] - 1 for v in videos if v["sync"]["cuts_on_beat"] is not None)
+    exp = sum(v["sync"]["chance_on_beat"] * (v["shots"]["count"] - 1) for v in videos if v["sync"]["cuts_on_beat"] is not None)
+    from scipy.stats import norm
+    var = sum(v["sync"]["chance_on_beat"] * (1 - v["sync"]["chance_on_beat"]) * (v["shots"]["count"] - 1) for v in videos if v["sync"]["cuts_on_beat"] is not None)
+    z = (k_hit - exp) / np.sqrt(var) if var else 0
     return {
+        "calibration": cal, "entry_spring_calibrated": esp_cal,
+        "cuts_on_beat_pooled": {"hits": int(k_hit), "cuts": int(n_tot), "expected_by_chance": round(exp, 1),
+                                "z": round(float(z), 2), "p_one_sided": round(float(1 - norm.cdf(z)), 4)},
         "videos": len(slugs), "duration_s": round(sum(v["duration_s"] for v in videos), 1),
         "frames": sum(v["frames"] for v in videos),
         "shot_length_frames": q(alllen, nd=1),
+        "median_shot_by_quarter": [med([v["structure"]["median_shot_by_quarter"][k] for v in videos], 1) for k in range(4)],
+        "first_shot_frames": q([v["structure"]["first_shot_frames"] for v in videos], nd=0),
+        "last_shot_frames": q([v["structure"]["last_shot_frames"] for v in videos], nd=0),
+        "montage_runs_per_minute": q([v["structure"]["montage_runs"] / (v["duration_s"] / 60) for v in videos]),
+        "typography_share_by_quarter": [round(sum(v["structure"]["typography_by_quarter"][k] for v in videos) /
+                                              max(1, sum(sum(v["structure"]["typography_by_quarter"]) for v in videos)), 3) for k in range(4)],
         "cuts_per_10s": q([v["shots"]["cuts_per_10s"] for v in videos]),
         "transitions": shares(sum((Counter(v["shots"]["transitions"]) for v in videos), Counter())),
         "typography_count": len(allty),
@@ -165,7 +238,7 @@ def pool(videos, slugs):
         "exit_kind": shares(Counter(e["exit_kind"] for e in allty)),
         "entry_style": shares(Counter(a["entry_style"] for a in allan)),
         "exit_style": shares(Counter(a["exit_style"] for a in allan)),
-        "entry_spring": {k: med([a["entry"]["spring"][k] for a in good]) for k in ("damping", "stiffness", "durationInFrames", "zeta", "overshoot_pct", "rmse")} | {"mass": 1, "n": len(good)},
+        "entry_spring": esp,
         "entry_spring_q": {k: q([a["entry"]["spring"][k] for a in good]) for k in ("damping", "stiffness", "durationInFrames")},
         "entry_spring_idiomatic": {k: med([a["entry"]["spring_idiomatic"][k] for a in good]) for k in ("damping", "durationInFrames", "rmse")} | {"stiffness": 100, "mass": 1},
         "entry_bezier": [med([a["entry"]["bezier"]["bezier"][i] for a in anim if a["entry"].get("bezier", {}).get("bezier")], 3) for i in range(4)],

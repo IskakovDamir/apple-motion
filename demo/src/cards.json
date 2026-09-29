@@ -15,7 +15,7 @@
    "beats": 4,
    "bg": "black",
    "counter": {
-    "to": 33202,
+    "to": 33187,
     "caption": "frames, one by one"
    },
    "size": "hero",

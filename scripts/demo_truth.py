@@ -19,7 +19,8 @@ if len(sys.argv) > 2 and sys.argv[2] == "calibration":
         cards.append({"i": i, "start": i * card, "frames": card, "entry": e, "entry_frames": int(fr),
                       "lines": ["Every word counts"] if e == "perWord" else [f"Entry {e}"],
                       "spring": "tokens SPRING.textIn stretched to entry_frames"})
-    Path(sys.argv[1]).write_text(json.dumps({"fps": 30, "cards": cards}, indent=1))
+    sp = re.search(r"textIn: \{damping: ([\d.]+), stiffness: ([\d.]+)", tokens_src := (ROOT / "skill" / "apple-motion" / "templates" / "remotion" / "tokens.ts").read_text())
+    Path(sys.argv[1]).write_text(json.dumps({"fps": 30, "cards": cards, "text_in_spring": {"damping": float(sp.group(1)), "stiffness": float(sp.group(2)), "mass": 1}}, indent=1))
     print(f"calibration truth: {len(cards)} cards")
     sys.exit(0)
 data = json.loads((ROOT / "demo" / "src" / "cards.json").read_text())
@@ -36,5 +37,7 @@ for i, c in enumerate(data["cards"]):
     out.append({"i": i, "start": cur, "frames": round(c["beats"] * beat), "lines": lines, "entry": entry,
                 "entry_frames": ef, "transition": c.get("transition", "cut"), "size": c.get("size")})
     cur += round(c["beats"] * beat)
-Path(sys.argv[1]).write_text(json.dumps({"bpm": bpm, "fps": fps, "cards": out}, indent=1))
+sp = re.search(r"textIn: \{damping: ([\d.]+), stiffness: ([\d.]+)", tokens)
+Path(sys.argv[1]).write_text(json.dumps({"bpm": bpm, "fps": fps, "cards": out, "text_in_spring": {
+    "damping": float(sp.group(1)), "stiffness": float(sp.group(2)), "mass": 1}}, indent=1))
 print(f"{len(out)} cards, {cur} frames")
