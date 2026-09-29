@@ -5,55 +5,64 @@ description: Write Remotion (React) videos in the style of Apple's short, fast, 
 
 # apple-motion
 
-Every default here is measured, not guessed: six Apple recap videos (1107 s, 33,187 frames) were
-run through a forensic pipeline (OCR text tracking, spring fitting, optical flow, beat tracking,
-loudness). The pipeline itself was calibrated on renders with known springs. Not affiliated with Apple.
+Every default here is measured, not guessed: six Apple recap videos (1107 s, 33,187 frames) went
+through a forensic pipeline (OCR text tracking, spring fitting, optical flow, beat tracking,
+loudness), and the pipeline itself was calibrated on renders with known springs and fonts.
+Not affiliated with Apple.
 
 ## The style in numbers
 
 <!-- numbers:start -->
 - **Pace.** Median shot 56.5 frames (1.9 s); p10 13.0, p90 173.5 frames; 3.24 cuts per 10 s (median video). Transitions: cut 92%, whip 5%, scale through 1%, dissolve 1%.
-- **Typography is an accent, not the bed.** Designer-set type appears 0.78 times per 10 s (median video); most on-screen text is UI inside product shots. Hold 28.5 frames median (p10 5.4, p90 80.6).
+- **Typography is an accent, not the bed.** Designer-set type appears 0.78 times per 10 s (median video); most on-screen text is UI inside product shots. Hold 33.0 frames median (p10 10.0, p90 80.6).
 - **Size.** Cap height median 6.67% of frame height (p10 3.25%, p90 20.23%). Lines: 1 84%, 2 10%, 4 4%. Alignment: center 60%, right 19%, left 15%.
-- **Entries.** cut on 19%, slide 19%, fade 18%, scale up from small 10%, blur in 7%. Animated entries are visibly done in 8.0 frames (median). Spring (calibrated): damping 14.0, stiffness 82.1, mass 1 - use it without durationInFrames.
-- **Exits.** cut off 47%, fade out 15%, slide out 13%, scale out (down) 12%; median 3.5 frames.
+- **Entries.** cut on 25%, slide 21%, fade 18%, scale down from large 9%, per-letter 7%. Animated entries are visibly done in 8.0 frames (median). Spring (calibrated): damping 15.35, stiffness 115.0, mass 1 - use it without durationInFrames.
+- **Exits.** cut off 59%, slide out 13%, fade out 10%, blur out 7%; median 0.0 frames.
 - **Sound.** 118.8 BPM median (p10 91.9, p90 131.3); -17.4 LUFS integrated, -2.0 dBTP true peak; voice-over at 3.04 words/s. Cuts are not locked to the beat: 134/400 within +-2 frames vs 124.8 expected by chance (p=0.1586) - the edit follows the voice and picture.
 <!-- numbers:end -->
 
 ## How to build one
 
 1. **Copy the library.** `templates/remotion/` -> `src/apple-motion/` in the user's Remotion project
-   (needs `remotion`, `@remotion/transitions`). Keep `tokens.ts` as is - it is the measured style.
-2. **Write the video as cards** (`Card[]` in `Recap.tsx`): each card lasts a whole number of beats and
-   is one of: product/footage (`media`), claim or word (`lines`), feature title (`icon` + `lines`,
-   white), spec (`spec`, gradient numerals), number roll (`counter`), device with UI (`device`),
-   player-chrome moment (`scrubber`). Pick `bpm` first; at 30 fps and 120 BPM one beat = 15 frames.
-3. **Pace it like the measurements**, not like a slideshow: mostly short cards (1-2 beats) with a few
-   longer holds on product or UI; a quick run of 1-beat (or half-beat) cards before the finale;
-   open on something that moves, end on the wordmark/logo held for 2-4 bars with a hit.
-4. **Type is punctuation.** Most cards should be picture (product, UI, people). Put type on a card
-   only for a feature name, a claim, a number. 1-4 words per line, at most 2 lines.
-5. **Transitions:** leave `transition` empty (hard cut) on most cards. Use `whip` / `dissolve` /
-   `maskWipe` / `scaleThrough` only as accents on musical moments.
-6. **Sound:** music bed at the chosen BPM (licensed, or `scripts/synth_audio.py` for a CC0 bed and
-   SFX kit), SFX only on whips, UI taps and the final hit; master to the measured loudness.
-7. **Check:** render, then `python scripts/check_render.py out.mp4` and fix anything outside Apple's
-   p10-p90 ranges (pace, loudness, black/white share).
+   (needs `remotion` and `@remotion/transitions`). `tokens.ts` is the measured style - don't edit it.
+2. **Fix the length on the music first.** Pick BPM (numbers block), then the number of bars. At 30 fps
+   and 120 BPM: 1 beat = 15 frames, 1 bar = 60, 16 bars = 32 s. A "30-second recap" = 16 bars.
+   With `scripts/synth_audio.py` the bed is laid out as: intro bars 1-2, build 3-4, main 5-12,
+   break 13-14 (drums out), final 15-16, and a closing **hit exactly on the last bar line**
+   (beat 64 for 16 bars). Land the logo card on that beat and don't add another `sfx: 'hit'`.
+3. **Write the video as cards** (`Card[]`, see `Recap.tsx`). Each card lasts a number of beats
+   (half beats allow) and is one of: footage/still (`media`), claim or word (`lines`), feature title
+   (`icon` + `lines` on white), spec (`spec`: gradient numerals + label), number roll (`counter`),
+   device with UI (`device`), icon wall (`grid`), player-chrome moment (`scrubber`).
+4. **Pace to the measurements.** Median card ~1.9 s (about 4 beats at 120 BPM); most cards 1-7
+   beats; a few long holds (8-12 beats) on product or UI. The opening shot is long (median ~4 s:
+   start on something that moves, not on a title). Runs of very short (<= 10 frame) shots are rare in
+   the corpus - don't build a flash montage unless the brief asks for one.
+5. **Type is punctuation.** 1-4 words per line, 1 line (84% of measured type), at most 2. Name a
+   feature, state a claim, show a number. With a voice-over, type is rare (numbers block); without
+   one, type has to name the features - still keep it to about one type card per 5-7 s.
+6. **Transitions:** leave `transition` empty (hard cut) on >90% of cards; `whip` is the common
+   accent, `dissolve` / `maskWipe` / `scaleThrough` are rare. Put accents on musical moments.
+7. **Mix and master:** SFX only on whips (automatic), UI taps, the final hit. Render, then
+   `scripts/master.sh out.mp4 final.mp4` (two-pass loudnorm to `AUDIO.lufs` / `AUDIO.truePeakDb`).
+8. **Check:** `python scripts/check_render.py final.mp4` prints your pace and loudness next to
+   Apple's p10-p90 ranges. Fix anything marked OUTSIDE.
 
 ```tsx
 // src/Root.tsx
 import {Composition} from 'remotion';
 import {Recap, recapDuration, type Card, type RecapProps} from './apple-motion';
 
-const cards: Card[] = [
-  {beats: 2, bg: 'black', media: {src: 'hero.mp4', type: 'video'}},
-  {beats: 2, bg: 'black', lines: ['Faster.'], entry: 'cut', size: 'hero'},
-  {beats: 2, bg: 'white', icon: {glyph: '✦', from: '#64d2ff', to: '#0a84ff'}, lines: ['Smart Replies'], entry: 'fade', size: 'title'},
-  {beats: 4, bg: 'offWhite', device: {cards: [{title: 'Reply drafted', subtitle: 'in your voice', icon: '✍️'}]}},
-  {beats: 2, bg: 'white', spec: {value: '2x', label: 'faster sync', gradient: ['#b150e2', '#e0417b']}, transition: 'whip'},
-  {beats: 1, bg: 'black', media: {src: 'a.mp4', type: 'video'}},
-  {beats: 1, bg: 'black', media: {src: 'b.mp4', type: 'video'}},
-  {beats: 8, bg: 'black', lines: ['Acme'], entry: 'scaleDown', size: 'hero', transition: 'dissolve', sfx: 'hit'},
+const cards: Card[] = [                                    // 120 BPM, 16 bars = 64 beats
+  {beats: 8, bg: 'offWhite', device: {cards: [{title: 'Northwind 3.0', subtitle: "What's new", icon: '📝'}]}},
+  {beats: 4, bg: 'white', icon: {glyph: '↻', from: '#64d2ff', to: '#0a84ff'}, lines: ['Offline sync'], entry: 'fade', size: 'title'},
+  {beats: 8, bg: 'black', device: {tone: 'dark', cards: [{title: 'Offline', subtitle: '3 edits saved'}, {title: 'Synced', subtitle: 'just now'}]}},
+  {beats: 4, bg: 'white', icon: {glyph: '⌕', from: '#ff9f0a', to: '#ff375f'}, lines: ['Smart search'], entry: 'fade', size: 'title', transition: 'whip'},
+  {beats: 8, bg: 'black', media: {src: 'search.mp4', type: 'video'}},
+  {beats: 4, bg: 'white', spec: {value: '2x', label: 'faster to open', gradient: ['#b150e2', '#e0417b']}},
+  {beats: 12, bg: 'black', grid: {icons: [{glyph: '✦', from: '#5e5ce6', to: '#bf5af2'}]}},
+  {beats: 16, bg: 'gradient', gradient: ['#0a84ff', '#5e5ce6'], lines: ['Your notes.', 'Everywhere.'], entry: 'slideUpMask', size: 'headline'},
+  {beats: 8, bg: 'black', lines: ['Northwind'], entry: 'scaleDown', size: 'display'}, // starts on beat 64 = the bed's final hit
 ];
 const props: RecapProps = {bpm: 120, cards, music: 'music.wav'};
 export const Root = () => (
@@ -62,40 +71,55 @@ export const Root = () => (
 );
 ```
 
+The engine computes every card's start from the running total of beats (no drift), overlaps a
+transition into the outgoing card so the incoming card still starts on its beat, and peaks the whoosh
+in the middle of each whip.
+
+## No footage?
+
+About half of Apple's frames are footage. Without it, carry the picture with: `device` cards (UI
+inside a phone; set `device.x` to ~30 and put `lines` at `x` ~62, `align: 'left'` to have a claim
+beside the phone), `grid` icon walls, `spec` numerals, gradient fields (`bg: 'gradient'` +
+`gradient: [from, to]`), and single `icon` cards. Avoid long stretches of plain black or white: the
+corpus is ~8% pure black and ~21% pure white frames.
+
 ## Rules the measurements back up
 
-- **Type:** SF Pro Display (system font on macOS; Inter off Apple platforms), Semibold for
-  headlines, tight tracking, leading ~1.05. White on black/footage, near-black #1d1d1f on white or
-  #f5f5f7. Flat colour - except spec numerals, which Apple fills with a vertical gradient.
-  No outlines, shadows, boxes behind text, rotation or bouncy type.
-- **Motion:** type springs are close to critically damped (no visible bounce) and visibly finish in
-  a handful of frames; most type simply cuts on with its shot. Holds drift a little (slow push of the
-  whole frame), type itself stays still.
-- **Remotion detail:** `spring({durationInFrames})` stretches the spring; the visible move ends long
-  before `durationInFrames`. Use `SPRING.textIn` from `tokens.ts` without `durationInFrames` to get
-  the measured curve. Damping above `2*sqrt(stiffness*mass)` behaves exactly like critical damping in
-  Remotion (verified against Remotion's stepping code).
-- **Sync:** see the numbers block - in voice-over recaps the cut does not chase the beat; type lands
-  on the spoken word. Music-only pieces: cut on beats, hits on downbeats (`beat.ts`).
-- **Loudness:** master to the measured integrated LUFS / true peak (`AUDIO` in `tokens.ts`).
+- **Type:** SF Pro Display (system font on macOS; Inter off Apple platforms), weight from the
+  calibrated stroke measurement (`TYPE.weight`), tight tracking, leading from `TYPE.lineHeight`.
+  White on black/footage; near-black (#080808-#1d1d1f) on white or #f5f5f7. Flat colour - except spec
+  numerals (vertical gradient). No outlines, shadows, boxes behind text, rotation.
+- **Sizes:** `size` maps to measured cap-height percentiles: caption (p10), title (p25), headline
+  (median), display (p75), hero (p90, event wordmarks). `KineticText` shrinks a line that would exceed
+  88% of the frame width.
+- **Motion:** the calibrated type spring is slightly under-damped (a ~2% overshoot, no visible
+  bounce). Remotion detail: `spring({durationInFrames})` stretches the spring and the visible move
+  ends ~3x earlier than `durationInFrames`; the components therefore use `SPRING.textIn` unstretched,
+  which reproduces Apple's visible entry length. Most type cuts on with its shot; most exits are cuts.
+- **Sync:** in Apple's voice-over recaps cuts are *not* locked to the beat (numbers block); the edit
+  follows the voice and picture, and type lands on the spoken word. For music-only pieces the card
+  engine keeps cuts on beats - a deliberate choice, not a measured Apple trait.
+- **Loudness:** `AUDIO.lufs` integrated, `AUDIO.truePeakDb` true peak (median of the six videos).
 
 ## Library (templates/remotion)
 
 | file | what |
 |---|---|
-| `tokens.ts` | measured defaults - generated from `references/fingerprint.json` |
-| `Recap.tsx` | card engine: beat-aligned cards, transitions, SFX, music |
-| `KineticText.tsx` | `lines`, `entry` (cut, fade, blurIn, scaleDown, scaleUp, slideUp, slideUpMask, perWord, perLetter), `exit`, `size`, `gradient` |
-| `Counter.tsx` | number roll, tabular figures |
-| `AppIcon.tsx`, `DeviceFrame.tsx`, `UICard.tsx`, `Scrubber.tsx` | feature-title icon, phone mock-up, notification/widget card, player chrome |
+| `tokens.ts` | measured defaults, generated from `references/fingerprint.json` |
+| `Recap.tsx` | card engine (`Card`, `Recap`, `recapDuration`, `cardStarts`) |
+| `KineticText.tsx` | `lines`, `entry` (cut, fade, blurIn, scaleDown, scaleUp, slideUp, slideUpMask, perWord, perLetter), `exit` (cut, fade, blurOut, scaleUp, scaleDown, slideOut), `size`, `gradient`, `maxWidthPct` |
+| `Counter.tsx` | number roll with tabular figures and a caption line |
+| `DeviceFrame.tsx`, `UICard.tsx` | phone mock-up and notification/widget card (max 3 per phone; titles up to ~17 characters at the default size) |
+| `AppIcon.tsx`, `IconGrid.tsx`, `Scrubber.tsx`, `Backdrop.tsx` | feature-title icon, icon wall, player chrome, flat/gradient backgrounds |
 | `transitions.tsx` | `appleTransition('whip' / 'dissolve' / 'maskWipe' / 'scaleThrough', key)` |
-| `beat.ts`, `Sfx.tsx`, `Backdrop.tsx` | beat grid helpers, pre-rolled SFX, flat/gradient backgrounds |
+| `beat.ts`, `Sfx.tsx` | beat grid helpers, pre-rolled SFX |
 
 ## References
 
 - `references/measurements.md` - every measured distribution, pooled and per video (generated)
 - `references/typography.md` - the recurring type devices and how to set them
 - `references/editing.md` - pace, transitions, framing devices, sync
-- `references/audio.md` - music, voice-over, SFX, loudness
+- `references/audio.md` - music, voice-over, SFX, loudness, the synth bed's layout
+- `references/example-script.md` - a complete 16-bar card script with the reasoning
 - `references/fingerprint.json` - machine-readable fingerprint
-- `scripts/synth_audio.py` (CC0 music bed + SFX kit), `scripts/check_render.py` (self-check)
+- `scripts/synth_audio.py` (CC0 bed + SFX), `scripts/master.sh` (loudness), `scripts/check_render.py` (self-check)

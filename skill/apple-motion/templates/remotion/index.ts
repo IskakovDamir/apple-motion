@@ -17,3 +17,5 @@ export {Scrubber} from './Scrubber';
 export {AppIcon} from './AppIcon';
 export {Recap, recapDuration, cardFrames} from './Recap';
 export type {Card, RecapProps} from './Recap';
+export {IconGrid} from './IconGrid';
+export type {GridIcon} from './IconGrid';

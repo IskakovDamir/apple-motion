@@ -1,0 +1,217 @@
+{
+ "slug": "render-demo-v2",
+ "reviewer": "auto: every text in our own renders is typography",
+ "typography": [
+  {
+   "id_at_review": 0,
+   "text": "Six Apple recaps / 1,107 s . 33,187 frames / 33,187 frames / 1,107 s . 33,187 frames / 33,187 frames / 1,107 s / 1,107 $ / 33,187 frames / 1,107 s / 1,107 s . 33,187 frames",
+   "ref_frame": 97,
+   "cx": 990.5,
+   "cy": 311.0
+  },
+  {
+   "id_at_review": 1,
+   "text": "Every frame read / OCR on every text shot",
+   "ref_frame": 63,
+   "cx": 990.0,
+   "cy": 540.0
+  },
+  {
+   "id_at_review": 2,
+   "text": "Every spring fitted / Remotion spring() port",
+   "ref_frame": 91,
+   "cx": 987.0,
+   "cy": 766.0
+  },
+  {
+   "id_at_review": 3,
+   "text": "Measured:",
+   "ref_frame": 131,
+   "cx": 962.0,
+   "cy": 543.0
+  },
+  {
+   "id_at_review": 4,
+   "text": "Kinetic type",
+   "ref_frame": 162,
+   "cx": 964.5,
+   "cy": 702.0
+  },
+  {
+   "id_at_review": 5,
+   "text": "Aa",
+   "ref_frame": 163,
+   "cx": 964.5,
+   "cy": 436.5
+  },
+  {
+   "id_at_review": 6,
+   "text": "Beat grid",
+   "ref_frame": 192,
+   "cx": 967.0,
+   "cy": 696.5
+  },
+  {
+   "id_at_review": 7,
+   "text": "Springs",
+   "ref_frame": 223,
+   "cx": 959.0,
+   "cy": 702.0
+  },
+  {
+   "id_at_review": 8,
+   "text": "33,187 / mes, one / by",
+   "ref_frame": 265,
+   "cx": 848.0,
+   "cy": 575.0
+  },
+  {
+   "id_at_review": 9,
+   "text": "Cut detected / 22 frames / shot 41 / shot 41 . 22 frames",
+   "ref_frame": 350,
+   "cx": 957.0,
+   "cy": 320.0
+  },
+  {
+   "id_at_review": 10,
+   "text": "Type on the word / lands with the voice",
+   "ref_frame": 343,
+   "cx": 968.0,
+   "cy": 542.5
+  },
+  {
+   "id_at_review": 11,
+   "text": "Every cut: / Every word:",
+   "ref_frame": 371,
+   "cx": 423.0,
+   "cy": 547.5
+  },
+  {
+   "id_at_review": 12,
+   "text": "0.95s",
+   "ref_frame": 445,
+   "cx": 967.0,
+   "cy": 482.0
+  },
+  {
+   "id_at_review": 13,
+   "text": "median type hold",
+   "ref_frame": 445,
+   "cx": 963.0,
+   "cy": 695.0
+  },
+  {
+   "id_at_review": 14,
+   "text": "Type does the talking:",
+   "ref_frame": 506,
+   "cx": 959.5,
+   "cy": 466.5
+  },
+  {
+   "id_at_review": 15,
+   "text": "MEASURED AT 30 FPS",
+   "ref_frame": 507,
+   "cx": 960.0,
+   "cy": 768.0
+  },
+  {
+   "id_at_review": 16,
+   "text": "Loudness / -17.4 LUFS integrated",
+   "ref_frame": 628,
+   "cx": 979.0,
+   "cy": 326.0
+  },
+  {
+   "id_at_review": 17,
+   "text": "Tempo / 118.8 BPM median",
+   "ref_frame": 643,
+   "cx": 953.0,
+   "cy": 542.0
+  },
+  {
+   "id_at_review": 18,
+   "text": "Transitions",
+   "ref_frame": 672,
+   "cx": 963.0,
+   "cy": 693.0
+  },
+  {
+   "id_at_review": 19,
+   "text": "Loudness",
+   "ref_frame": 705,
+   "cx": 963.0,
+   "cy": 695.0
+  },
+  {
+   "id_at_review": 20,
+   "text": "Type is the accent",
+   "ref_frame": 768,
+   "cx": 959.5,
+   "cy": 554.0
+  },
+  {
+   "id_at_review": 21,
+   "text": "Pace.",
+   "ref_frame": 846,
+   "cx": 974.5,
+   "cy": 551.5
+  },
+  {
+   "id_at_review": 22,
+   "text": "Type.",
+   "ref_frame": 861,
+   "cx": 967.0,
+   "cy": 588.5
+  },
+  {
+   "id_at_review": 23,
+   "text": "Springs:",
+   "ref_frame": 876,
+   "cx": 968.0,
+   "cy": 568.5
+  },
+  {
+   "id_at_review": 24,
+   "text": "Cuts.",
+   "ref_frame": 891,
+   "cx": 970.5,
+   "cy": 552.0
+  },
+  {
+   "id_at_review": 25,
+   "text": "Beats:",
+   "ref_frame": 906,
+   "cx": 971.0,
+   "cy": 549.0
+  },
+  {
+   "id_at_review": 26,
+   "text": "Words.",
+   "ref_frame": 921,
+   "cx": 978.0,
+   "cy": 552.0
+  },
+  {
+   "id_at_review": 27,
+   "text": "Loudness:",
+   "ref_frame": 936,
+   "cx": 970.5,
+   "cy": 549.0
+  },
+  {
+   "id_at_review": 28,
+   "text": "Measured:",
+   "ref_frame": 951,
+   "cx": 977.5,
+   "cy": 552.5
+  },
+  {
+   "id_at_review": 29,
+   "text": "apple-motion",
+   "ref_frame": 1008,
+   "cx": 962.5,
+   "cy": 563.0
+  }
+ ],
+ "caption": []
+}

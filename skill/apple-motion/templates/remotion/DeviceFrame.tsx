@@ -10,7 +10,6 @@ export type DeviceFrameProps = {
   y?: number;
   /** entry: rise from below and settle, or none */
   entry?: 'rise' | 'none';
-  entryFrames?: number;
   /** slow push during the hold, % scale per second (measured holds drift slightly) */
   pushPctPerSec?: number;
   tiltDeg?: number;
@@ -27,7 +26,6 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({
   x = 50,
   y = 50,
   entry = 'rise',
-  entryFrames = 18,
   pushPctPerSec = 1.5,
   tiltDeg = 0,
   screenColor = '#000000',
@@ -36,7 +34,7 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({
   const {fps, height} = useVideoConfig();
   const h = (heightPct / 100) * height;
   const w = h * 0.4615; // 19.5:9 screen + bezel
-  const p = entry === 'rise' ? spring({frame, fps, config: SPRING.textIn, durationInFrames: entryFrames}) : 1;
+  const p = entry === 'rise' ? spring({frame, fps, config: SPRING.camera}) : 1;
   const ty = interpolate(p, [0, 1], [0.35 * height, 0]);
   const push = 1 + (pushPctPerSec / 100) * (frame / fps);
   const r = w * 0.17;

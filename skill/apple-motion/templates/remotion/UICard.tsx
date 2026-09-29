@@ -14,7 +14,6 @@ export type UICardProps = {
   y?: number;
   /** frame (local) at which the card pops in */
   at?: number;
-  entryFrames?: number;
   /** title size in % of frame height (UI inside a device needs ~2.5-4.5 to read in a recap) */
   fontPct?: number;
 };
@@ -32,12 +31,11 @@ export const UICard: React.FC<UICardProps> = ({
   x = 50,
   y = 50,
   at = 0,
-  entryFrames = 12,
   fontPct = 2.6,
 }) => {
   const frame = useCurrentFrame();
   const {fps, width, height} = useVideoConfig();
-  const p = spring({frame: frame - at, fps, config: SPRING.textIn, durationInFrames: entryFrames});
+  const p = spring({frame: frame - at, fps, config: SPRING.textIn});
   const w = (widthPct / 100) * width;
   const bg = tone === 'dark' ? 'rgba(28,28,30,0.96)' : tone === 'glass' ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.97)';
   const fg = tone === 'dark' ? '#ffffff' : '#1d1d1f';

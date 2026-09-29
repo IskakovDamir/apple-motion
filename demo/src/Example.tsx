@@ -1,15 +1,7 @@
-# Example: a 32-second launch recap as cards
+// Compiles and renders the card script from skill/apple-motion/references/example-script.md
+import type {Card, RecapProps} from '@apple-motion';
 
-Brief: "30-second Apple-style recap for Northwind Notes 3.0: offline sync, smart search, 2x faster
-to open, new widgets. Music only, end on the logo."
-
-Length first: 120 BPM, 16 bars = 64 beats = 32 s (1 beat = 15 frames at 30 fps). The bed from
-`scripts/synth_audio.py OUT --bpm 120 --bars 16` has: intro bars 1-2 (beats 0-7), build 3-4
-(8-15), main 5-12 (16-47), break 13-14 (48-55, drums out), final 15-16 (56-63) and its closing hit
-on beat 64. The logo card starts on beat 64 and holds over the tail.
-
-```ts
-const cards: Card[] = [
+export const exampleCards: Card[] = [
   // intro (beats 0-7): open on motion, no title - median Apple opening shot is ~4 s
   {beats: 8, bg: 'offWhite', device: {cards: [
     {title: 'Northwind 3.0', subtitle: "What's new", icon: '📝'},
@@ -37,16 +29,5 @@ const cards: Card[] = [
   // beat 64 = the bed's closing hit: logo, no extra sfx
   {beats: 8, bg: 'black', lines: ['Northwind Notes'], entry: 'scaleDown', size: 'display'},
 ];
-// 8+3+5+3+9+3+9+4+12+2+2+2+2 = 64 -> the logo starts on beat 64
-```
 
-Check the arithmetic before rendering: `cardStarts(cards, 120, 30)` gives every start frame; the
-logo must start at frame 960 (beat 64). Re-add the beats after every edit.
-
-Why it reads as Apple (all backed by `measurements.md`):
-
-- Picture carries most cards (device, grid, icons, spec); type appears about every 5-6 s.
-- Median card 3-4 beats (1.5-2 s), a few 8-12 beat holds, a long opening shot.
-- One whip, the rest hard cuts.
-- The final card lands on the bar line where the music hits (every card starts on its beat).
-- No bouncy or rotating type, no coloured boxes behind text.
+export const exampleProps: RecapProps = {bpm: 120, cards: exampleCards, music: 'music.wav'};

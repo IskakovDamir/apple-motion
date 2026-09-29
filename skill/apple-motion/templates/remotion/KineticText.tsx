@@ -12,7 +12,7 @@ export type Entry =
   | 'slideUpMask'
   | 'perWord'
   | 'perLetter';
-export type Exit = 'cut' | 'fade' | 'blurOut' | 'scaleUp' | 'slideOut';
+export type Exit = 'cut' | 'fade' | 'blurOut' | 'scaleUp' | 'scaleDown' | 'slideOut';
 export type Size = keyof typeof TYPE.capHeightPct;
 
 export type KineticTextProps = {
@@ -36,6 +36,8 @@ export type KineticTextProps = {
   staggerFrames?: number;
   /** vertical gradient fill (Apple uses it only for spec numerals, e.g. ['#b150e2', '#e0417b']) */
   gradient?: readonly [string, string];
+  /** shrink the font so the widest line fits this % of frame width (default 88) */
+  maxWidthPct?: number;
   style?: React.CSSProperties;
 };
 
@@ -62,9 +64,17 @@ const useCapToEm = (family: string, weight: number): number =>
 
 const ease = (b: readonly [number, number, number, number]) => Easing.bezier(b[0], b[1], b[2], b[3]);
 
-/** 0 -> 1 entry progress with the measured spring, stretched to `frames`. */
-const entryProgress = (frame: number, fps: number, frames: number) =>
-  frames <= 0 ? 1 : spring({frame, fps, config: SPRING.textIn, durationInFrames: frames});
+/**
+ * 0 -> 1 entry progress. Default: the measured spring UNSTRETCHED - its visible move lasts about
+ * DURATION.textInFrames, like Apple's. Passing `frames` stretches it to exactly that many frames
+ * (Remotion durationInFrames), which makes the visible move ~3x shorter than `frames`.
+ */
+const entryProgress = (frame: number, fps: number, frames?: number) =>
+  frames === undefined
+    ? spring({frame, fps, config: SPRING.textIn})
+    : frames <= 0
+      ? 1
+      : spring({frame, fps, config: SPRING.textIn, durationInFrames: frames});
 
 /** 0 -> 1 exit progress (bezier; Apple exits are short and front-loaded). */
 const exitProgress = (frame: number, total: number, frames: number) =>
@@ -90,17 +100,27 @@ export const KineticText: React.FC<KineticTextProps> = ({
   align = 'center',
   x = 50,
   y = 50,
-  entryFrames = DURATION.textInFrames,
+  entryFrames,
   exitFrames,
   staggerFrames,
   gradient,
+  maxWidthPct = 88,
   style,
 }) => {
   const frame = useCurrentFrame();
   const {fps, height} = useVideoConfig();
   const w = weight ?? TYPE.weight[size];
   const capToEm = useCapToEm(TYPE.family, w);
-  const fontSize = (((capHeightPct ?? TYPE.capHeightPct[size]) / 100) * height) / capToEm;
+  const {width} = useVideoConfig();
+  const wanted = (((capHeightPct ?? TYPE.capHeightPct[size]) / 100) * height) / capToEm;
+  const widest = useMemo(() => {
+    if (typeof document === 'undefined') return 0;
+    const ctx = document.createElement('canvas').getContext('2d');
+    if (!ctx) return 0;
+    ctx.font = `${w} 100px ${TYPE.family}`;
+    return Math.max(...lines.map((l) => ctx.measureText(l).width / 100 + TYPE.letterSpacingEm * l.length));
+  }, [lines, w]);
+  const fontSize = widest > 0 ? Math.min(wanted, ((maxWidthPct / 100) * width) / widest) : wanted;
   const outFrames = exit === 'cut' ? 0 : exitFrames ?? DURATION.textOutFrames;
   if (frame >= durationInFrames) return null;
 
@@ -148,6 +168,10 @@ export const KineticText: React.FC<KineticTextProps> = ({
       scale *= 1 + q * (START.scaleDown - 1);
       opacity *= 1 - q;
       break;
+    case 'scaleDown':
+      scale *= 1 - q * (1 - START.scaleUp);
+      opacity *= 1 - q;
+      break;
     case 'slideOut':
       ty -= q * (START.slideYPctH / 100) * height;
       opacity *= 1 - q;
@@ -182,7 +206,7 @@ export const KineticText: React.FC<KineticTextProps> = ({
           {parts.map((part, pi) => {
             if (/^\s+$/.test(part)) return <span key={pi}>{part}</span>;
             const i = unitIndex++;
-            const up = entryProgress(frame - i * stagger, fps, entry === 'perLetter' ? Math.max(2, Math.round(entryFrames / 3)) : entryFrames);
+            const up = entryProgress(frame - i * stagger, fps, entry === 'perLetter' ? 2 : entryFrames);
             const st: React.CSSProperties =
               entry === 'perWord'
                 ? {

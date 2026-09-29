@@ -1,5 +1,5 @@
 // Beat grid helpers. Everything in frames.
-// Apple recaps are timed to the voice-over first and the music second (see references/timing.md):
+// Apple recaps are timed to the voice-over first and the music second (see references/editing.md):
 // use the grid to place cuts and hits, then nudge text onto the spoken word.
 
 export type BeatGrid = {

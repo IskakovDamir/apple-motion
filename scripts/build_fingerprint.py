@@ -271,6 +271,8 @@ def pool(videos, slugs):
         "entry_bezier_named": dict(Counter(a["entry"]["bezier"]["nearest_named"] for a in anim if a["entry"].get("bezier", {}).get("nearest_named")).most_common()),
         "exit_bezier": [med([a["exit"]["bezier"]["bezier"][i] for a in allan if a.get("exit", {}).get("bezier", {}).get("bezier")], 3) for i in range(4)],
         "entry_channels": shares(Counter(k for a in anim for k, c in a["entry"]["channels"].items() if c.get("animated"))),
+        "entry_start_scale_down": q([x for x in cs("scale") if x > 1.0]),
+        "entry_start_scale_up": q([x for x in cs("scale") if x < 1.0]),
         "entry_start": {"scale": q(cs("scale")), "dy_pct_h": q(cs("dy", "start_pct_h")), "blur_px": q(cs("blur_px")),
                         "opacity": q(cs("opacity"))},
         "hold_drift_scale_pct_per_s": q([e["hold_drift"]["scale_pct_per_s"] for e in allty if e.get("hold_drift")]),

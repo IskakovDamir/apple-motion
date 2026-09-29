@@ -7,26 +7,26 @@ export type SpringCfg = {damping: number; stiffness: number; mass: number};
 export type Bezier = readonly [number, number, number, number];
 
 export const SPRING = {
-  /** median fitted entry spring of designer typography (n=43), corrected by the pipeline
+  /** median fitted entry spring of designer typography (n=41), corrected by the pipeline
    *  calibration (time scale 1.19). Use WITHOUT durationInFrames to reproduce the curve. */
-  textIn: {damping: 14.0, stiffness: 82.1, mass: 1},
-  textOut: {damping: 14.0, stiffness: 123.1, mass: 1},
+  textIn: {damping: 15.3, stiffness: 115.0, mass: 1},
+  textOut: {damping: 15.3, stiffness: 172.5, mass: 1},
   camera: {damping: 30, stiffness: 60, mass: 1},
 } satisfies Record<string, SpringCfg>;
 
 export const EASE = {
   /** median fitted cubic-bezier of typography entries */
-  textIn: [0.341, 0.111, 0.726, 0.8] as Bezier,
-  textOut: [0.32, 0.422, 0.494, 0.354] as Bezier,
+  textIn: [0.205, 0.137, 0.732, 0.802] as Bezier,
+  textOut: [0.026, 0.422, 0.943, 0.649] as Bezier,
   camera: [0.45, 0, 0.2, 1] as Bezier,
 };
 
 export const DURATION = {
-  /** animated typography entries, median frames (p10..p90 5.0..31.6) */
+  /** animated typography entries, median frames (p10..p90 5.0..24.0) */
   textInFrames: 8,
-  textOutFrames: 4,
-  /** typography hold, median frames (p10..p90 5.4..80.6) */
-  holdFrames: 28,
+  textOutFrames: 2,
+  /** typography hold, median frames (p10..p90 10.0..80.6) */
+  holdFrames: 33,
   /** shot length, median frames (p10..p90 13.0..173.5) */
   shotFrames: 56,
   wordStaggerFrames: 3,
@@ -36,20 +36,21 @@ export const DURATION = {
 
 export const START = {
   /** median start scale of entries that scale down into place */
-  scaleDown: 1.1,
-  scaleUp: 0.93,
+  scaleDown: 1.13,
+  scaleUp: 0.82,
   /** median start blur (px at 1080p) of entries that blur in */
-  blurPx: 14.4,
+  blurPx: 10.3,
   /** median |start y offset| in % of frame height for sliding entries */
-  slideYPctH: 1.83,
+  slideYPctH: 1.95,
 };
 
 export const TYPE = {
   family: '"SF Pro Display", "SF Pro", -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, sans-serif',
-  /** cap height in % of frame height: hero = p90, headline = p50, title = p25, caption = p10 */
-  capHeightPct: {hero: 20.23, headline: 6.67, title: 5.43, caption: 3.25},
+  /** cap height in % of frame height over all reviewed Apple typography: hero = p90 (event wordmarks),
+   *  display = p75, headline = p50, title = p25, caption = p10 */
+  capHeightPct: {hero: 20.23, display: 11.89, headline: 6.67, title: 5.43, caption: 3.25},
   /** SF Pro weight from measured stroke/cap, calibrated on renders at known weights (median 600.0) */
-  weight: {hero: 600, headline: 600, title: 600, caption: 500},
+  weight: {hero: 600, display: 600, headline: 600, title: 600, caption: 500},
   /** line pitch / cap height 1.53 -> line-height in em for SF Pro Display */
   lineHeight: 1.079,
   letterSpacingEm: -0.015,

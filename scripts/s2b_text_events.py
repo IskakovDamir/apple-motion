@@ -488,51 +488,119 @@ def settle_distance(series, fref, cap_px, first, last):
     for k in ("scale", "dx", "dy"):
         ok = mid & np.isfinite(sm[k])
         trend[k] = float(np.polyfit(fs[ok], sm[k][ok], 1)[0]) if ok.sum() >= 4 and np.ptp(fs[ok]) >= 6 else 0.0
+    # settled reference = median over the certainly-held middle of the span (NOT the reference frame
+    # alone: the template matches itself exactly there - blur 0, scale 1.000 - which biased D upward
+    # on every other frame; found by rendering known animations and measuring them back)
+    ok_mid = mid & np.isfinite(sm["mass"]) & (sm["mass"] >= 0.5)
+    t_mid = float(np.median(fs[ok_mid])) if ok_mid.any() else float(fs[iref])
+    refv = {}
+    for k in ("scale", "dx", "dy", "opacity", "blur_px", "reveal"):
+        v = sm[k][ok_mid]
+        v = v[np.isfinite(v)]
+        refv[k] = float(np.median(v)) if len(v) else sm[k][iref]
     D = np.full(len(fs), np.inf)
     for i in range(len(fs)):
         if not np.isfinite(sm["mass"][i]) or sm["mass"][i] < 0.05:
             continue
-        dt = fs[i] - fs[iref]
+        dt = fs[i] - t_mid
         terms = []
-        if np.isfinite(sm["scale"][i]):
-            terms.append(abs(sm["scale"][i] - (sm["scale"][iref] + trend["scale"] * dt)) / sig["scale"])
-        if np.isfinite(sm["dx"][i]) and np.isfinite(sm["dy"][i]):
-            ex = sm["dx"][i] - (sm["dx"][iref] + trend["dx"] * dt)
-            ey = sm["dy"][i] - (sm["dy"][iref] + trend["dy"] * dt)
+        if np.isfinite(sm["scale"][i]) and np.isfinite(refv["scale"]):
+            terms.append(abs(sm["scale"][i] - (refv["scale"] + trend["scale"] * dt)) / sig["scale"])
+        if np.isfinite(sm["dx"][i]) and np.isfinite(sm["dy"][i]) and np.isfinite(refv["dx"]) and np.isfinite(refv["dy"]):
+            ex = sm["dx"][i] - (refv["dx"] + trend["dx"] * dt)
+            ey = sm["dy"][i] - (refv["dy"] + trend["dy"] * dt)
             terms.append(np.hypot(ex, ey) / sig["pos"])
         for k in ("opacity", "blur_px", "reveal"):
-            if np.isfinite(sm[k][i]) and np.isfinite(sm[k][iref]):
-                terms.append(abs(sm[k][i] - sm[k][iref]) / sig[k])
+            if np.isfinite(sm[k][i]) and np.isfinite(refv[k]):
+                terms.append(abs(sm[k][i] - refv[k]) / sig[k])
         wm = series[i].get("word_mass") or []
         wv = [w for w in wm if w is not None]
         if len(wv) >= 2:
-            terms.append(max(abs(w - 1) for w in wv) / 0.2)  # every word present (per-word entries)
+            terms.append(max(abs(w - 1) for w in wv) / 0.25)  # every word present (per-word entries)
         D[i] = max(terms) if terms else np.inf
     return fs.astype(int), D, sm["mass"], trend
+
+
+def foreign_frames(p, frames_ocr, block_text):
+    """Frames in which OCR confidently read a DIFFERENT string inside this event's box (text swapped
+    in place). Presence / settle walks must not cross them."""
+    box = p["box"]
+    own = key(block_text)
+    digits = lambda k: sum(ch.isdigit() for ch in k) >= max(1, len(k) // 2)
+    out = set()
+    for f in range(p["lo"], p["hi"] + 1):
+        for b, t, c in frames_ocr.get(f, []):
+            if c < 0.5 or iou(b, box) < 0.3:
+                continue
+            k = key(t)
+            if digits(k) and digits(own):
+                continue  # a number rolling in place is the same event (counter)
+            if k and difflib.SequenceMatcher(None, k, own).ratio() < 0.5 and k not in own:
+                out.add(f)
+    return out
 
 
 def timing(series, fref, shots, p, cap_px):
     fs, D, mass, trend = settle_distance(series, fref, cap_px, p["first"], p["last"])
     iref = int(np.argmin(np.abs(fs - fref)))
+    # the walks start from a frame that is itself settled (D < 1): the nearest one to the reference
+    if not D[iref] < 1:
+        ok = np.where(D < 1)[0]
+        if len(ok):
+            iref = int(ok[np.argmin(np.abs(ok - iref))])
     # appear / gone: contiguous presence (mass >= 5%) around the settled frame
+    cuts = {sh["start_frame"] for sh in shots}
+    nccs = {x["f"]: (x.get("ncc") if x.get("ncc") is not None else 0.0) for x in series}
+
+    def crosses_cut(a, b):  # a < b: is there a shot start in (a, b]?
+        return any(a < c <= b for c in cuts)
+    by_f = {x["f"]: x for x in series}
+
+    foreign = p.get("foreign") or set()
+
+    def other_text(f):
+        """Full-opacity, unscaled glyphs that do not match the template = different text in place."""
+        if int(f) in foreign:
+            return True
+        x = by_f.get(int(f), {})
+        nc, op, sc = x.get("ncc"), x.get("opacity"), x.get("scale")
+        ok = all(v is not None and np.isfinite(v) for v in (nc, op, sc))
+        return ok and nc < 0.6 and op >= 0.85 and 0.97 <= sc <= 1.03
     i = iref
     while i > 0 and mass[i - 1] >= 0.05 and fs[i] - fs[i - 1] <= HOLD_STEP:
+        if crosses_cut(fs[i - 1], fs[i]) and nccs.get(int(fs[i - 1]), 0.0) < 0.8:
+            break  # different text in the same place on the previous shot
+        if other_text(fs[i - 1]):
+            break
         i -= 1
     appear, appear_at_window_start = int(fs[i]), i == 0
     j = iref
     while j < len(fs) - 1 and mass[j + 1] >= 0.05 and fs[j + 1] - fs[j] <= HOLD_STEP:
+        if crosses_cut(fs[j], fs[j + 1]) and nccs.get(int(fs[j + 1]), 0.0) < 0.8:
+            break
+        if other_text(fs[j + 1]):
+            break
         j += 1
     gone, gone_at_window_end = int(fs[j]) + 1, j == len(fs) - 1
-    # full: earliest frame from which every frame up to the reference looks settled (D < 1)
-    k = iref
-    while k > i and D[k - 1] < 1:
-        k -= 1
-    full = int(fs[k])
-    # exit start: first frame after the hold that is no longer settled
-    k = iref
-    while k < j and D[k + 1] < 1:
-        k += 1
-    exit_start = int(fs[k + 1]) if k < j else gone
+    # full: first settled sample after appear that is followed by mostly settled samples;
+    # exit start: sample after the last settled one before gone (mirror rule). Tolerant of isolated
+    # glitch samples inside the hold (one bad sample must not end the hold).
+    S_ = D < 1
+    full = None
+    for k in range(i, iref + 1):
+        nxt = S_[k + 1:k + 4]
+        if S_[k] and (len(nxt) == 0 or nxt.sum() >= min(2, len(nxt))):
+            full = int(fs[k])
+            break
+    if full is None:
+        full = int(fs[iref])
+    exit_start = gone
+    for k in range(j, iref - 1, -1):
+        prv = S_[max(i, k - 3):k]
+        if S_[k] and (len(prv) == 0 or prv.sum() >= min(2, len(prv))):
+            exit_start = int(fs[k + 1]) if k < j else gone
+            break
+    exit_start = max(exit_start, full)
     sa = shots[p["shot_first"]]["start_frame"]
     sb = shots[p["shot_last"]]["end_frame"] + 1
     if full - appear <= 1:
@@ -655,6 +723,7 @@ def run(slug):
         # (cap = 0.64 x EasyOCR line box height, median over clean wwdc22 typography)
         if not 0.4 * line_h <= cap_px <= 0.9 * line_h:
             cap_px = 0.64 * line_h
+        p["foreign"] = foreign_frames(p, frames, " ".join(t["text"] for t in block))
         appear, full, exit_start, gone, ak, ek = timing(series, p["fref"], shots, p, cap_px)
         xh = float(np.median(info["xh_px"])) if info["xh_px"] else None
         bb_time, last_bb = [], None

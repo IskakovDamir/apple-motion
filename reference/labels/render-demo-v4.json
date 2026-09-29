@@ -1,0 +1,56 @@
+{
+ "slug": "render-demo-v4",
+ "reviewer": "auto: text matching a card's `lines` (ground truth) is typography; UI text is not",
+ "typography": [
+  {
+   "id_at_review": 9,
+   "text": "Six Apple recaps:",
+   "ref_frame": 102,
+   "cx": 962.0,
+   "cy": 553.0
+  },
+  {
+   "id_at_review": 11,
+   "text": "Every cut found / 406 shots",
+   "ref_frame": 167,
+   "cx": 951.0,
+   "cy": 539.0
+  },
+  {
+   "id_at_review": 14,
+   "text": "33,187",
+   "ref_frame": 237,
+   "cx": 961.0,
+   "cy": 508.0
+  },
+  {
+   "id_at_review": 15,
+   "text": "frames; one by one",
+   "ref_frame": 229,
+   "cx": 959.5,
+   "cy": 669.0
+  },
+  {
+   "id_at_review": 25,
+   "text": "Every cut: / Every word:",
+   "ref_frame": 566,
+   "cx": 420.0,
+   "cy": 547.0
+  },
+  {
+   "id_at_review": 34,
+   "text": "Type is the accent:",
+   "ref_frame": 750,
+   "cx": 959.5,
+   "cy": 554.0
+  },
+  {
+   "id_at_review": 37,
+   "text": "apple-motion",
+   "ref_frame": 1008,
+   "cx": 962.5,
+   "cy": 566.5
+  }
+ ],
+ "caption": []
+}

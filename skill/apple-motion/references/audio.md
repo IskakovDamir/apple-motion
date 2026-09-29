@@ -11,6 +11,13 @@ Numbers: `measurements.md` (BPM per video, integrated LUFS, true peak, LRA, VO w
 - License real music or generate a bed: `scripts/synth_audio.py OUT --bpm 120 --bars 16` writes a
   CC0 bed (kick, clap, hats, bass, supersaw chords, pluck arp, riser, final hit) and an SFX kit.
 
+## Bed layout of `synth_audio.py`
+
+`--bars N` (default 16): bars 1-2 intro (pads, hats), 3-4 build (bass, kick), 5-(N-4) main (full
+drums, arp), N-3..N-2 break (drums out, riser), N-1..N final, and a closing hit exactly on beat 4N
+(the bar line after the last bar). Plan cards so the logo starts on beat 4N; the bed already has the
+hit, so don't add `sfx: 'hit'` there.
+
 ## Voice-over
 
 - Fast, conversational, dense: words per second while speaking in measurements.md. Few pauses; the

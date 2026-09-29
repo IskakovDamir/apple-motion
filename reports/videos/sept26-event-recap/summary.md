@@ -4,19 +4,19 @@
 - Shots: 90; length median 22.0 fr, p10 5, p90 75, min 4, max 210 fr.
 - Cuts per 10 s: 9.4. Transitions: cut 85, whip 3, match cut 1.
 - Text events: 289 total, 4 typography (0.42 per 10 s); roles: ui_text 172, chrome 58, scene_text 45, other_text 8, typography 4, caption 2.
-- Typography hold: median 26.0 fr (0.87 s), p10 2, p90 51 fr.
-- Typography entry duration (animated only, n=1): median 34.0 fr, p90 34 fr.
+- Typography hold: median 28.0 fr (0.93 s), p10 4, p90 51 fr.
+- Typography entry duration (animated only, n=1): median 4.0 fr, p90 4 fr.
 - Entry styles (typography): cut on 3, per-word pop 1.
-- Exit styles (typography): scale out (down) 2, other 1, cut off 1.
-- Entry spring fit (median of 1): damping 8.4, stiffness 3.2, mass 1, durationInFrames 125.0, overshoot 0.0%, rmse 0.253.
-- Entry bezier (median control points): (0.32, 0.04, 0.59, -0.41); nearest named: easeInCubic 1.
-- Animated channels in typography entries: opacity 1, reveal 1.
+- Exit styles (typography): cut off 3, scale out (down) 1.
+- Entry spring fit (median of 1): damping 94.1, stiffness 5000.0, mass 1, durationInFrames 3.0, overshoot 6.1%, rmse 0.371.
+- Entry bezier (median control points): (0.00, 1.21, 0.31, 0.97); nearest named: easeOutExpo 1.
+- Animated channels in typography entries: .
 - Entry start values: scale median None (n=0), y-offset median None% of height (n=0), blur median None px (n=0).
 - Cap height (typography): median 10.3% of frame height, p10 6.62%, p90 11.55%.
 - Typography lines: 1 line(s) 1, 2 line(s) 2, 4 line(s) 1; alignment: ragged 1, center 1, right 1, left 1.
 - Typography position (3x3): middle-center 3, bottom-center 1.
 - Typography colour: #e5e5e5 1, #f5f5f5 1, #f3f4f5 1, #cdf3cf 1; background type: image 3, solid 1.
-- Hold drift (typography): scale median 1.6%/s (n=2).
+- Hold drift (typography): scale median 1.55%/s (n=3).
 - Camera/global motion per shot: pull 22, static 21, push 17, local 16, tilt 8, pan 3, whip 3; element entries 3.53/s.
 - Camera move spring (median of 47): damping 10.2, stiffness 130.8; accel 2.0 fr, decel 4.0 fr.
 - Frame classes (share of frames): footage 55%, pure black 16%, ui screenshot 14%, product 12%, pure white 1%, gradient 1%.
@@ -27,6 +27,6 @@
 - Stems RMS share of mix: drums 0.378, bass 0.192, other 0.158, vocals 0.857, residual 0.0227.
 - Voice-over: 206 words, 2.59 words/s while speaking, 2.16 words/s overall, 79.66 s of speech.
 - SFX candidates (non-music, off word onsets): 42 (4.4 per 10 s); classes: tonal hit 26, hit/boom 15, click/tick 1.
-- Sync (+-2 fr): cuts on beat 0.38 vs chance 0.354; on downbeat 0.063 vs 0.088; typography on beat 0.25.
+- Sync (+-2 fr): cuts on beat 0.38 vs chance 0.354; on downbeat 0.063 vs 0.088; typography on beat 0.5.
 - Cuts within 2 fr of a word onset 0.382 (chance 0.361), of a word end 0.348; typography vs same spoken word: median offset -7.5 fr (n=4).
-- Cuts with an SFX candidate within 2 fr: 0.101; typography entries with SFX: 0.0.
+- Cuts with an SFX candidate within 2 fr: 0.101; typography entries with SFX: 0.25.

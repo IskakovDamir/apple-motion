@@ -4,14 +4,14 @@
 - Shots: 72; length median 66.0 fr, p10 31, p90 137, min 1, max 239 fr.
 - Cuts per 10 s: 4.0. Transitions: cut 69, whip 2.
 - Text events: 556 total, 19 typography (1.06 per 10 s); roles: ui_text 469, scene_text 39, typography 19, chrome 12, other_text 11, caption 6.
-- Typography hold: median 34.0 fr (1.13 s), p10 13, p90 55 fr.
-- Typography entry duration (animated only, n=15): median 13.0 fr, p90 28 fr.
-- Entry styles (typography): scale up from small 4, cut on 4, slide 4, fade 3, blur in 2, scale down from large 2.
-- Exit styles (typography): cut off 11, fade out 3, other 3, slide out 1, scale out (down) 1.
-- Entry spring fit (median of 15): damping 8.4, stiffness 31.8, mass 1, durationInFrames 45.0, overshoot 2.3%, rmse 0.03.
-- Entry bezier (median control points): (0.60, 0.33, 1.00, 0.76); nearest named: easeInCubic 3, easeInExpo 3, ease-in 3.
-- Animated channels in typography entries: opacity 13, dy 10, dx 8, blur_px 7, scale 6, reveal 1.
-- Entry start values: scale median 0.85 (n=6), y-offset median 2.25% of height (n=10), blur median 9.0 px (n=7).
+- Typography hold: median 34.0 fr (1.13 s), p10 14, p90 59 fr.
+- Typography entry duration (animated only, n=14): median 10.0 fr, p90 19 fr.
+- Entry styles (typography): cut on 5, scale down from large 4, slide 4, fade 3, slide down with mask 1, scale up from small 1, blur in 1.
+- Exit styles (typography): cut off 13, slide out 4, other 2.
+- Entry spring fit (median of 14): damping 9.3, stiffness 35.4, mass 1, durationInFrames 40.0, overshoot 1.8%, rmse 0.056.
+- Entry bezier (median control points): (0.17, 0.12, 1.00, 0.65); nearest named: easeInExpo 3, easeInCubic 3, ease-in 3.
+- Animated channels in typography entries: opacity 13, dy 10, dx 7, scale 6, blur_px 6, reveal 1.
+- Entry start values: scale median 0.85 (n=6), y-offset median 2.25% of height (n=10), blur median 7.5 px (n=6).
 - Cap height (typography): median 5.65% of frame height, p10 2.41%, p90 10.94%.
 - Typography lines: 1 line(s) 17, 2 line(s) 2; alignment: center 11, right 5, left 3.
 - Typography position (3x3): bottom-center 10, middle-right 3, middle-center 2, top-center 2, bottom-left 1.
@@ -27,6 +27,6 @@
 - Stems RMS share of mix: drums 0.488, bass 0.579, other 0.113, vocals 0.579, residual 0.0226.
 - Voice-over: 429 words, 2.75 words/s while speaking, 2.39 words/s overall, 156.27 s of speech.
 - SFX candidates (non-music, off word onsets): 79 (4.4 per 10 s); classes: hit/boom 48, tonal hit 30, noise burst 1.
-- Sync (+-2 fr): cuts on beat 0.343 vs chance 0.276; on downbeat 0.1 vs 0.069; typography on beat 0.421.
-- Cuts within 2 fr of a word onset 0.254 (chance 0.399), of a word end 0.268; typography vs same spoken word: median offset 1.0 fr (n=11).
-- Cuts with an SFX candidate within 2 fr: 0.056; typography entries with SFX: 0.158.
+- Sync (+-2 fr): cuts on beat 0.343 vs chance 0.276; on downbeat 0.1 vs 0.069; typography on beat 0.368.
+- Cuts within 2 fr of a word onset 0.254 (chance 0.399), of a word end 0.268; typography vs same spoken word: median offset 1.0 fr (n=10).
+- Cuts with an SFX candidate within 2 fr: 0.056; typography entries with SFX: 0.211.

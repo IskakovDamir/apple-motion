@@ -51,10 +51,20 @@ def ingest(video, slug):
     (d / "meta.json").write_text(json.dumps(meta, indent=1))
 
 
-def label_all(slug):
+def label_all(slug, truth=None):
+    import difflib
+    import re as _re
     te = load_json(DATA / slug / "text_events.json")
-    out = {"slug": slug, "reviewer": "auto: every text in our own renders is typography", "typography": [], "caption": []}
+    out = {"slug": slug, "reviewer": "auto: text matching a card's `lines` (ground truth) is typography; UI text is not",
+           "typography": [], "caption": []}
+    lines = []
+    if truth:
+        for c in load_json(truth)["cards"]:
+            lines += [l for l in c.get("lines") or [] if l]
+    norm = lambda t: _re.sub(r"[^a-z0-9]", "", t.lower())
     for e in te["events"]:
+        if lines and not any(difflib.SequenceMatcher(None, norm(e["text"].split(" / ")[0]), norm(l)).ratio() >= 0.75 for l in lines):
+            continue
         b = e["bbox_ref"]
         out["typography"].append({"id_at_review": e["id"], "text": e["text"], "ref_frame": e["ref_frame"],
                                   "cx": b["x"] + b["w"] / 2, "cy": b["y"] + b["h"] / 2})
@@ -89,8 +99,8 @@ def scorecard(slug, truth):
         ("BPM", V["audio"]["bpm"], P["bpm"]),
         ("integrated LUFS", V["audio"]["loudness"]["integrated_lufs"], P["lufs"]),
         ("true peak dBTP", V["audio"]["loudness"]["true_peak_dbtp"], P["true_peak_dbtp"]),
-        ("cuts on beat (share)", V["sync"]["cuts_on_beat"], P["cuts_on_beat"]),
     ]
+    info = [("cuts on beat (share; Apple's VO-led edits sit at chance level - informational)", V["sync"]["cuts_on_beat"], P["cuts_on_beat"])]
     L = [f"# eval: {slug}", "", f"Measured with the extraction pipeline; Apple = pooled over {P['videos']} videos.", "",
          "| metric | render | Apple p10 | p50 | p90 | inside |", "|---|---|---|---|---|---|"]
     n_in = n_tot = 0
@@ -101,6 +111,8 @@ def scorecard(slug, truth):
             n_in += ok
         L.append(f"| {name} | {v if v is not None else 'n/a'} | {q['p10'] if q else ''} | {q['p50'] if q else ''} | "
                  f"{q['p90'] if q else ''} | {'yes' if ok else ('no' if ok is not None else '-')} |")
+    for name, v, q in info:
+        L.append(f"| {name} | {v} | {q['p10']} | {q['p50']} | {q['p90']} | - |")
     L += ["", f"**{n_in}/{n_tot} metrics inside Apple's p10-p90 range.**", ""]
     L += ["Entry styles measured: " + ", ".join(f"{k} {v}" for k, v in t["entry_style"].items()), ""]
     if truth:
@@ -166,7 +178,7 @@ def main():
             continue
         sh([PY, f"{step}.py", slug], log)
         if step == "s2b_text_events":
-            label_all(slug)
+            label_all(slug, a.truth)
             sh([PY, "relabel.py", slug], log)
     scorecard(slug, a.truth)
 

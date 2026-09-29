@@ -5,11 +5,11 @@
 - Cuts per 10 s: 2.0. Transitions: cut 53, dissolve 2.
 - Text events: 217 total, 21 typography (0.77 per 10 s); roles: ui_text 157, scene_text 23, typography 21, caption 11, other_text 3, chrome 2.
 - Typography hold: median 75.0 fr (2.50 s), p10 34, p90 99 fr.
-- Typography entry duration (animated only, n=17): median 8.0 fr, p90 16 fr.
+- Typography entry duration (animated only, n=17): median 8.0 fr, p90 15 fr.
 - Entry styles (typography): fade 7, slide 4, cut on 4, scale up from small 3, slide up with mask 1, scale down from large 1, per-letter 1.
 - Exit styles (typography): cut off 17, fade out 2, other 1, slide out 1.
 - Entry spring fit (median of 17): damping 28.9, stiffness 201.7, mass 1, durationInFrames 16.0, overshoot 0.4%, rmse 0.019.
-- Entry bezier (median control points): (0.19, 0.10, 0.48, 0.84); nearest named: linear 9, ease-in 4, easeOutExpo 2.
+- Entry bezier (median control points): (0.32, 0.10, 0.82, 0.84); nearest named: linear 8, ease-in 4, ease-out 2.
 - Animated channels in typography entries: opacity 17, dy 7, blur_px 5, scale 5, dx 4, reveal 2.
 - Entry start values: scale median 0.93 (n=5), y-offset median 2.96% of height (n=7), blur median 11.0 px (n=5).
 - Cap height (typography): median 5.65% of frame height, p10 3.06%, p90 9.17%.

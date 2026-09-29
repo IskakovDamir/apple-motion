@@ -69,7 +69,12 @@ def analyse_window(series, a, b, direction, fps, cap_px=None, limit=None):
         rng = v_end - v_start
         is_sig = abs(rng) >= sig[ch]
         # start/end = moving side / settled side; from/to = chronological order
+        # "reliable" start: first sample (moving side) where at least half the glyph ink is visible -
+        # estimates at 10-30% opacity are noisy (calibration: a 1.11->1.0 scale-down read as 0.92)
+        rel = np.where(valid & (mass >= 0.5))[0]
+        v_rel = (v[rel[0]] if direction > 0 else v[rel[-1]]) if len(rel) else v_start
         entry = {"start": round(float(v_start), 4), "end": round(float(v_end), 4), "animated": bool(is_sig),
+                 "start_reliable": round(float(v_rel), 4),
                  "from": round(float(v_start if direction > 0 else v_end), 4),
                  "to": round(float(v_end if direction > 0 else v_start), 4)}
         if ch in ("dy", "dx"):
@@ -150,12 +155,14 @@ def classify_entry(ev, win, words, letters):
     bl = ch.get("blur_px", {})
     if rev.get("animated") and rev.get("start", 1) < 0.8 and dy.get("animated"):
         return "slide up with mask" if dy["start"] > dy["end"] else "slide down with mask"
-    # the first measurable frame is already ~half-way through a fast spring: 1.03 / 0.97 thresholds
-    if sc.get("animated") and sc["start"] > 1.03:
+    # the first reliable frame is already ~half-way through a fast spring: 1.03 / 0.97 thresholds
+    s0 = sc.get("start_reliable", sc.get("start", 1.0))
+    if sc.get("animated") and s0 > 1.03:
         return "scale down from large"
-    if sc.get("animated") and sc["start"] < 0.97:
+    if sc.get("animated") and s0 < 0.97:
         return "scale up from small"
-    if bl.get("animated") and bl["start"] > 2.0:
+    cap = ev.get("cap_height_px") or 60
+    if bl.get("animated") and bl.get("start_reliable", bl.get("start", 0)) > max(3.0, 0.03 * cap):
         return "blur in"
     if dy.get("animated") or ch.get("dx", {}).get("animated"):
         return "slide"

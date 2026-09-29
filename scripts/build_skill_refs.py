@@ -98,8 +98,8 @@ export const DURATION = {{
 
 export const START = {{
   /** median start scale of entries that scale down into place */
-  scaleDown: {round(max(1.04, sc if sc > 1 else 1.1), 3)},
-  scaleUp: {round(min(0.96, sc if sc < 1 else 0.9), 3)},
+  scaleDown: {round(g(P.get('entry_start_scale_down'), default=1.1), 3)},
+  scaleUp: {round(g(P.get('entry_start_scale_up'), default=0.93), 3)},
   /** median start blur (px at 1080p) of entries that blur in */
   blurPx: {round(blur, 1)},
   /** median |start y offset| in % of frame height for sliding entries */
@@ -108,10 +108,11 @@ export const START = {{
 
 export const TYPE = {{
   family: '"SF Pro Display", "SF Pro", -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, sans-serif',
-  /** cap height in % of frame height: hero = p90, headline = p50, title = p25, caption = p10 */
-  capHeightPct: {{hero: {g(cap, 'p90', 12)}, headline: {g(cap, 'p50', 7)}, title: {g(cap, 'p25', 4.5)}, caption: {g(cap, 'p10', 2.6)}}},
+  /** cap height in % of frame height over all reviewed Apple typography: hero = p90 (event wordmarks),
+   *  display = p75, headline = p50, title = p25, caption = p10 */
+  capHeightPct: {{hero: {g(cap, 'p90', 12)}, display: {g(cap, 'p75', 10)}, headline: {g(cap, 'p50', 7)}, title: {g(cap, 'p25', 4.5)}, caption: {g(cap, 'p10', 2.6)}}},
   /** SF Pro weight from measured stroke/cap, calibrated on renders at known weights (median {g(P.get('font_weight_estimate'), default='n/a')}) */
-  weight: {{hero: {wt}, headline: {wt}, title: {wt}, caption: {max(400, wt - 100)}}},
+  weight: {{hero: {wt}, display: {wt}, headline: {wt}, title: {wt}, caption: {max(400, wt - 100)}}},
   /** line pitch / cap height {lp} -> line-height in em for SF Pro Display */
   lineHeight: {line_height},
   letterSpacingEm: -0.015,

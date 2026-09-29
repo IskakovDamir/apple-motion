@@ -37,7 +37,7 @@ and type is the punctuation: a feature name, a claim, a number.
   measurements (calibrated against SF Pro weights 400-800 rendered through the same pipeline).
 - Tracking: tight for display sizes (-0.01 to -0.02 em); numerals tabular in counters.
 - Leading: from `line pitch / cap height` (converted to line-height in `tokens.ts`).
-- Colour: white on dark / footage; #1d1d1f-ish on white. Colour lives in the picture.
+- Colour: white on dark / footage; near-black (#080808 most often measured, up to #1d1d1f) on white. Colour lives in the picture.
 - Never: outlines, drop shadows, boxes behind type, rotation, bouncy overshoot on type.
 
 ## Motion
@@ -57,4 +57,4 @@ are sub-pixel settling. Our pipeline measures the visible duration; `tokens.ts` 
 spring config that reproduces the measured curve directly (use it without `durationInFrames`), and
 `spring_idiomatic` in measurements.md gives the `{damping, durationInFrames}` form.
 Calibration of the measurement itself (known springs rendered and measured back) is in
-`reports/eval/render-cal.md` of the repository.
+`reports/eval/render-cal.md` in the apple-motion GitHub repository (not part of this skill folder).

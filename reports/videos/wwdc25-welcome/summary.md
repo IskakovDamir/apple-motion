@@ -4,19 +4,19 @@
 - Shots: 85; length median 41.0 fr, p10 25, p90 93, min 15, max 263 fr.
 - Cuts per 10 s: 5.5. Transitions: cut 81, dissolve 1, mask wipe 1, scale through 1.
 - Text events: 297 total, 12 typography (0.79 per 10 s); roles: ui_text 194, scene_text 64, other_text 13, typography 12, caption 7, chrome 7.
-- Typography hold: median 10.0 fr (0.33 s), p10 1, p90 19 fr.
-- Typography entry duration (animated only, n=12): median 19.0 fr, p90 31 fr.
-- Entry styles (typography): slide 5, per-letter 2, blur in 2, fade 1, counter/number roll 1, scale down from large 1.
-- Exit styles (typography): scale out (down) 3, slide out 3, fade out 2, cut off 2, blur out 1, scale out (up) 1.
-- Entry spring fit (median of 12): damping 4.4, stiffness 34.0, mass 1, durationInFrames 70.0, overshoot 19.5%, rmse 0.06.
-- Entry bezier (median control points): (0.66, 0.02, 0.30, 0.81); nearest named: easeInOutExpo 2, ease-in 2, linear 2.
-- Animated channels in typography entries: opacity 11, dx 7, blur_px 6, dy 5, scale 4, reveal 3.
-- Entry start values: scale median 0.99 (n=4), y-offset median 1.91% of height (n=5), blur median 36.1 px (n=6).
+- Typography hold: median 13.0 fr (0.43 s), p10 8, p90 31 fr.
+- Typography entry duration (animated only, n=12): median 14.0 fr, p90 29 fr.
+- Entry styles (typography): slide 6, per-letter 2, fade 1, counter/number roll 1, scale down from large 1, blur in 1.
+- Exit styles (typography): cut off 5, blur out 3, fade out 2, slide out 2.
+- Entry spring fit (median of 12): damping 4.4, stiffness 46.6, mass 1, durationInFrames 70.0, overshoot 13.9%, rmse 0.05.
+- Entry bezier (median control points): (0.36, -0.09, 0.48, 0.77); nearest named: linear 3, easeOutBack 2, easeOutCirc 1.
+- Animated channels in typography entries: opacity 10, dx 7, blur_px 6, dy 5, scale 2, reveal 2.
+- Entry start values: scale median 1.05 (n=2), y-offset median 1.91% of height (n=5), blur median 42.0 px (n=6).
 - Cap height (typography): median 19.46% of frame height, p10 9.73%, p90 23.24%.
 - Typography lines: 1 line(s) 11, 2 line(s) 1; alignment: center 12.
 - Typography position (3x3): middle-center 11, bottom-center 1.
 - Typography colour: #b89ca2 1, #bea3a3 1, #767d83 1, #292a2c 1; background type: solid 8, image 2, gradient 2.
-- Hold drift (typography): scale median 0.06%/s (n=8).
+- Hold drift (typography): scale median -0.17%/s (n=12).
 - Camera/global motion per shot: static 55, push 11, pull 9, tilt 5, local 3, pan 2; element entries 3.56/s.
 - Camera move spring (median of 23): damping 8.4, stiffness 35.8; accel 4.0 fr, decel 8.0 fr.
 - Frame classes (share of frames): footage 57%, ui screenshot 20%, pure white 15%, pure black 3%, product 2%, gradient 2%.
@@ -29,4 +29,4 @@
 - SFX candidates (non-music, off word onsets): 115 (7.6 per 10 s); classes: tonal hit 48, hit/boom 46, click/tick 17, noise burst 4.
 - Sync (+-2 fr): cuts on beat 0.284 vs chance 0.235; on downbeat 0.111 vs 0.059; typography on beat 0.167.
 - Cuts within 2 fr of a word onset 0.5 (chance 0.464), of a word end 0.393; typography vs same spoken word: median offset -2.0 fr (n=6).
-- Cuts with an SFX candidate within 2 fr: 0.107; typography entries with SFX: 0.083.
+- Cuts with an SFX candidate within 2 fr: 0.107; typography entries with SFX: 0.167.

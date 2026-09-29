@@ -15,14 +15,14 @@ not from vibes.
 
 | video | fps | dur s | shots | median shot fr | BPM | text ev /10s | typo /10s | median hold fr text / typo | most common typo entry | median entry spring d/k/m (n) | cuts on beat (chance) | text / typo on beat | LUFS |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| ios26-liquid-glass | 29.97 | 273.77 | 68 | 99.5 | 118.05 | 24.03 | 0.04 | 8.0 / 28.0 | blur in | 37.36/732.8/1 (1) | 0.277 (0.328) | 0.351 / 1.0 | -19.2 |
-| sept26-event-recap | 29.97 | 95.09 | 90 | 22.5 | 127.2 | 30.39 | 0.42 | 10.0 / 26.5 | cut on | None/None/1 (0) | 0.38 (0.354) | 0.328 / 0.25 | -17.0 |
-| wwdc22-day1-recap | 29.97 | 179.51 | 72 | 66.0 | 99.18 | 30.97 | 1.06 | 22.0 / 34.0 | scale up from small | 8.5/33.6/1 (11) | 0.343 (0.276) | 0.268 / 0.421 | -16.5 |
-| wwdc23-17things | 29.97 | 135.1 | 35 | 66.0 | 119.57 | 20.36 | 0.81 | 15.0 / 20.0 | cut on | 41.49/409.5/1 (7) | 0.375 (0.332) | 0.207 / 0.75 | -16.7 |
-| wwdc25-welcome | 29.97 | 152.09 | 85 | 41.0 | 84.65 | 19.53 | 0.79 | 14.0 / 9.5 | slide | 5.21/14.8/1 (7) | 0.284 (0.235) | 0.333 / 0.167 | -21.6 |
-| wwdc26-sotu-recap | 30.0 | 271.5 | 56 | 118.0 | 135.42 | 7.99 | 0.77 | 69.0 / 75.0 | fade | 28.92/201.7/1 (17) | 0.36 (0.376) | 0.363 / 0.333 | -17.7 |
+| ios26-liquid-glass | 29.97 | 273.77 | 68 | 99.5 | 118.05 | 24.03 | 0.04 | 14.0 / 25.0 | blur in | 128.31/5000.0/1 (1) | 0.277 (0.328) | 0.339 / 0.0 | -19.2 |
+| sept26-event-recap | 29.97 | 95.09 | 90 | 22.5 | 127.2 | 30.39 | 0.42 | 12.0 / 28.0 | cut on | None/None/1 (0) | 0.38 (0.354) | 0.355 / 0.5 | -17.0 |
+| wwdc22-day1-recap | 29.97 | 179.51 | 72 | 66.0 | 99.18 | 30.97 | 1.06 | 22.0 / 34.0 | cut on | 13.25/75.45/1 (10) | 0.343 (0.276) | 0.29 / 0.368 | -16.5 |
+| wwdc23-17things | 29.97 | 135.1 | 35 | 66.0 | 119.57 | 20.36 | 0.81 | 17.0 / 21.0 | cut on | 60.38/406.0/1 (5) | 0.375 (0.332) | 0.234 / 0.75 | -16.7 |
+| wwdc25-welcome | 29.97 | 152.09 | 85 | 41.0 | 84.65 | 19.53 | 0.79 | 17.0 / 13.0 | slide | 11.74/88.85/1 (8) | 0.284 (0.235) | 0.327 / 0.167 | -21.6 |
+| wwdc26-sotu-recap | 30.0 | 271.5 | 56 | 118.0 | 135.42 | 7.99 | 0.77 | 69.0 / 75.0 | fade | 28.92/201.7/1 (17) | 0.36 (0.376) | 0.358 / 0.333 | -17.7 |
 
-Pooled: median shot 56.5 frames, typography cap height 6.67% of frame height (~SF Pro 600.0), typography hold 28.5 frames, calibrated entry spring damping 14.0 / stiffness 82.1 / mass 1, -17.4 LUFS.
+Pooled: median shot 56.5 frames, typography cap height 6.67% of frame height (~SF Pro 600.0), typography hold 33.0 frames, calibrated entry spring damping 15.35 / stiffness 115.0 / mass 1, -17.4 LUFS.
 <!-- results:end -->
 
 ## What's in here
