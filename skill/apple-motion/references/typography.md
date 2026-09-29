@@ -55,6 +55,7 @@ and type is the punctuation: a feature name, a claim, a number.
 A Remotion `spring({durationInFrames: 12})` *looks* finished after ~4 frames: the remaining frames
 are sub-pixel settling. Our pipeline measures the visible duration; `tokens.ts` gives you the fitted
 spring config that reproduces the measured curve directly (use it without `durationInFrames`), and
-`spring_idiomatic` in measurements.md gives the `{damping, durationInFrames}` form.
+the "Idiomatic form" line in measurements.md gives an equivalent `{damping, durationInFrames}` form
+if you prefer Remotion's stretched springs.
 Calibration of the measurement itself (known springs rendered and measured back) is in
 `reports/eval/render-cal.md` in the apple-motion GitHub repository (not part of this skill folder).

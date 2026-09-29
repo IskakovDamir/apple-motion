@@ -50,7 +50,7 @@ Pooled over 6 videos, 1107.1 s, 33187 frames. Generated from fingerprint.json - 
 - Appear kind: animated 79%, instant 15%, cut 6%; exit kind: cut 37%, animated 31%, instant 22%
 - Animated channels in entries: opacity 34%, dy 19%, blur_px 15%, dx 14%, scale 10%, reveal 7%
 - Entry spring (median of good fits): damping 18.27, stiffness 162.9, mass 1, durationInFrames 17.0, zeta 0.78, overshoot 2.06%, n=41
-- Calibrated entry spring (pipeline speed bias removed, see calibration): {'damping': 15.35, 'stiffness': 115.0, 'mass': 1, 'durationInFrames': 20}; calibration {"time_scale": 1.19, "zeta_ratio": 1.032, "n": 5, "ratios": [1.171, 1.393, 1.19, 1.347, 1.121], "note": "fitted springs are this much faster than the truth; calibrated = fitted / c (damping), / c^2 (stiffness)"}
+- Calibrated entry spring (pipeline speed bias removed, see calibration): {'damping': 15.35, 'stiffness': 115.0, 'mass': 1, 'durationInFrames': 20} - use damping/stiffness/mass WITHOUT durationInFrames; durationInFrames here is only Remotion's natural settle length (measureSpring), for reference; calibration {"time_scale": 1.19, "zeta_ratio": 1.032, "n": 5, "ratios": [1.171, 1.393, 1.19, 1.347, 1.121], "note": "fitted springs are this much faster than the truth; calibrated = fitted / c (damping), / c^2 (stiffness)"}
 - Median shot length by quarter of the video: [71.0, 59.5, 68.8, 73.0] frames; share of typography per quarter: [0.294, 0.25, 0.132, 0.324]
 - Cuts on the beat, pooled: {"hits": 134, "cuts": 400, "expected_by_chance": 124.8, "z": 1.0, "p_one_sided": 0.1586}
 - Idiomatic form: spring({config: {damping: 14.79}, durationInFrames: 19.0}) (stiffness 100, mass 1)

@@ -25,15 +25,18 @@ Not affiliated with Apple.
 
 1. **Copy the library.** `templates/remotion/` -> `src/apple-motion/` in the user's Remotion project
    (needs `remotion` and `@remotion/transitions`). `tokens.ts` is the measured style - don't edit it.
-2. **Fix the length on the music first.** Pick BPM (numbers block), then bars. At 30 fps and 120 BPM:
-   1 beat = 15 frames, 1 bar = 60 frames = 2 s. Beat 0 is t = 0 (`offsetFrames` 0) unless the music has
-   a pickup. Total length = (beats before the logo + logo beats) x beat + `tailFrames` (default 45; the
-   last card holds through it). For a "30-second recap" at 120 BPM: 13 bars of cards (52 beats) +
-   a 4-beat logo = 28 s + 1.5 s tail. Generate the bed to match: `synth_audio.py OUT --bpm 120
-   --bars 13` puts its closing **hit exactly on the bar line after the last bar** (beat 52 here) -
-   start the logo card on that beat and don't add `sfx: 'hit'`. Bed layout: intro bars 1-2, build
-   3-4, main, break (last 4-3 bars, drums out), final 2 bars, hit. If you must use a longer bed, set
-   `musicFadeOutFrames` (e.g. 30) and add `sfx: 'hit'` on the logo.
+2. **Fix the length on the music first.** Pick BPM from the numbers block (calm: p25-p50, "upbeat,
+   fast": p75-p90); any BPM works, fractional frames per beat are handled. At 30 fps and 120 BPM:
+   1 beat = 15 frames, 1 bar = 60 frames = 2 s. Beat 0 is t = 0 (`offsetFrames` 0).
+   **Length = (beats of all cards before the logo + logo beats) x beat + `tailFrames`** (default 45;
+   the logo holds through it). The logo holds ~3 s (measured last shot, median 94 frames): 6 beats at
+   120 BPM. Example "30-second recap" at 120 BPM: 12 bars of cards (48 beats) + a 6-beat logo =
+   27 s + 1.5 s tail = 28.5 s.
+   Generate the bed to match: `scripts/synth_audio.py <project>/public --bpm 120 --bars 12` writes a
+   mastered `music.wav` (+ `sfx/`) whose closing **hit lands exactly on beat 4 x bars** (beat 48 here,
+   printed with its frame) and rings out ~4 s. Start the logo card on that beat and don't add
+   `sfx: 'hit'`. Beds shorter than 12 bars have almost no main section (intro, build, break and final
+   take 8 bars). If you must use a longer bed, set `musicFadeOutFrames` (e.g. 30) and add `sfx: 'hit'`.
 3. **Write the video as cards** (`Card[]`, see `Recap.tsx`). Each card lasts a number of beats
    (half beats allow) and is one of: footage/still (`media`), claim or word (`lines`), feature title
    (`icon` + `lines` on white), spec (`spec`: gradient numerals + label), number roll (`counter`),
@@ -44,16 +47,19 @@ Not affiliated with Apple.
    the corpus - don't build a flash montage unless the brief asks for one.
 5. **Type is punctuation.** 1-4 words per line, 1 line (84% of measured type), at most 2. Name a
    feature, state a claim, show a number. Every card with `lines`, `spec` or `counter` counts as a
-   type moment, the final name too. With a voice-over type is rare (numbers block); without one it has
-   to name the features - aim for one type moment per 5-7 s, and when the brief has more features
-   than that allows, name some inside the UI (`device` cards) instead of on their own cards. Type
+   type moment, the final name too. Measured: ~0.8 type moments per 10 s, but all six videos carry a
+   voice-over that names things. Without a voice-over type has to do that job; our recommendation
+   (not a measurement) is one type moment per 5-7 s, naming extra features inside UI (`device`
+   cards) rather than on their own cards. Type
    does not have to last the whole card: `typeBeats` lets it leave while the picture continues
    (measured type on-screen time is ~1 s median, ~3 s p90). Leaving `entry` out gives a cut-on, the
    most common measured entry.
-6. **Transitions:** leave `transition` empty (hard cut) on >90% of cards; `whip` is the common
-   accent, `dissolve` / `maskWipe` / `scaleThrough` are rare. Put accents on musical moments.
-7. **Mix and master:** SFX only on whips (automatic), UI taps (`device.tapSfx`), the final hit. Render, then
-   `scripts/master.sh out.mp4 final.mp4` (two-pass loudnorm to `AUDIO.lufs` / `AUDIO.truePeakDb`).
+6. **Transitions:** ~92% of measured edits are hard cuts (leave `transition` empty). Budget about one
+   accent per 10-12 cards - `whip` is the common one, `dissolve` / `maskWipe` / `scaleThrough` are
+   rare. Put accents on musical moments (a downbeat, the drop after the break).
+7. **Mix and master:** SFX only on whips (automatic), UI taps (`device.tapSfx`), the final hit. SFX load
+   from `public/sfx/` (`sfxDir` to change). Render, then `scripts/master.sh out.mp4 final.mp4`
+   (two-pass loudnorm to `AUDIO.lufs` / `AUDIO.truePeakDb`; also accepts .wav).
 8. **Check:** `python scripts/check_render.py final.mp4` prints your pace and loudness next to
    Apple's p10-p90 ranges. Fix anything marked OUTSIDE.
 
@@ -62,7 +68,7 @@ Not affiliated with Apple.
 import {Composition} from 'remotion';
 import {Recap, recapDuration, type Card, type RecapProps} from './apple-motion';
 
-const cards: Card[] = [                                    // 120 BPM, 16 bars = 64 beats
+const cards: Card[] = [          // 120 BPM: 64 beats of cards (bed: --bars 16), logo on beat 64 = 37.5 s
   {beats: 8, bg: 'offWhite', device: {cards: [{title: 'Northwind 3.0', subtitle: "What's new", icon: '📝'}]}},
   {beats: 4, bg: 'white', icon: {glyph: '↻', from: '#64d2ff', to: '#0a84ff'}, lines: ['Offline sync'], entry: 'fade', size: 'title'},
   {beats: 8, bg: 'black', device: {tone: 'dark', cards: [{title: 'Offline', subtitle: '3 edits saved'}, {title: 'Synced', subtitle: 'just now'}]}},
@@ -98,6 +104,8 @@ corpus is ~8% pure black and ~21% pure white frames.
   calibrated stroke measurement (`TYPE.weight`), tight tracking, leading from `TYPE.lineHeight`.
   White on black/footage; near-black (#080808-#1d1d1f) on white or #f5f5f7. Flat colour - except spec
   numerals (vertical gradient). No outlines, shadows, boxes behind text, rotation.
+- **Glyphs:** icon glyphs render with the system fonts: plain symbols (↻ ⌕ ▦ ✦ { }) stay monochrome
+  white, emoji render in colour - pick one style per video.
 - **Sizes:** `size` maps to measured cap-height percentiles: caption (p10), title (p25), headline
   (median), display (p75), hero (p90, event wordmarks). `KineticText` shrinks a line that would exceed
   88% of the frame width.

@@ -44,8 +44,8 @@ export type Card = {
   icon?: {glyph: string; from: string; to: string};
   /** spec numeral with gradient fill + small label */
   spec?: {value: string; label: string; gradient: [string, string]};
-  /** device mock-up; UI cards pop in every `everyBeats` (default 1). x < 50 leaves room for `lines`
-   *  on the right (set x on the card, e.g. 68, and align 'left'). Max 3 UI cards; titles <= ~17 chars. */
+  /** device mock-up; UI cards pop in every `everyBeats` (default 1). x: 30 leaves room for `lines`
+   *  on the right (card x: 58, align: 'left'). Max 3 UI cards; titles <= ~17 chars. */
   device?: {cards: {title: string; subtitle?: string; icon?: string}[]; tone?: 'light' | 'dark'; x?: number;
     entry?: 'rise' | 'none'; everyBeats?: number; tapSfx?: boolean;
     /** screen wallpaper gradient; default a soft light/dark pair, null for a flat screen */
@@ -73,6 +73,8 @@ export type RecapProps = {
   musicFadeOutFrames?: number;
   /** SFX gain (0-1). Apple mixes SFX low; master the final file to AUDIO.lufs / AUDIO.truePeakDb. */
   sfxVolume?: number;
+  /** folder under public/ holding whoosh/swish/click/hit/riser .wav (default 'sfx') */
+  sfxDir?: string;
 };
 
 const isLight = (bg?: BackdropKind) => bg === 'white' || bg === 'offWhite';
@@ -179,7 +181,7 @@ const Pill: React.FC<{text: string}> = ({text}) => {
 };
 
 export const Recap: React.FC<RecapProps> = ({bpm, offsetFrames = 0, cards, music, sfxVolume = 0.3, tailFrames = 45,
-  musicFadeOutFrames = 0}) => {
+  musicFadeOutFrames = 0, sfxDir = 'sfx'}) => {
   const {fps, durationInFrames} = useVideoConfig();
   const g = beatGrid(bpm, fps, offsetFrames);
   const durs = cardFrames(cards, bpm, fps, offsetFrames, tailFrames);
@@ -192,14 +194,14 @@ export const Recap: React.FC<RecapProps> = ({bpm, offsetFrames = 0, cards, music
     if (tf > 0 && c.transition) {
       items.push(appleTransition(c.transition, `t${i}`));
       // the transition plays from this card's beat for tf frames: peak the whoosh in its middle
-      if (c.transition === 'whip') sfx.push(<Sfx key={`w${i}`} name="whoosh" at={cursor + Math.round(tf / 2)} volume={sfxVolume} />);
+      if (c.transition === 'whip') sfx.push(<Sfx dir={sfxDir} key={`w${i}`} name="whoosh" at={cursor + Math.round(tf / 2)} volume={sfxVolume} />);
     }
     if (c.device?.tapSfx) {
       c.device.cards.slice(0, 3).forEach((_, k) => {
-        sfx.push(<Sfx key={`tap${i}-${k}`} name="click" at={cursor + Math.round(g.beat * (c.device?.everyBeats ?? 1) * (k + 1))} volume={sfxVolume * 0.8} />);
+        sfx.push(<Sfx dir={sfxDir} key={`tap${i}-${k}`} name="click" at={cursor + Math.round(g.beat * (c.device?.everyBeats ?? 1) * (k + 1))} volume={sfxVolume * 0.8} />);
       });
     }
-    if (c.sfx) sfx.push(<Sfx key={`s${i}`} name={c.sfx} at={cursor} volume={sfxVolume * (c.sfx === 'hit' ? 1.4 : 1)} />);
+    if (c.sfx) sfx.push(<Sfx dir={sfxDir} key={`s${i}`} name={c.sfx} at={cursor} volume={sfxVolume * (c.sfx === 'hit' ? 1.4 : 1)} />);
     items.push(
       <TransitionSeries.Sequence key={`c${i}`} durationInFrames={durs[i] ?? 1}>
         <CardView c={c} dur={durs[i] ?? 1} beat={g.beat} />

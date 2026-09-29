@@ -42,3 +42,26 @@ typecheck passed first try. Rendered + mastered: every self-check metric inside 
 | type always lasted the whole card | `typeBeats` lets type leave while the picture continues |
 | UI-tap SFX impossible | `device.tapSfx` |
 | empty grey phone screens | default light/dark wallpaper gradients (`device.wallpaper`) |
+
+# Blind test round 3
+
+Brief: "WWDC-style 20-second recap for our developer tool 'Lumen CLI 4': builds 3x faster, new cloud cache,
+first-class Swift support, redesigned dashboard. Upbeat, fast, end on the name. Fresh music bed that fits."
+The agent generated its own 128 BPM, 9-bar bed, put the logo on the bed's hit (frame 506 of 506.25) and wrote
+10 cards (`demo/src/agent3/Round3Recap.tsx`); typecheck passed first try. Rendered + mastered: cuts 4.44/10 s,
+median shot 56 frames (Apple median 56.5), -16.7 LUFS; true peak -5.0 dBTP (below Apple's range - the bed had
+been pre-normalised before the SFX were mixed).
+
+| finding | fix |
+|---|---|
+| synth wrote `music_raw.wav` but docs said `music.wav`; raw bed peaks +2.3 dBTP | synth now also writes a mastered `music.wav` (-17.4 LUFS / -2 dBTP) and prints the hit's frame |
+| two loudness targets (script docstring -16 / tokens -17.4) | one target everywhere |
+| `master.sh` could not master a WAV | accepts audio-only input |
+| length examples disagreed (28 s vs 32 s vs 37.5 s); logo length unspecified | one formula; logo ~3 s from the measured last-shot median; example relabelled 37.5 s; 30 s example = 12 bars + 6-beat logo |
+| video outlasted the bed after the hit | bed now rings out ~4 s after the hit |
+| short beds lose the main section; `--bars >= 8` not enforced | documented (>= 12 bars for a main section); enforced |
+| SFX folder fixed to `public/sfx` | `sfxDir` prop; docs say to write the bed into `public/` |
+| ">90% hard cuts" impossible with 10 cards | "about one accent per 10-12 cards" |
+| type density presented as measured although it is a recommendation for music-only pieces | labelled as a recommendation, measured value given separately |
+| calibrated spring listed with `durationInFrames: 20` next to "use without durationInFrames" | labelled as Remotion's natural settle length, reference only |
+| emoji vs monochrome glyphs | documented |

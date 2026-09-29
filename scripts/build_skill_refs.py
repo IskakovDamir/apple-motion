@@ -186,7 +186,9 @@ def measurements():
          f"- Entry spring (median of good fits): damping {P['entry_spring']['damping']}, stiffness {P['entry_spring']['stiffness']}, "
          f"mass 1, durationInFrames {P['entry_spring']['durationInFrames']}, zeta {P['entry_spring']['zeta']}, overshoot "
          f"{P['entry_spring']['overshoot_pct']}%, n={P['entry_spring']['n']}",
-         f"- Calibrated entry spring (pipeline speed bias removed, see calibration): {P.get('entry_spring_calibrated')}; "
+         f"- Calibrated entry spring (pipeline speed bias removed, see calibration): {P.get('entry_spring_calibrated')} - "
+         f"use damping/stiffness/mass WITHOUT durationInFrames; durationInFrames here is only Remotion's natural settle "
+         f"length (measureSpring), for reference; "
          f"calibration {json.dumps(P.get('calibration'))}",
          f"- Median shot length by quarter of the video: {P.get('median_shot_by_quarter')} frames; share of typography per quarter: "
          f"{P.get('typography_share_by_quarter')}",

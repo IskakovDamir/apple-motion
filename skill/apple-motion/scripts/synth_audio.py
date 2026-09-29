@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 """Generate a royalty-free (CC0, synthesized from scratch) upbeat music bed + SFX kit.
 
-  music.wav   BPM-locked electronic bed (four-on-the-floor kick, clap 2&4, 8th hats, pulsing bass,
+  music.wav   BPM-locked electronic bed, mastered with ffmpeg loudnorm to the measured Apple median
+              (-17.4 LUFS integrated, -2 dBTP true peak) - use this one in the composition
+  music_raw.wav  the same bed unmastered (peaks above 0 dBTP - do not use directly)
+              (four-on-the-floor kick, clap 2&4, 8th hats, pulsing bass,
               supersaw chords, pluck arpeggio) with an intro, build, drop, break and final hit
   sfx/whoosh.wav, sfx/swish.wav, sfx/click.wav, sfx/hit.wav, sfx/riser.wav
 
-Usage: synth_audio.py OUT_DIR [--bpm 120] [--bars 16] [--seed 7]
-Loudness: normalise the result with ffmpeg loudnorm to the measured Apple target
-(see references/audio.md), e.g. -16 LUFS integrated, -1.5 dBTP.
-Only numpy + stdlib wave are needed.
+Usage: synth_audio.py OUT_DIR [--bpm 120] [--bars 16] [--seed 7] [--lufs -17.4] [--tp -2]
+Write OUT_DIR = your Remotion project's public/ folder: the card engine loads SFX from public/sfx/.
+Layout (N = bars, >= 8; >= 12 for a real main section): intro 2 bars, build 2, main, break 2 (drums
+out), final 2, closing hit on beat 4N, then ~4 s of ring-out (enough for a 3 s logo hold + tail).
+Needs numpy; ffmpeg on PATH for the mastered music.wav.
 """
 import argparse
 import wave
@@ -108,7 +112,7 @@ def hz(name, octave):
 def music(bpm=120, bars=16, seed=7):
     rng = np.random.default_rng(seed)
     beat = 60 / bpm
-    total = int((bars * 4 * beat + 2.5) * SR)
+    total = int((bars * 4 * beat + 4.0) * SR)
     L = np.zeros(total)
     R = np.zeros(total)
     drums = np.zeros(total)
@@ -227,7 +231,11 @@ def main():
     ap.add_argument("--bpm", type=float, default=120)
     ap.add_argument("--bars", type=int, default=16, help="length in 4/4 bars (>= 8); closing hit on beat 4*bars")
     ap.add_argument("--seed", type=int, default=7)
+    ap.add_argument("--lufs", type=float, default=-17.4)
+    ap.add_argument("--tp", type=float, default=-2.0)
     a = ap.parse_args()
+    if a.bars < 8:
+        ap.error("--bars must be >= 8 (intro, build, break and final take 8 bars)")
     out = Path(a.out)
     rng = np.random.default_rng(a.seed)
     write_wav(out / "music_raw.wav", music(a.bpm, a.bars, a.seed))
@@ -236,7 +244,18 @@ def main():
     write_wav(out / "sfx" / "click.wav", sfx_click())
     write_wav(out / "sfx" / "hit.wav", sfx_hit(rng))
     write_wav(out / "sfx" / "riser.wav", sfx_riser(int(2 * SR), rng))
-    print(f"wrote {out}/music_raw.wav and sfx/*.wav ({a.bpm} BPM, {a.bars} bars)")
+    import shutil
+    import subprocess
+    if shutil.which("ffmpeg"):
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(out / "music_raw.wav"), "-af",
+                        f"loudnorm=I={a.lufs}:TP={a.tp}:LRA=7", "-ar", "48000", "-c:a", "pcm_s16le",
+                        str(out / "music.wav")], check=True)
+        mastered = "music.wav (mastered)"
+    else:
+        mastered = "no ffmpeg: only music_raw.wav - master it before use"
+    hit = a.bars * 4 * 60 / a.bpm
+    print(f"wrote {out}/music_raw.wav, {mastered}, sfx/*.wav ({a.bpm} BPM, {a.bars} bars, hit at {hit:.3f} s "
+          f"= frame {hit * 30:.1f} at 30 fps)")
 
 
 if __name__ == "__main__":

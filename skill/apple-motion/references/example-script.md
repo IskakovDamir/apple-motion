@@ -1,12 +1,13 @@
-# Example: a 32-second launch recap as cards
+# Example: a 37-second launch recap as cards
 
 Brief: "30-second Apple-style recap for Northwind Notes 3.0: offline sync, smart search, 2x faster
 to open, new widgets. Music only, end on the logo."
 
-Length first: 120 BPM, 16 bars = 64 beats = 32 s (1 beat = 15 frames at 30 fps). The bed from
-`scripts/synth_audio.py OUT --bpm 120 --bars 16` has: intro bars 1-2 (beats 0-7), build 3-4
-(8-15), main 5-12 (16-47), break 13-14 (48-55, drums out), final 15-16 (56-63) and its closing hit
-on beat 64. The logo card starts on beat 64 and holds over the tail.
+Length first: 120 BPM (1 beat = 15 frames at 30 fps). 64 beats of cards (32 s) + an 8-beat logo
+(4 s) + the 45-frame tail = 1125 frames = 37.5 s. (For exactly 30 s use 12 bars and a 6-beat logo,
+see SKILL.md step 2.) The bed from `scripts/synth_audio.py public --bpm 120 --bars 16` has: intro
+bars 1-2 (beats 0-7), build 3-4 (8-15), main 5-12 (16-47), break 13-14 (48-55, drums out), final
+15-16 (56-63), its closing hit on beat 64 and ~4 s of ring-out. The logo card starts on beat 64.
 
 ```ts
 const cards: Card[] = [
