@@ -8,6 +8,11 @@ not from vibes.
 > names are trademarks of Apple Inc. This repository contains no Apple media: only code, numbers
 > measured from publicly available videos, and our own synthesized audio.
 
+<p align="center"><img src="docs/demo.gif" width="480" alt="Demo recap rendered with the skill's components"></p>
+<p align="center"><sub>Demo recap built only with the skill's components and its synthesized music bed
+(<code>demo/</code>). Measured back with the same pipeline: 10 of 12 metrics inside Apple's p10-p90 range
+(<a href="reports/eval/render-demo-v5.md">scorecard</a>).</sub></p>
+
 <!-- results:start -->
 ## Results
 
@@ -40,10 +45,12 @@ Pooled: median shot 56.5 frames, typography cap height 6.67% of frame height (~S
 Claude Code:
 
 ```bash
-mkdir -p ~/.claude/skills && cp -R skill/apple-motion ~/.claude/skills/
+git clone https://github.com/IskakovDamir/apple-motion && mkdir -p ~/.claude/skills && cp -R apple-motion/skill/apple-motion ~/.claude/skills/
 ```
 
-Claude.ai / Claude apps: zip `skill/apple-motion` and upload it under Settings -> Capabilities -> Skills.
+Claude.ai / Claude apps: download `apple-motion-skill.zip` from the
+[latest release](https://github.com/IskakovDamir/apple-motion/releases/latest) and upload it under
+Settings -> Capabilities -> Skills.
 
 Then ask for something like *"Make a 30-second Apple-style recap in Remotion of our Q3 launch: three
 features, one stat, end on the logo"*. Claude will copy `templates/remotion/` into your project,
@@ -82,20 +89,36 @@ Six Apple recap videos (1107 s, 33,187 frames) went through nine steps, all in `
 ## Calibration: how much to trust the pipeline
 
 The same pipeline is run on videos we rendered ourselves with **known** fonts and springs
-(`demo/src/Calibration.tsx`, `scripts/eval_render.py`). Results in `reports/eval/render-cal.md`:
+(`demo/src/Calibration.tsx`, `scripts/eval_render.py`; results in `reports/eval/`):
 
-- entry styles (cut, fade, scale down, scale up, blur in, slide, slide under a mask, per-word) are
-  recovered correctly;
+- entry styles of the calibration cards (cut, fade, scale down, scale up, blur in, slide, slide under
+  a mask, per-word) are recovered; appear frames are exact for cut-on text and within a few frames for
+  animated entries;
 - the tracked position of a masked slide follows the true spring to within 0.01 progress units;
 - fitted springs come out ~19% too fast in time scale (damping ratio preserved), so the skill uses
-  **calibrated** springs (fitted / 1.19, stiffness / 1.19^2);
-- blur-driven entries are the least accurate (~1.9x); swaps of near-identical text in place
-  (e.g. "Weight 500" -> "Weight 600") can shift the appear frame.
+  **calibrated** springs (damping / 1.19, stiffness / 1.19^2);
+- font weight is read from stroke width / cap height, calibrated on SF Pro Display rendered at
+  weights 400-800;
+- known weak spots: blur-driven entries, and a fast scale-down read at its first reliable frame can
+  be labelled as a blur or slide.
 
-The calibration found and fixed four real bugs along the way (merged in-place swaps, per-word
-settle, per-word vs per-letter, quantised BPM). That loop - render, measure, compare, fix - is the
-"training" of this skill; `scripts/eval_render.py <video> --name X` scores any render against the
-Apple ranges.
+The calibration renders found and fixed nine measurement bugs (merged in-place text swaps, per-word
+settle, per-word vs per-letter, quantised BPM, a reference-frame self-match bias in the settle test,
+presence leaking across in-place swaps, isolated glitch samples ending holds, counters split as swaps,
+unreliable start values at low opacity).
+
+## Training loop
+
+"Training" here is an explicit loop, not model weights: **render -> measure with the same pipeline ->
+compare with Apple's ranges -> fix the tokens / components / guidance -> render again.**
+
+- Demo recap: v2 had 8 of 13 metrics inside Apple's p10-p90 range; v5 has 10 of 12 (beat-lock was made informational: Apple's voice-led edits sit at chance level). The loop moved type
+  density, entry timing (the components now use the calibrated spring unstretched), loudness
+  (two-pass mastering) and black/white frame share toward the corpus.
+- Blind tests: separate agents that saw only the skill folder wrote recaps from new briefs
+  (`demo/src/agent*/`). Their notes drove two rounds of fixes - see
+  [`reports/blind-test.md`](reports/blind-test.md). The round-2 recap rendered with every self-check
+  metric inside Apple's range.
 
 ## Reproduce
 
@@ -119,9 +142,17 @@ Demo:
 ```bash
 cd demo && npm install
 python ../skill/apple-motion/scripts/synth_audio.py public --bpm 120 --bars 16
-ffmpeg -i public/music_raw.wav -af loudnorm=I=-16:TP=-1.5 public/music.wav
-npx remotion render src/index.ts Recap out/recap.mp4
+ffmpeg -i public/music_raw.wav -af loudnorm=I=-17.4:TP=-2 public/music.wav
+npx remotion render src/index.ts Recap out/recap_raw.mp4
+../skill/apple-motion/scripts/master.sh out/recap_raw.mp4 out/recap.mp4
+python ../skill/apple-motion/scripts/check_render.py out/recap.mp4
+python ../scripts/eval_render.py out/recap.mp4 --name mine --truth <truth.json>   # full pipeline scorecard
 ```
+
+Storage note: `scripts/env.sh` keeps every cache, temp dir and model inside the repository folder
+(pip, torch, Hugging Face, EasyOCR, npm). The original run lived on an external USB drive; source
+videos are read from a RAM-disk copy when `/Volumes/amvideo` exists, because the drive dropped off the
+bus under concurrent reads, and every step is resumable.
 
 ## License
 
