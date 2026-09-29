@@ -10,8 +10,8 @@ not from vibes.
 
 <p align="center"><img src="docs/demo.gif" width="480" alt="Demo recap rendered with the skill's components"></p>
 <p align="center"><sub>Demo recap built only with the skill's components and its synthesized music bed
-(<code>demo/</code>). Measured back with the same pipeline: 10 of 12 metrics inside Apple's p10-p90 range
-(<a href="reports/eval/render-demo-v5.md">scorecard</a>).</sub></p>
+(<code>demo/</code>). Measured back with the same pipeline: 11 of 14 metrics inside Apple's p10-p90 range
+(<a href="reports/eval/render-demo-v9.md">scorecard</a>).</sub></p>
 
 <!-- results:start -->
 ## Results
@@ -112,13 +112,18 @@ unreliable start values at low opacity).
 "Training" here is an explicit loop, not model weights: **render -> measure with the same pipeline ->
 compare with Apple's ranges -> fix the tokens / components / guidance -> render again.**
 
-- Demo recap: v2 had 8 of 13 metrics inside Apple's p10-p90 range; v5 has 10 of 12 (beat-lock was made informational: Apple's voice-led edits sit at chance level). The loop moved type
-  density, entry timing (the components now use the calibrated spring unstretched), loudness
-  (two-pass mastering) and black/white frame share toward the corpus.
+- Demo recap: v2 had 8 of 13 metrics inside Apple's p10-p90 range, v5 10 of 12, v9 11 of 14 (camera-motion
+  metrics were added; beat-lock is informational because Apple's voice-led edits sit at chance level). The
+  loop moved type density, entry timing, loudness, black/white frame share and camera motion toward the
+  corpus.
+- Entry speed training (`scripts/train_entries.py`): every entry type rendered at four spring speeds,
+  measured back, and set to the speed whose measured length matches Apple's median for that type
+  ([`reports/eval/entry-training.md`](reports/eval/entry-training.md)).
 - Blind tests: separate agents that saw only the skill folder wrote recaps from new briefs
   (`demo/src/agent*/`). Their notes drove two rounds of fixes - see
   [`reports/blind-test.md`](reports/blind-test.md). The round-2 recap rendered with every self-check
-  metric inside Apple's range.
+  metric inside Apple's range; round 4 (voice-over) came out with pure black/white frame shares of
+  0.03/0.23 against Apple's 0.08/0.21.
 
 ## Reproduce
 
