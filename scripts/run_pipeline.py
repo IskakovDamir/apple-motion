@@ -68,10 +68,12 @@ def locked_by_other(slug):
 
 
 def main():
-    if len(sys.argv) == 1:  # the supervised default runner owns the pid file
-        pid = ROOT / ".cache" / "run" / "pipeline.pid"
+    import os
+    rid = os.environ.get("RUNNER_ID") or ("main" if len(sys.argv) == 1 else None)
+    if rid:  # supervised runners own a pid file each
+        pid = ROOT / ".cache" / "run" / f"pipeline_{rid}.pid"
         pid.parent.mkdir(parents=True, exist_ok=True)
-        pid.write_text(str(__import__("os").getpid()))
+        pid.write_text(str(os.getpid()))
     slugs = sys.argv[1:] or ORDER
     pending = True
     while pending:
@@ -91,7 +93,7 @@ def main():
             (ROOT / ".cache" / "run" / f"lock_{slug}").unlink(missing_ok=True)
         if pending:
             time.sleep(60)
-    missing = [f"{s}:{st}" for s in slugs for st in STEPS if not marker(s, st).exists()]
+    missing = [f"{s}:{st}" for s in ORDER for st in STEPS if not marker(s, st).exists()]
     status = {"slugs": slugs, "t": time.strftime("%H:%M:%S"), "missing": missing}
     (DONE / ("ALL.ok" if not missing else "RUN_INCOMPLETE.json")).write_text(json.dumps(status))
 

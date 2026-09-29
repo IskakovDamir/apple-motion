@@ -97,9 +97,13 @@ def main(slug):
                             download_enabled=True, verbose=False)
     # pass A: every Nth frame (3 for the first two videos, 6 afterwards to fit the time budget;
     # the value actually used is recorded in ocr_summary.json)
-    step = int(os.environ.get("OCR_PASS_A_STEP", 6))
-    if any(f % 3 == 0 and f % 6 != 0 for f in done):
-        step = 3
+    # the pass-A step is fixed per video the first time pass A starts (restarts must not change it)
+    sp = DATA / slug / "ocr_passA.json"
+    if sp.exists():
+        step = json.loads(sp.read_text())["pass_a_step"]
+    else:
+        step = int(os.environ.get("OCR_PASS_A_STEP", 6))
+        sp.write_text(json.dumps({"pass_a_step": step}))
     run_pass(slug, reader, set(range(0, n, step)), path, done, "passA")
     min_h = MIN_EVENT_H * m["height"]
     text_shots = []

@@ -161,7 +161,9 @@ def classify_entry(ev, win, words, letters):
         return "slide"
     if ch.get("opacity", {}).get("animated"):
         return "fade"
-    return "other"
+    # nothing measurable changed during the 'entry': the text is simply there from its first frame
+    # (the settle window was stretched by background noise, e.g. footage moving behind the type)
+    return "cut on (no measurable animation)"
 
 
 def classify_exit(ev, win):
@@ -206,10 +208,14 @@ def run(slug):
         ext = analyse_window(series, xs, g, -1, fps, cap, limit=full) if ev["exit_frames"] > 1 else None
         words = stagger(series, a, full, "word_mass")
         letters = stagger(series, a, full, "letter_mass")
+        style = classify_entry(ev, ent, words, letters)
+        entry_frames = ev["entry_frames"]
+        if style.startswith("cut on (no"):
+            style, entry_frames = "cut on", 0
         rec = {"id": ev["id"], "text": ev["text"], "role": ev.get("role"),
                "appear_frame": a, "full_frame": full, "exit_start_frame": xs, "gone_frame": g,
-               "entry_frames": ev["entry_frames"], "exit_frames": ev["exit_frames"],
-               "entry_style": classify_entry(ev, ent, words, letters),
+               "entry_frames": entry_frames, "entry_frames_measured": ev["entry_frames"], "exit_frames": ev["exit_frames"],
+               "entry_style": style,
                "exit_style": classify_exit(ev, ext),
                "word_stagger": words, "letter_stagger": letters}
         if ent is not None and len(ent["progress"]) >= 2:
@@ -225,6 +231,7 @@ def run(slug):
             fr = np.array([-1, 0, 1, 2]); p = np.array([0, 1, 1, 1.0])
             rec["entry"]["spring"] = {**mf.fit_spring(fr, p, fps), "degenerate": True}
         if rec["entry_frames"] <= 1:
+            rec["entry"]["spring"] = rec["entry"].get("spring") or {}
             rec["entry"]["spring"]["degenerate"] = True
         anims.append(rec)
     save_json(DATA / slug / "text_anim.json", {"slug": slug, "fps": fps, "significance": SIG, "events": anims})

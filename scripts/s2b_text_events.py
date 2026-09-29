@@ -284,12 +284,34 @@ def plan_event(block, shots, n, W, H):
             "shot_first": s_first, "shot_last": s_last}
 
 
+def _ckpt_key(p):
+    return f"{p['first']}:{p['last']}:{p['fref']}:{','.join(map(str, p['box']))}"
+
+
+def _to_jsonable(o):
+    if isinstance(o, dict):
+        return {k: _to_jsonable(v) for k, v in o.items()}
+    if isinstance(o, (list, tuple)):
+        return [_to_jsonable(v) for v in o]
+    if isinstance(o, np.ndarray):
+        return o.tolist()
+    if isinstance(o, (np.floating,)):
+        return float(o)
+    if isinstance(o, (np.integer,)):
+        return int(o)
+    if isinstance(o, np.bool_):
+        return bool(o)
+    return o
+
+
 def stream_crops(slug, plans, on_done):
     """One linear decode. Stores region crops for planned frames; calls on_done(i) as soon as
     plan i has all its frames, then frees them (keeps memory bounded)."""
     need, ends = defaultdict(list), defaultdict(list)
     for i, p in enumerate(plans):
         p["crops"] = {}
+        if p.get("skip"):
+            continue
         for f in p["frames"]:
             need[f].append(i)
         ends[max(p["frames"])].append(i)
@@ -589,14 +611,36 @@ def run(slug):
     blocks = group_lines(tr)
     plans = [plan_event(b, shots, n, W, H) for b in blocks]
     results = {}
+    # checkpoint: every measured event is appended at once, so a restart (the USB drive drops out)
+    # only measures what is missing
+    ck = DATA / slug / "_s2b_checkpoint.jsonl"
+    cached = {}
+    if ck.exists():
+        for line in ck.read_text().splitlines():
+            try:
+                r = json.loads(line)
+                cached[r["key"]] = (r["series"], r["info"])
+            except Exception:
+                pass
+    for i, p in enumerate(plans):
+        k = _ckpt_key(p)
+        if k in cached:
+            results[i] = cached[k]
+            p["skip"] = True
+    print(f"[{slug}] checkpoint: {len(results)}/{len(plans)} events already measured", flush=True)
+    ckf = open(ck, "a")
 
     def on_done(i):
         try:
             results[i] = measure(plans[i], W, H)
+            ckf.write(json.dumps({"key": _ckpt_key(plans[i]), "series": _to_jsonable(results[i][0]),
+                                  "info": _to_jsonable(results[i][1])}) + "\n")
+            ckf.flush()
         except Exception as ex:  # keep going; record failure
             print(f"[{slug}] event {i} measure failed: {ex!r}", flush=True)
 
     stream_crops(slug, plans, on_done)
+    ckf.close()
     events, measures = [], {}
     for eid, (block, p) in enumerate(zip(blocks, plans)):
         if eid not in results:
@@ -684,6 +728,7 @@ def run(slug):
                                                    "hold_step": HOLD_STEP},
                                         "n_events": len(events), "events": events})
     save_json(od / "text_measure.json", measures)
+    ck.unlink(missing_ok=True)  # complete: the checkpoint has served its purpose
     print(f"[{slug}] {len(tr)} line tracks -> {len(events)} events", flush=True)
 
 

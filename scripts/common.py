@@ -30,6 +30,11 @@ def meta(slug):
 
 
 def video_path(slug):
+    """Source video. If VIDEO_CACHE_DIR (a RAM disk) holds a copy, read that instead: the USB HDD
+    drops off the bus under concurrent reads; outputs are still written to the project on Transcend."""
+    cache = os.environ.get("VIDEO_CACHE_DIR")
+    if cache and (Path(cache) / f"{slug}.mp4").exists():
+        return Path(cache) / f"{slug}.mp4"
     return SRC / f"{slug}.mp4"
 
 

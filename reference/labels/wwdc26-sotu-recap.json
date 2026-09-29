@@ -1,0 +1,233 @@
+{
+ "slug": "wwdc26-sotu-recap",
+ "reviewer": "visual review of data/<slug>/review/*.png",
+ "rule": "typography = designer-set type over the picture; caption = small overlay pills/labels; everything else (UI screens, products, player timecodes, legal) is not labelled",
+ "typography": [
+  {
+   "id_at_review": 0,
+   "text": "Apple Intelligence",
+   "ref_frame": 288,
+   "cx": 965,
+   "cy": 552
+  },
+  {
+   "id_at_review": 4,
+   "text": "Claude",
+   "ref_frame": 1037,
+   "cx": 606,
+   "cy": 540
+  },
+  {
+   "id_at_review": 5,
+   "text": "Gemini",
+   "ref_frame": 1038,
+   "cx": 1414,
+   "cy": 540
+  },
+  {
+   "id_at_review": 6,
+   "text": "Dynamic Profiles",
+   "ref_frame": 1163,
+   "cx": 965,
+   "cy": 552
+  },
+  {
+   "id_at_review": 23,
+   "text": "Core AI",
+   "ref_frame": 1414,
+   "cx": 963,
+   "cy": 865
+  },
+  {
+   "id_at_review": 29,
+   "text": "App Intents",
+   "ref_frame": 1758,
+   "cx": 964,
+   "cy": 874
+  },
+  {
+   "id_at_review": 41,
+   "text": "Siri",
+   "ref_frame": 1970,
+   "cx": 963,
+   "cy": 867
+  },
+  {
+   "id_at_review": 71,
+   "text": "SwiftUl",
+   "ref_frame": 3446,
+   "cx": 963,
+   "cy": 865
+  },
+  {
+   "id_at_review": 135,
+   "text": "Xcode Cloud",
+   "ref_frame": 4871,
+   "cx": 963,
+   "cy": 866
+  },
+  {
+   "id_at_review": 138,
+   "text": "Device Hub",
+   "ref_frame": 5158,
+   "cx": 964,
+   "cy": 867
+  },
+  {
+   "id_at_review": 186,
+   "text": "Xcode",
+   "ref_frame": 7041,
+   "cx": 489,
+   "cy": 465
+  },
+  {
+   "id_at_review": 187,
+   "text": "Xcodeis the best place / tocode with agents",
+   "ref_frame": 7086,
+   "cx": 966,
+   "cy": 551
+  },
+  {
+   "id_at_review": 188,
+   "text": "Plugins",
+   "ref_frame": 7206,
+   "cx": 963,
+   "cy": 384
+  },
+  {
+   "id_at_review": 189,
+   "text": "Skills",
+   "ref_frame": 7229,
+   "cx": 590,
+   "cy": 711
+  },
+  {
+   "id_at_review": 190,
+   "text": "Agents",
+   "ref_frame": 7246,
+   "cx": 1334,
+   "cy": 714
+  },
+  {
+   "id_at_review": 191,
+   "text": "Tools",
+   "ref_frame": 7229,
+   "cx": 961,
+   "cy": 712
+  },
+  {
+   "id_at_review": 192,
+   "text": "Figma",
+   "ref_frame": 7346,
+   "cx": 628,
+   "cy": 540
+  },
+  {
+   "id_at_review": 193,
+   "text": "GitHub",
+   "ref_frame": 7347,
+   "cx": 1278,
+   "cy": 532
+  },
+  {
+   "id_at_review": 212,
+   "text": "WDC26",
+   "ref_frame": 7905,
+   "cx": 799,
+   "cy": 487
+  },
+  {
+   "id_at_review": 213,
+   "text": "WDC26",
+   "ref_frame": 7906,
+   "cx": 1433,
+   "cy": 695
+  },
+  {
+   "id_at_review": 216,
+   "text": "WDC26",
+   "ref_frame": 7911,
+   "cx": 1726,
+   "cy": 626
+  }
+ ],
+ "caption": [
+  {
+   "id_at_review": 1,
+   "text": "NEXT-GENERATION / APPLE FOUNDATION MODELS",
+   "ref_frame": 539,
+   "cx": 944,
+   "cy": 840
+  },
+  {
+   "id_at_review": 2,
+   "text": "GOOGLE GEMINI MODELS",
+   "ref_frame": 441,
+   "cx": 1442,
+   "cy": 878
+  },
+  {
+   "id_at_review": 3,
+   "text": "Foundation Models framework",
+   "ref_frame": 722,
+   "cx": 964,
+   "cy": 867
+  },
+  {
+   "id_at_review": 72,
+   "text": "Speed / Interactions / Capabilities",
+   "ref_frame": 3547,
+   "cx": 964,
+   "cy": 559
+  },
+  {
+   "id_at_review": 137,
+   "text": "Faster builds / Metal support / Apple silicon",
+   "ref_frame": 5011,
+   "cx": 1224,
+   "cy": 554
+  },
+  {
+   "id_at_review": 202,
+   "text": "Device Hub",
+   "ref_frame": 7602,
+   "cx": 474,
+   "cy": 357
+  },
+  {
+   "id_at_review": 203,
+   "text": "Foundation Models / framework",
+   "ref_frame": 7603,
+   "cx": 170,
+   "cy": 444
+  },
+  {
+   "id_at_review": 204,
+   "text": "Game Porting / Toolkit 4",
+   "ref_frame": 7603,
+   "cx": 1744,
+   "cy": 842
+  },
+  {
+   "id_at_review": 206,
+   "text": "Xcode Cloud",
+   "ref_frame": 7603,
+   "cx": 1742,
+   "cy": 984
+  },
+  {
+   "id_at_review": 207,
+   "text": "Apple Intelligence",
+   "ref_frame": 7604,
+   "cx": 202,
+   "cy": 253
+  },
+  {
+   "id_at_review": 209,
+   "text": "Core Al",
+   "ref_frame": 7604,
+   "cx": 171,
+   "cy": 633
+  }
+ ]
+}

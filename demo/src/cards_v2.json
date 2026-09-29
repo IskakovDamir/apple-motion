@@ -1,0 +1,324 @@
+{
+ "bpm": 120,
+ "offsetFrames": 0,
+ "cards": [
+  {
+   "beats": 8,
+   "bg": "offWhite",
+   "device": {
+    "cards": [
+     {
+      "title": "Six Apple recaps",
+      "subtitle": "1,107 s · 33,187 frames",
+      "icon": "🎬"
+     },
+     {
+      "title": "Every frame read",
+      "subtitle": "OCR on every text shot",
+      "icon": "🔎"
+     },
+     {
+      "title": "Every spring fitted",
+      "subtitle": "Remotion spring() port",
+      "icon": "〰️"
+     }
+    ]
+   }
+  },
+  {
+   "beats": 2,
+   "bg": "black",
+   "lines": [
+    "Measured."
+   ],
+   "entry": "cut",
+   "size": "headline"
+  },
+  {
+   "beats": 2,
+   "bg": "white",
+   "icon": {
+    "glyph": "Aa",
+    "from": "#64d2ff",
+    "to": "#0a84ff"
+   },
+   "lines": [
+    "Kinetic type"
+   ],
+   "entry": "fade",
+   "size": "title"
+  },
+  {
+   "beats": 2,
+   "bg": "white",
+   "icon": {
+    "glyph": "♩",
+    "from": "#ff9f0a",
+    "to": "#ff375f"
+   },
+   "lines": [
+    "Beat grid"
+   ],
+   "entry": "fade",
+   "size": "title"
+  },
+  {
+   "beats": 2,
+   "bg": "white",
+   "icon": {
+    "glyph": "↗",
+    "from": "#30d158",
+    "to": "#00a86b"
+   },
+   "lines": [
+    "Springs"
+   ],
+   "entry": "fade",
+   "size": "title"
+  },
+  {
+   "beats": 4,
+   "bg": "black",
+   "counter": {
+    "to": 33187,
+    "caption": "frames, one by one"
+   },
+   "size": "hero",
+   "transition": "whip"
+  },
+  {
+   "beats": 4,
+   "bg": "black",
+   "device": {
+    "tone": "dark",
+    "cards": [
+     {
+      "title": "Cut detected",
+      "subtitle": "shot 41 · 22 frames",
+      "icon": "✂️"
+     },
+     {
+      "title": "Type on the word",
+      "subtitle": "lands with the voice",
+      "icon": "🎙️"
+     }
+    ]
+   }
+  },
+  {
+   "beats": 4,
+   "bg": "black",
+   "lines": [
+    "Every cut.",
+    "Every word."
+   ],
+   "entry": "slideUpMask",
+   "size": "headline",
+   "align": "left",
+   "x": 9
+  },
+  {
+   "beats": 4,
+   "bg": "white",
+   "spec": {
+    "value": "SPEC_VALUE",
+    "label": "SPEC_LABEL",
+    "gradient": [
+     "#b150e2",
+     "#e0417b"
+    ]
+   },
+   "entry": "scaleDown"
+  },
+  {
+   "beats": 4,
+   "bg": "gradient",
+   "scrubber": {
+    "from": 1845,
+    "to": 1930,
+    "pill": "MEASURED AT 30 FPS"
+   },
+   "lines": [
+    "Type does the talking."
+   ],
+   "entry": "perWord",
+   "size": "headline",
+   "y": 42,
+   "transition": "whip"
+  },
+  {
+   "beats": 1,
+   "bg": "white",
+   "icon": {
+    "glyph": "◐",
+    "from": "#5e5ce6",
+    "to": "#bf5af2"
+   }
+  },
+  {
+   "beats": 1,
+   "bg": "white",
+   "icon": {
+    "glyph": "✦",
+    "from": "#ff375f",
+    "to": "#ff9f0a"
+   }
+  },
+  {
+   "beats": 1,
+   "bg": "white",
+   "icon": {
+    "glyph": "⌘",
+    "from": "#0a84ff",
+    "to": "#64d2ff"
+   }
+  },
+  {
+   "beats": 1,
+   "bg": "white",
+   "icon": {
+    "glyph": "♪",
+    "from": "#30d158",
+    "to": "#34c759"
+   }
+  },
+  {
+   "beats": 4,
+   "bg": "offWhite",
+   "device": {
+    "cards": [
+     {
+      "title": "Loudness",
+      "subtitle": "LUFS_TEXT",
+      "icon": "🔊"
+     },
+     {
+      "title": "Tempo",
+      "subtitle": "BPM_TEXT",
+      "icon": "🥁"
+     }
+    ]
+   }
+  },
+  {
+   "beats": 2,
+   "bg": "white",
+   "icon": {
+    "glyph": "⇄",
+    "from": "#5ac8fa",
+    "to": "#007aff"
+   },
+   "lines": [
+    "Transitions"
+   ],
+   "entry": "fade",
+   "size": "title"
+  },
+  {
+   "beats": 2,
+   "bg": "white",
+   "icon": {
+    "glyph": "≋",
+    "from": "#ff453a",
+    "to": "#ff2d55"
+   },
+   "lines": [
+    "Loudness"
+   ],
+   "entry": "fade",
+   "size": "title"
+  },
+  {
+   "beats": 8,
+   "bg": "black",
+   "lines": [
+    "Type is the accent."
+   ],
+   "entry": "perWord",
+   "size": "headline",
+   "transition": "dissolve"
+  },
+  {
+   "beats": 1,
+   "bg": "black",
+   "lines": [
+    "Pace."
+   ],
+   "entry": "cut",
+   "size": "hero"
+  },
+  {
+   "beats": 1,
+   "bg": "white",
+   "lines": [
+    "Type."
+   ],
+   "entry": "cut",
+   "size": "hero"
+  },
+  {
+   "beats": 1,
+   "bg": "black",
+   "lines": [
+    "Springs."
+   ],
+   "entry": "cut",
+   "size": "hero"
+  },
+  {
+   "beats": 1,
+   "bg": "white",
+   "lines": [
+    "Cuts."
+   ],
+   "entry": "cut",
+   "size": "hero"
+  },
+  {
+   "beats": 1,
+   "bg": "black",
+   "lines": [
+    "Beats."
+   ],
+   "entry": "cut",
+   "size": "hero"
+  },
+  {
+   "beats": 1,
+   "bg": "white",
+   "lines": [
+    "Words."
+   ],
+   "entry": "cut",
+   "size": "hero"
+  },
+  {
+   "beats": 1,
+   "bg": "black",
+   "lines": [
+    "Loudness."
+   ],
+   "entry": "cut",
+   "size": "hero"
+  },
+  {
+   "beats": 1,
+   "bg": "offWhite",
+   "lines": [
+    "Measured."
+   ],
+   "entry": "cut",
+   "size": "hero"
+  },
+  {
+   "beats": 8,
+   "bg": "black",
+   "lines": [
+    "apple-motion"
+   ],
+   "entry": "scaleDown",
+   "size": "hero",
+   "sfx": "hit"
+  }
+ ]
+}

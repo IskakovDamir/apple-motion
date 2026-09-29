@@ -1,0 +1,142 @@
+{
+ "slug": "wwdc25-welcome",
+ "reviewer": "visual review of data/<slug>/review/*.png",
+ "rule": "typography = designer-set type over the picture; caption = small overlay pills/labels; everything else (UI screens, products, player timecodes, legal) is not labelled",
+ "typography": [
+  {
+   "id_at_review": 0,
+   "text": "WDC25",
+   "ref_frame": 141,
+   "cx": 1022,
+   "cy": 533
+  },
+  {
+   "id_at_review": 1,
+   "text": "WDC2S",
+   "ref_frame": 155,
+   "cx": 982,
+   "cy": 536
+  },
+  {
+   "id_at_review": 2,
+   "text": "WDC25",
+   "ref_frame": 176,
+   "cx": 984,
+   "cy": 545
+  },
+  {
+   "id_at_review": 57,
+   "text": "Metal 4",
+   "ref_frame": 542,
+   "cx": 960,
+   "cy": 870
+  },
+  {
+   "id_at_review": 63,
+   "text": "W 25",
+   "ref_frame": 1278,
+   "cx": 982,
+   "cy": 530
+  },
+  {
+   "id_at_review": 64,
+   "text": "Platforms State / of the Union",
+   "ref_frame": 1318,
+   "cx": 981,
+   "cy": 530
+  },
+  {
+   "id_at_review": 109,
+   "text": "Liqjuid Glass",
+   "ref_frame": 1828,
+   "cx": 964,
+   "cy": 552
+  },
+  {
+   "id_at_review": 110,
+   "text": "Liqjuid Olass",
+   "ref_frame": 1838,
+   "cx": 966,
+   "cy": 545
+  },
+  {
+   "id_at_review": 111,
+   "text": "Liqjuid Glass",
+   "ref_frame": 1844,
+   "cx": 966,
+   "cy": 540
+  },
+  {
+   "id_at_review": 112,
+   "text": "Liquid Glass",
+   "ref_frame": 1854,
+   "cx": 965,
+   "cy": 540
+  },
+  {
+   "id_at_review": 295,
+   "text": "IDC25",
+   "ref_frame": 4443,
+   "cx": 924,
+   "cy": 534
+  },
+  {
+   "id_at_review": 296,
+   "text": "WDC2S",
+   "ref_frame": 4471,
+   "cx": 1002,
+   "cy": 534
+  }
+ ],
+ "caption": [
+  {
+   "id_at_review": 59,
+   "text": "Deeply nested containers",
+   "ref_frame": 958,
+   "cx": 534,
+   "cy": 102
+  },
+  {
+   "id_at_review": 164,
+   "text": "App data",
+   "ref_frame": 2444,
+   "cx": 894,
+   "cy": 102
+  },
+  {
+   "id_at_review": 165,
+   "text": "Internet",
+   "ref_frame": 2444,
+   "cx": 1029,
+   "cy": 101
+  },
+  {
+   "id_at_review": 166,
+   "text": "prompt",
+   "ref_frame": 2444,
+   "cx": 496,
+   "cy": 519
+  },
+  {
+   "id_at_review": 167,
+   "text": "response",
+   "ref_frame": 2444,
+   "cx": 1422,
+   "cy": 593
+  },
+  {
+   "id_at_review": 169,
+   "text": "8 Trained / knowledge",
+   "ref_frame": 2444,
+   "cx": 960,
+   "cy": 964
+  },
+  {
+   "id_at_review": 170,
+   "text": "Your tool",
+   "ref_frame": 2446,
+   "cx": 962,
+   "cy": 321
+  }
+ ]
+}

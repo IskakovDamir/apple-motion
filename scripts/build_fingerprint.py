@@ -14,6 +14,7 @@ import sys
 from collections import Counter
 
 import numpy as np
+from pathlib import Path
 
 from common import DATA, ROOT, load_json, meta, read_shots
 
@@ -313,7 +314,24 @@ def storage():
         now = subprocess.run(["df", "-k", "/System/Volumes/Data"], capture_output=True, text=True).stdout.splitlines()[1].split()
         used0, used1 = int(b[2]), int(now[2])
         lines.append(f"- Internal Data volume used: {used0 / 1e6:.2f} GB at baseline ({base.read_text().splitlines()[0]}) -> "
-                     f"{used1 / 1e6:.2f} GB now: {(used1 - used0) / 1024:+.0f} MB")
+                     f"{used1 / 1e6:.2f} GB now: {(used1 - used0) / 1024:+.0f} MB. This counts everything on the Mac "
+                     "(other apps, browsers, other Claude sessions, caches), not just this project.")
+    home = Path.home()
+    own = [home / ".claude" / "projects" / "-Volumes-Transcend-dev-apple-motion",
+           home / ".claude" / "projects" / "-Users-damir-dev-apple-motion",
+           Path("/private/tmp/claude-501/-Volumes-Transcend-dev-apple-motion")]
+    tot = 0
+    for p_ in own:
+        if p_.exists():
+            kb = int(subprocess.run(["du", "-sk", str(p_)], capture_output=True, text=True).stdout.split()[0])
+            tot += kb
+            lines.append(f"  - this project's files on the internal disk: {p_} {kb / 1024:.1f} MB")
+    lines.append(f"- This project's own internal-disk footprint (session transcript + scratchpad + the ~/dev symlink): "
+                 f"{tot / 1024:.0f} MB {'(<= 200 MB: OK)' if tot / 1024 <= 200 else '(> 200 MB)'}")
+    old = home / "dev" / "apple-motion.internal-old-20260928"
+    if old.exists():
+        lines.append(f"- Left on the internal disk from the earlier aborted attempt (moved aside, not deleted): {old} "
+                     "(1.5 GB; safe to delete by hand)")
     return lines
 
 

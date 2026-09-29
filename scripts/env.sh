@@ -23,6 +23,8 @@ export MKL_NUM_THREADS=$OMP_NUM_THREADS VECLIB_MAXIMUM_THREADS=$OMP_NUM_THREADS 
 export CV_THREADS=${CV_THREADS:-3}
 export DATA_DIR="$PROJECT_ROOT/data"
 export npm_config_cache="$CACHE_ROOT/npm"
+# optional read-only RAM-disk copy of data/_src (see common.video_path)
+[ -d /Volumes/amvideo ] && export VIDEO_CACHE_DIR=/Volumes/amvideo
 export REMOTION_CACHE_DIR="$CACHE_ROOT/remotion"
 mkdir -p "$PIP_CACHE_DIR" "$TORCH_HOME" "$HF_HOME" "$XDG_CACHE_HOME" "$TMPDIR" "$EASYOCR_DIR" \
          "$MPLCONFIGDIR" "$NUMBA_CACHE_DIR" "$YTDLP_CACHE_DIR" "$DATA_DIR"

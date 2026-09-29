@@ -91,7 +91,7 @@ export const DURATION = {{
   holdFrames: {int(round(hold))},
   /** shot length, median frames (p10..p90 {g(P['shot_length_frames'], 'p10')}..{g(P['shot_length_frames'], 'p90')}) */
   shotFrames: {int(round(shot))},
-  wordStaggerFrames: {int(round(g(P.get('word_stagger_frames') or {{}}, default=3) or 3))},
+  wordStaggerFrames: {int(round(g(P.get('word_stagger_frames') or dict(), default=3) or 3))},
   letterStaggerFrames: 1,
   transitionFrames: 8,
 }};
