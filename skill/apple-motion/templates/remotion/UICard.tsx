@@ -15,6 +15,8 @@ export type UICardProps = {
   /** frame (local) at which the card pops in */
   at?: number;
   entryFrames?: number;
+  /** title size in % of frame height (UI inside a device needs ~2.5-4.5 to read in a recap) */
+  fontPct?: number;
 };
 
 /**
@@ -31,6 +33,7 @@ export const UICard: React.FC<UICardProps> = ({
   y = 50,
   at = 0,
   entryFrames = 12,
+  fontPct = 2.6,
 }) => {
   const frame = useCurrentFrame();
   const {fps, width, height} = useVideoConfig();
@@ -39,7 +42,7 @@ export const UICard: React.FC<UICardProps> = ({
   const bg = tone === 'dark' ? 'rgba(28,28,30,0.96)' : tone === 'glass' ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.97)';
   const fg = tone === 'dark' ? '#ffffff' : '#1d1d1f';
   const sub = tone === 'dark' ? 'rgba(235,235,245,0.6)' : 'rgba(60,60,67,0.6)';
-  const base = height * 0.026; // ~28 px at 1080p
+  const base = (fontPct / 100) * height;
   return (
     <div
       style={{

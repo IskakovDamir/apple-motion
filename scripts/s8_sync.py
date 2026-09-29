@@ -71,6 +71,14 @@ def run(slug):
                     best = (d, w["w"])
         return {"offset_frames": best[0], "word": best[1]} if best else None
 
+    # VO pauses: gaps >= 0.15 s between consecutive words (breaths / phrase ends)
+    pauses = []
+    for w0, w1 in zip(words[:-1], words[1:]):
+        if (w1["start_frame"] - w0["end_frame"]) / m["fps"] >= 0.15:
+            pauses.append((w0["end_frame"], w1["start_frame"]))
+    in_pause = lambda f: any(a - WIN <= f <= b + WIN for a, b in pauses)
+    speech_span = (words[0]["start_frame"], words[-1]["end_frame"]) if words else (0, 0)
+    pause_frames = sum(min(b + WIN, speech_span[1]) - max(a - WIN, speech_span[0]) + 1 for a, b in pauses)
     items = []
     for s in shots[1:]:
         items.append(item("cut", s["start_frame"], {"shot": s["index"], "transition": s["transition"]}))
@@ -104,8 +112,21 @@ def run(slug):
         "typography_vo_offsets": [i["vo_same_word"]["offset_frames"] for i in typo if i.get("vo_same_word")],
         "typography_vo_median_offset": float(np.median([i["vo_same_word"]["offset_frames"] for i in typo if i.get("vo_same_word")]))
             if any(i.get("vo_same_word") for i in typo) else None,
+        "cuts_in_vo_pause": (round(sum(1 for i in cuts if speech_span[0] <= i["frame"] <= speech_span[1] and in_pause(i["frame"]))
+                                   / max(1, sum(1 for i in cuts if speech_span[0] <= i["frame"] <= speech_span[1])), 3) if pauses else None),
+        "chance_in_vo_pause": round(pause_frames / max(1, speech_span[1] - speech_span[0]), 3) if pauses else None,
+        "n_vo_pauses": len(pauses),
         "cut_beat_offset_hist": {str(k): int(sum(1 for o in offs if o == k)) for k in range(-7, 8)},
     }
+    # one-sided binomial tests against the chance rate (is the alignment more than coincidence?)
+    from scipy.stats import binomtest
+    def ptest(sel, key, chance):
+        sel = [i for i in sel if i["in_music"]]
+        k = sum(bool(i[key]) for i in sel)
+        return round(float(binomtest(k, len(sel), chance, alternative="greater").pvalue), 4) if sel and chance else None
+    summary["p_cuts_on_beat"] = ptest(cuts, "on_beat", chance_beat)
+    summary["p_cuts_on_downbeat"] = ptest(cuts, "on_downbeat", chance_down)
+    summary["p_typography_on_beat"] = ptest(typo, "on_beat", chance_beat)
     save_json(DATA / slug / "sync.json", {"slug": slug, "summary": summary, "items": items})
     print(f"[{slug}] cuts on beat {summary['cuts_on_beat']} (chance {summary['chance_on_beat']}), "
           f"typo on beat {summary['typography_on_beat']}", flush=True)

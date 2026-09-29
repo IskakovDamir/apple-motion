@@ -2,6 +2,10 @@ import React from 'react';
 import {AbsoluteFill, Html5Audio, staticFile} from 'remotion';
 import {TransitionSeries} from '@remotion/transitions';
 import {
+  AppIcon,
+  DeviceFrame,
+  Scrubber,
+  UICard,
   appleTransition,
   transitionFrames,
   Backdrop,
@@ -22,6 +26,14 @@ export type Card = {
   /** length in beats */
   beats: number;
   bg: BackdropKind;
+  /** feature title card: app icon above the title */
+  icon?: {glyph: string; from: string; to: string};
+  /** spec numeral with a gradient fill and a small label under it */
+  spec?: {value: string; label: string; gradient: [string, string]};
+  /** device mock-up with UI cards popping in, one per beat */
+  device?: {cards: {title: string; subtitle?: string; icon?: string}[]};
+  /** player-chrome framing with a caption pill */
+  scrubber?: {from: number; to: number; pill?: string};
   lines?: string[];
   counter?: {to: number; suffix?: string; caption?: string; decimals?: number};
   entry?: Entry;
@@ -75,6 +87,29 @@ export const Recap: React.FC<RecapProps> = ({bpm, offsetFrames, cards, music}) =
     items.push(
       <TransitionSeries.Sequence key={`c${i}`} durationInFrames={dur}>
         <Backdrop kind={c.bg}>
+          {c.icon ? <AppIcon glyph={c.icon.glyph} from={c.icon.from} to={c.icon.to} y={40} sizePct={15} /> : null}
+          {c.device ? (
+            <DeviceFrame heightPct={150} y={78} entryFrames={g.beat} pushPctPerSec={1.2} screenColor="#f2f2f7">
+              {c.device.cards.map((u, k) => (
+                <UICard key={k} title={u.title} subtitle={u.subtitle} icon={u.icon} widthPct={33} fontPct={4.2} x={50} y={17 + k * 14}
+                  at={Math.round(g.beat * (k + 1))} />
+              ))}
+            </DeviceFrame>
+          ) : null}
+          {c.scrubber ? <Scrubber from={c.scrubber.from} to={c.scrubber.to} /> : null}
+          {c.scrubber?.pill ? (
+            <div style={{position: 'absolute', left: '50%', top: '69%', transform: 'translateX(-50%)', padding: '10px 22px',
+              borderRadius: 99, background: 'rgba(40,40,42,0.72)', color: '#fff', fontFamily: 'SF Pro Display, -apple-system, Inter, sans-serif',
+              fontSize: 26, letterSpacing: '0.04em', fontWeight: 500}}>{c.scrubber.pill}</div>
+          ) : null}
+          {c.spec ? (
+            <>
+              <KineticText lines={[c.spec.value]} durationInFrames={dur} entry={c.entry ?? 'scaleDown'} size="hero" capHeightPct={16}
+                gradient={c.spec.gradient} y={44} weight={700} />
+              <KineticText lines={[c.spec.label]} durationInFrames={dur} entry="fade" size="caption" capHeightPct={3.2}
+                color={color} y={64} weight={500} />
+            </>
+          ) : null}
           {c.counter ? (
             <Counter
               to={c.counter.to}
@@ -100,7 +135,7 @@ export const Recap: React.FC<RecapProps> = ({bpm, offsetFrames, cards, music}) =
               color={color}
               align={c.align}
               x={c.x}
-              y={c.y}
+              y={c.y ?? (c.icon ? 64 : undefined)}
             />
           ) : null}
         </Backdrop>

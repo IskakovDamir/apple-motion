@@ -1,0 +1,191 @@
+{
+ "slug": "wwdc22-day1-recap",
+ "reviewer": "visual review of data/<slug>/review/*.png",
+ "rule": "typography = designer-set type over the picture; caption = small overlay pills/labels; everything else (UI screens, products, player timecodes, legal) is not labelled",
+ "typography": [
+  {
+   "id_at_review": 0,
+   "text": "DC",
+   "ref_frame": 354,
+   "cx": 1369,
+   "cy": 539
+  },
+  {
+   "id_at_review": 137,
+   "text": "iCloud Shared / Photo Library",
+   "ref_frame": 1435,
+   "cx": 1401,
+   "cy": 475
+  },
+  {
+   "id_at_review": 309,
+   "text": "SM2",
+   "ref_frame": 2477,
+   "cx": 537,
+   "cy": 1003
+  },
+  {
+   "id_at_review": 310,
+   "text": "Up to",
+   "ref_frame": 2541,
+   "cx": 1161,
+   "cy": 464
+  },
+  {
+   "id_at_review": 313,
+   "text": "18%",
+   "ref_frame": 2530,
+   "cx": 694,
+   "cy": 820
+  },
+  {
+   "id_at_review": 314,
+   "text": "35%",
+   "ref_frame": 2524,
+   "cx": 1204,
+   "cy": 838
+  },
+  {
+   "id_at_review": 315,
+   "text": "Faster GPU",
+   "ref_frame": 2539,
+   "cx": 1164,
+   "cy": 896
+  },
+  {
+   "id_at_review": 316,
+   "text": "Faster CPU",
+   "ref_frame": 2537,
+   "cx": 712,
+   "cy": 903
+  },
+  {
+   "id_at_review": 318,
+   "text": "Ventura",
+   "ref_frame": 2915,
+   "cx": 978,
+   "cy": 552
+  },
+  {
+   "id_at_review": 319,
+   "text": "macOS",
+   "ref_frame": 2923,
+   "cx": 980,
+   "cy": 304
+  },
+  {
+   "id_at_review": 327,
+   "text": "Stage Manager",
+   "ref_frame": 3055,
+   "cx": 1431,
+   "cy": 788
+  },
+  {
+   "id_at_review": 447,
+   "text": "Shared with You API",
+   "ref_frame": 4044,
+   "cx": 962,
+   "cy": 866
+  },
+  {
+   "id_at_review": 449,
+   "text": "App Intents API",
+   "ref_frame": 4081,
+   "cx": 963,
+   "cy": 873
+  },
+  {
+   "id_at_review": 450,
+   "text": "Live Activities / API",
+   "ref_frame": 4118,
+   "cx": 1539,
+   "cy": 538
+  },
+  {
+   "id_at_review": 502,
+   "text": "WeatherKit",
+   "ref_frame": 4197,
+   "cx": 968,
+   "cy": 867
+  },
+  {
+   "id_at_review": 504,
+   "text": "Metal 3",
+   "ref_frame": 4280,
+   "cx": 963,
+   "cy": 865
+  },
+  {
+   "id_at_review": 526,
+   "text": "Swift Charts",
+   "ref_frame": 4437,
+   "cx": 963,
+   "cy": 878
+  },
+  {
+   "id_at_review": 532,
+   "text": "Xcode Cloud",
+   "ref_frame": 4552,
+   "cx": 963,
+   "cy": 867
+  },
+  {
+   "id_at_review": 540,
+   "text": "2022 Apple Design Awards",
+   "ref_frame": 4731,
+   "cx": 964,
+   "cy": 181
+  },
+  {
+   "id_at_review": 550,
+   "text": "Finalists",
+   "ref_frame": 4738,
+   "cx": 966,
+   "cy": 921
+  }
+ ],
+ "caption": [
+  {
+   "id_at_review": 311,
+   "text": "10-core / GPU",
+   "ref_frame": 2537,
+   "cx": 1170,
+   "cy": 552
+  },
+  {
+   "id_at_review": 312,
+   "text": "8-core / CPU",
+   "ref_frame": 2539,
+   "cx": 720,
+   "cy": 553
+  },
+  {
+   "id_at_review": 552,
+   "text": "GWWDC22 / What's new in / Discover / Metal 3 / Xcode 14",
+   "ref_frame": 4920,
+   "cx": 420,
+   "cy": 543
+  },
+  {
+   "id_at_review": 553,
+   "text": "Meet Focus / filters",
+   "ref_frame": 4858,
+   "cx": 371,
+   "cy": 593
+  },
+  {
+   "id_at_review": 554,
+   "text": "What's new in / SwiftUl",
+   "ref_frame": 4896,
+   "cx": 420,
+   "cy": 592
+  },
+  {
+   "id_at_review": 555,
+   "text": "Bring your world / into augmented / reality",
+   "ref_frame": 4964,
+   "cx": 471,
+   "cy": 652
+  }
+ ]
+}

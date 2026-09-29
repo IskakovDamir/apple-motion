@@ -34,6 +34,8 @@ export type KineticTextProps = {
   entryFrames?: number;
   exitFrames?: number;
   staggerFrames?: number;
+  /** vertical gradient fill (Apple uses it only for spec numerals, e.g. ['#b150e2', '#e0417b']) */
+  gradient?: readonly [string, string];
   style?: React.CSSProperties;
 };
 
@@ -91,6 +93,7 @@ export const KineticText: React.FC<KineticTextProps> = ({
   entryFrames = DURATION.textInFrames,
   exitFrames,
   staggerFrames,
+  gradient,
   style,
 }) => {
   const frame = useCurrentFrame();
@@ -224,6 +227,9 @@ export const KineticText: React.FC<KineticTextProps> = ({
           filter: blur > 0.05 ? `blur(${blur}px)` : undefined,
           fontFeatureSettings: '"kern" 1',
           WebkitFontSmoothing: 'antialiased',
+          ...(gradient
+            ? {backgroundImage: `linear-gradient(180deg, ${gradient[0]}, ${gradient[1]})`, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent'}
+            : {}),
           ...style,
         }}
       >

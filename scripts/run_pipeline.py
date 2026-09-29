@@ -48,10 +48,30 @@ def run(slug, step):
     return False
 
 
+def locked_by_other(slug):
+    """Per-slug lock so several runners can work in parallel without touching the same slug."""
+    import os
+    lk = ROOT / ".cache" / "run" / f"lock_{slug}"
+    if lk.exists():
+        try:
+            other = int(lk.read_text())
+            if other != os.getpid():
+                os.kill(other, 0)
+                cmd = subprocess.run(["ps", "-o", "command=", "-p", str(other)], capture_output=True, text=True).stdout
+                if "run_pipeline" in cmd:
+                    return True
+        except (ValueError, ProcessLookupError, PermissionError):
+            pass
+    lk.parent.mkdir(parents=True, exist_ok=True)
+    lk.write_text(str(os.getpid()))
+    return False
+
+
 def main():
-    pid = ROOT / ".cache" / "run" / "pipeline.pid"
-    pid.parent.mkdir(parents=True, exist_ok=True)
-    pid.write_text(str(__import__("os").getpid()))
+    if len(sys.argv) == 1:  # the supervised default runner owns the pid file
+        pid = ROOT / ".cache" / "run" / "pipeline.pid"
+        pid.parent.mkdir(parents=True, exist_ok=True)
+        pid.write_text(str(__import__("os").getpid()))
     slugs = sys.argv[1:] or ORDER
     pending = True
     while pending:
@@ -60,11 +80,15 @@ def main():
             if not ocr_done(slug):
                 pending = True
                 continue
+            if locked_by_other(slug):
+                pending = True
+                continue
             for step in STEPS:
                 if marker(slug, step).exists():
                     continue
                 if not run(slug, step):
                     break  # later steps depend on this one; retry on the next start
+            (ROOT / ".cache" / "run" / f"lock_{slug}").unlink(missing_ok=True)
         if pending:
             time.sleep(60)
     missing = [f"{s}:{st}" for s in slugs for st in STEPS if not marker(s, st).exists()]

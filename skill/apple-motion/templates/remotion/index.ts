@@ -14,3 +14,4 @@ export type {DeviceFrameProps} from './DeviceFrame';
 export {UICard} from './UICard';
 export type {UICardProps} from './UICard';
 export {Scrubber} from './Scrubber';
+export {AppIcon} from './AppIcon';
