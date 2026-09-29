@@ -108,6 +108,7 @@ def track(frames, shots):
             t = {"boxes": [(f, box)], "texts": [(f, text, conf)], "last": f}
             tracks.append(t)
             active.append(t)
+    tracks = [piece for t in tracks for piece in split_swaps(t)]
     out = []
     for t in tracks:
         if len(t["boxes"]) < 3:
@@ -128,6 +129,36 @@ def track(frames, shots):
                     "first": t["boxes"][0][0], "last": t["boxes"][-1][0], "max_conf": maxc,
                     "distinct_texts": distinct})
     return out
+
+
+def split_swaps(t, min_run=6):
+    """Split a track where the text changes to a different string that then stays stable
+    (text swapped in place: 'Weight 400' -> 'Weight 500'). Counters that roll every few frames
+    never form two stable runs, so they stay one event."""
+    seq = [(f, key(tx)) for f, tx, c in t["texts"] if c >= 0.5 and key(tx)]
+    if len(seq) < 2 * min_run:
+        return [t]
+    runs = []  # [key, first_f, last_f, count]
+    for f, k in seq:
+        if runs and (k == runs[-1][0] or difflib.SequenceMatcher(None, k, runs[-1][0]).ratio() >= 0.97):
+            runs[-1][2] = f
+            runs[-1][3] += 1
+        else:
+            runs.append([k, f, f, 1])
+    stable = [r for r in runs if r[3] >= min_run and r[2] - r[1] >= min_run - 1]
+    cuts = []
+    for a, b in zip(stable[:-1], stable[1:]):
+        if a[0] != b[0]:
+            cuts.append((a[2] + b[1] + 1) // 2)
+    if not cuts:
+        return [t]
+    pieces, bounds = [], [-10 ** 9] + cuts + [10 ** 9]
+    for lo, hi in zip(bounds[:-1], bounds[1:]):
+        bx = [(f, b) for f, b in t["boxes"] if lo <= f < hi]
+        tx = [(f, x, c) for f, x, c in t["texts"] if lo <= f < hi]
+        if bx:
+            pieces.append({"boxes": bx, "texts": tx, "last": bx[-1][0]})
+    return pieces
 
 
 def group_lines(tr):
@@ -409,6 +440,10 @@ def settle_distance(series, fref, cap_px, first, last):
         for k in ("opacity", "blur_px", "reveal"):
             if np.isfinite(sm[k][i]) and np.isfinite(sm[k][iref]):
                 terms.append(abs(sm[k][i] - sm[k][iref]) / sig[k])
+        wm = series[i].get("word_mass") or []
+        wv = [w for w in wm if w is not None]
+        if len(wv) >= 2:
+            terms.append(max(abs(w - 1) for w in wv) / 0.2)  # every word present (per-word entries)
         D[i] = max(terms) if terms else np.inf
     return fs.astype(int), D, sm["mass"], trend
 

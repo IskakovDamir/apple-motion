@@ -32,7 +32,11 @@ def analyse_window(series, a, b, direction, fps, cap_px=None):
     sig = dict(SIG)
     if cap_px:
         sig["blur_px"] = max(SIG["blur_px"], 0.04 * cap_px)
-    pts = [p for p in series if a - 2 <= p["f"] <= b + 2]
+    # fit window: the spring tail after the perceptual settle carries most of the shape information
+    # (calibration on our own renders: a 12-frame Remotion spring looks settled after ~3-5 frames)
+    tail = max(12, 2 * (b - a))
+    lo, hi = (a - 3, b + tail) if direction > 0 else (a - tail // 2, b + 3)
+    pts = [p for p in series if lo <= p["f"] <= hi]
     if len(pts) < 2:
         return None
     fr = np.array([p["f"] for p in pts], np.float64)
@@ -41,7 +45,7 @@ def analyse_window(series, a, b, direction, fps, cap_px=None):
     ok = mass >= 0.15
     settled_i = int(np.argmin(np.abs(fr - (b if direction > 0 else a))))
     moving_i = int(np.argmin(np.abs(fr - (a if direction > 0 else b))))
-    chans, progress = {}, []
+    chans, progress, prog_by = {}, [], {}
     for ch in ("scale", "dy", "dx", "opacity", "blur_px", "reveal"):
         v = channel_values(pts, ch)
         if ch == "opacity":
@@ -49,7 +53,11 @@ def analyse_window(series, a, b, direction, fps, cap_px=None):
         valid = np.isfinite(v) & (ok | (ch == "opacity"))
         if valid.sum() < 2:
             continue
-        v_end = v[settled_i] if valid[settled_i] else v[valid][-1 if direction > 0 else 0]
+        # settled value = median of the settled side of the window (not the single 'full' frame,
+        # which the settle tolerance allows to be a few % off -> fake overshoot in the fit)
+        side = (fr >= b) if direction > 0 else (fr <= a)
+        sv = v[side & valid]
+        v_end = float(np.median(sv)) if len(sv) else (v[settled_i] if valid[settled_i] else v[valid][-1 if direction > 0 else 0])
         # start value: first valid sample on the moving side
         idx = np.where(valid)[0]
         v_start = v[idx[0]] if direction > 0 else v[idx[-1]]
@@ -67,17 +75,30 @@ def analyse_window(series, a, b, direction, fps, cap_px=None):
         if is_sig:
             pr = (v - v_start) / rng
             progress.append(np.where(valid, pr, np.nan))
+            prog_by[ch] = np.where(valid, pr, np.nan)
     if not progress:
         # cut on/off: presence is the only signal
         pr = np.clip(mass, 0, 1)
         progress.append(pr if direction > 0 else pr)
-    P = np.nanmean(np.vstack(progress), axis=0)   # 0 on the moving side, 1 when settled
+    # the spring is fitted to ONE leading channel: geometry is driven linearly by the spring, while
+    # opacity usually has its own faster ramp (calibration: averaging channels made springs ~2x too fast).
+    # Masked slides: the visible fraction (reveal) is the clean signal.
+    primary = None
+    # calibration: under a mask the tracked y offset follows the spring exactly (0.49/0.76/0.93 vs
+    # 0.49/0.76/0.93 predicted), while the reveal fraction runs ~10% ahead -> prefer geometry
+    order = ("dy", "scale", "dx", "reveal", "blur_px", "opacity") if ("reveal" in prog_by and chans["reveal"]["from"] < 0.8) \
+        else ("scale", "dy", "dx", "blur_px", "reveal", "opacity")
+    for ch in order:
+        if ch in prog_by and np.isfinite(prog_by[ch]).sum() >= 3:
+            primary = ch
+            break
+    P = prog_by[primary] if primary else np.nanmean(np.vstack(progress), axis=0)  # 0 moving side, 1 settled
     if direction < 0:
         P = 1 - P                                   # exit: 0 settled -> 1 gone
     fr_rel = fr - a
     good = np.isfinite(P)
     return {"frames_rel": fr_rel[good], "progress": np.clip(P[good], -0.5, 1.8), "channels": chans,
-            "frames": fr[good]}
+            "frames": fr[good], "primary_channel": primary or "presence"}
 
 
 def stagger(series, a, b, key):
@@ -110,8 +131,13 @@ def classify_entry(ev, win, words, letters):
         return "counter/number roll"
     if ev.get("replaces_event") is not None and ev["entry_frames"] <= 4:
         return "swap in place"
+    # per-letter only when letters of the same word appear at different times; a per-word entry
+    # also staggers letters, but in word-sized groups
     if letters and letters["n_units"] >= 4 and letters["spread_frames"] >= 3 and letters["order_corr"] > 0.7:
-        return "per-letter"
+        distinct = len(set(letters["half_frames"]))
+        n_words = words["n_units"] if words else 1
+        if distinct > n_words + 1:
+            return "per-letter"
     if words and words["n_units"] >= 2 and words["spread_frames"] >= 2 and words["order_corr"] > 0.7:
         return "per-word pop"
     ch = win["channels"] if win else {}
@@ -121,9 +147,10 @@ def classify_entry(ev, win, words, letters):
     bl = ch.get("blur_px", {})
     if rev.get("animated") and rev.get("start", 1) < 0.8 and dy.get("animated"):
         return "slide up with mask" if dy["start"] > dy["end"] else "slide down with mask"
-    if sc.get("animated") and sc["start"] > 1.08:
+    # the first measurable frame is already ~half-way through a fast spring: 1.03 / 0.97 thresholds
+    if sc.get("animated") and sc["start"] > 1.03:
         return "scale down from large"
-    if sc.get("animated") and sc["start"] < 0.92:
+    if sc.get("animated") and sc["start"] < 0.97:
         return "scale up from small"
     if bl.get("animated") and bl["start"] > 2.0:
         return "blur in"
@@ -183,11 +210,11 @@ def run(slug):
                "exit_style": classify_exit(ev, ext),
                "word_stagger": words, "letter_stagger": letters}
         if ent is not None and len(ent["progress"]) >= 2:
-            rec["entry"] = {"channels": ent["channels"], **fit_window(ent, fps, full - a)}
+            rec["entry"] = {"channels": ent["channels"], "primary_channel": ent["primary_channel"], **fit_window(ent, fps, full - a)}
         else:
             rec["entry"] = {"channels": {}, "spring": None, "note": "no samples"}
         if ext is not None and len(ext["progress"]) >= 2:
-            rec["exit"] = {"channels": ext["channels"], **fit_window(ext, fps, g - xs)}
+            rec["exit"] = {"channels": ext["channels"], "primary_channel": ext["primary_channel"], **fit_window(ext, fps, g - xs)}
         else:
             rec["exit"] = {"note": "cut off or no samples", "spring": None}
         if rec["entry"].get("spring") is None:

@@ -242,12 +242,25 @@ def run(slug):
     stem_share["residual"] = round(e(residual) / e(mix), 4)
 
     # beats on the music stem; drums-weighted onset envelope when drums carry the groove
-    hop = 512
+    # hop 128 (5.8 ms): librosa's tempo estimate is quantised to 60*sr/(hop*lag); at hop 512 the
+    # neighbouring bins around 120 BPM are 117.45 and 123.05 (measured on our own 120 BPM render).
+    # BPM is therefore taken from a line fit of beat time vs beat index, not from the tempo bin.
+    hop = 128
     perc_src = st["drums"] + 0.5 * st["bass"] if stem_share["drums"] > 0.15 else music
     oenv = librosa.onset.onset_strength(y=perc_src, sr=SR, hop_length=hop)
     tempo, beats = librosa.beat.beat_track(onset_envelope=oenv, sr=SR, hop_length=hop, start_bpm=110, tightness=100)
-    bpm = float(np.atleast_1d(tempo)[0])
     beats_t = librosa.frames_to_time(beats, sr=SR, hop_length=hop)
+    bpm_bin = float(np.atleast_1d(tempo)[0])
+    if len(beats_t) >= 8:
+        ibi = np.diff(beats_t)
+        med = np.median(ibi)
+        keep = np.abs(ibi - med) < 0.15 * med
+        idx = np.concatenate([[0], np.cumsum(np.round(ibi / med))]).astype(int)
+        slope = np.polyfit(idx, beats_t, 1)[0] if keep.sum() >= 6 else med
+        bpm = float(60 / slope)
+    else:
+        bpm = bpm_bin
+    hop = 512
     # low-end onset env + harmonic novelty for downbeats
     low = librosa.onset.onset_strength(y=st["bass"] + st["drums"], sr=SR, hop_length=hop, fmax=200, n_mels=32)
     chroma = librosa.feature.chroma_cqt(y=music, sr=SR, hop_length=hop)
@@ -301,10 +314,10 @@ def run(slug):
     out = {
         "fps": fps, "duration_s": round(L / SR, 3), "sr_analysis": SR,
         "stem_rms_share": stem_share,
-        "bpm": round(bpm, 2), "beat_period_frames": round(beat_period_s * fps, 3),
+        "bpm": round(bpm, 2), "bpm_librosa_bin": round(bpm_bin, 2), "beat_period_frames": round(60 / bpm * fps, 3),
         "beat_frames": beats_f, "beat_times_s": [round(float(t), 3) for t in beats_t],
         "downbeat_frames": down_f, "downbeat_phase": phase, "downbeat_confidence": dconf,
-        "meter_assumed": "4/4", "bar_length_frames": round(4 * beat_period_s * fps, 3),
+        "meter_assumed": "4/4", "bar_length_frames": round(4 * 60 / bpm * fps, 3),
         "energy_db_per_frame": {"music": energy_music.tolist(), "mix": energy_mix.tolist()},
         "sections": secs,
         "sfx": {"method": "onsets in drums+bass+other stems; class from pre-roll/decay/centroid/flatness; "

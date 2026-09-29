@@ -108,8 +108,13 @@ def scorecard(slug, truth):
         te = load_json(DATA / slug / "text_events.json")["events"]
         ta = {a["id"]: a for a in load_json(DATA / slug / "text_anim.json")["events"]}
         L += ["## Pipeline calibration (measured vs. ground truth)", "",
-              "| card | text | true appear | measured appear | true entry fr | measured entry fr | true style | measured style | fitted damping/stiffness |",
-              "|---|---|---|---|---|---|---|---|---|"]
+              "| card | text | true appear | measured appear | true entry fr | measured entry fr | true style | measured style | true effective d/k | fitted d/k | idiomatic fit (damping, durationInFrames) |",
+              "|---|---|---|---|---|---|---|---|---|---|---|"]
+        import re as _re
+        import motionfit as mf
+        tok = (ROOT / "skill" / "apple-motion" / "templates" / "remotion" / "tokens.ts").read_text()
+        m_ = _re.search(r"textIn: \{damping: ([\d.]+), stiffness: ([\d.]+)", tok)
+        td, tk = float(m_.group(1)), float(m_.group(2))
         errs = []
         for c in T["cards"]:
             if not c.get("lines"):
@@ -122,8 +127,13 @@ def scorecard(slug, truth):
             a = ta.get(e["id"], {})
             s = (a.get("entry") or {}).get("spring") or {}
             errs.append(e["appear_frame"] - c["start"])
-            L.append(f"| {c['i']} | {' / '.join(c['lines'])[:30]} | {c['start']} | {e['appear_frame']} | {c.get('entry_frames')} | "
-                     f"{e['entry_frames']} | {c.get('entry')} | {a.get('entry_style')} | {s.get('damping')}/{s.get('stiffness')} |")
+            ef = c.get("entry_frames") or 0
+            te_ = mf.effective_spring(td, tk, 1, ef, 30) if ef >= 2 else (None, None)
+            idi = (a.get("entry") or {}).get("spring_idiomatic") or {}
+            L.append(f"| {c['i']} | {' / '.join(c['lines'])[:30]} | {c['start']} | {e['appear_frame']} | {ef} | "
+                     f"{e['entry_frames']} | {c.get('entry')} | {a.get('entry_style')} | "
+                     f"{'%.0f/%.0f' % te_ if te_[0] else '-'} | {s.get('damping')}/{s.get('stiffness')} | "
+                     f"{idi.get('damping')}, {idi.get('durationInFrames')} |")
         if errs:
             L += ["", f"Appear-frame error: median {np.median(errs):+.1f} fr, max |err| {np.max(np.abs(errs))} fr (n={len(errs)})."]
     out = ROOT / "reports" / "eval" / f"{slug}.md"
@@ -138,6 +148,7 @@ def main():
     ap.add_argument("--name", required=True)
     ap.add_argument("--truth")
     ap.add_argument("--skip", default="", help="comma list of steps already done")
+    ap.add_argument("--oracle", action="store_true", help="use s2a_oracle (truth-seeded boxes) instead of GPU OCR")
     a = ap.parse_args()
     slug = f"render-{a.name}"
     log = ROOT / ".cache" / "logs" / f"eval_{slug}.log"
@@ -146,6 +157,9 @@ def main():
         ingest(Path(a.video).resolve(), slug)
     for step in STEPS:
         if step in skip:
+            continue
+        if step == "s2a_ocr" and a.oracle:
+            sh([PY, "s2a_oracle.py", slug, "--truth", str(Path(a.truth).resolve())], log)
             continue
         sh([PY, f"{step}.py", slug], log)
         if step == "s2b_text_events":

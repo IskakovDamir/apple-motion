@@ -152,18 +152,28 @@ def fit_spring(frames_rel, p, fps):
 
 
 def fit_spring_duration(frames_rel, p, fps, duration):
-    """Idiomatic Remotion: spring({config:{damping}, durationInFrames}) with stiffness 100, mass 1."""
+    """Idiomatic Remotion: spring({config: {damping}, durationInFrames}) with stiffness 100, mass 1.
+    durationInFrames is fitted too (the visible settle is much shorter than Remotion's 0.5% settle)."""
     frames_rel = np.asarray(frames_rel, np.float64)
     best = (np.inf, None)
-    for d in np.geomspace(2, 60, 60):
-        for o in OFFSETS:
-            y = spring_with_duration(frames_rel - o, fps, d, 100, 1, duration)
-            e = float(np.mean((y - p) ** 2))
-            if e < best[0]:
-                best = (e, (d, o))
-    d, o = best[1]
-    return {"damping": round(float(d), 2), "stiffness": 100, "mass": 1, "durationInFrames": int(duration),
+    durs = sorted(set(int(x) for x in np.unique(np.round(np.geomspace(max(2, duration), max(6, 5 * duration + 10), 14)))))
+    for D in durs:
+        for d in np.geomspace(4, 60, 30):
+            for o in OFFSETS:
+                y = spring_with_duration(frames_rel - o, fps, d, 100, 1, D)
+                e = float(np.mean((y - p) ** 2))
+                if e < best[0]:
+                    best = (e, (d, o, D))
+    d, o, D = best[1]
+    return {"damping": round(float(d), 2), "stiffness": 100, "mass": 1, "durationInFrames": int(D),
             "time_offset_frames": round(float(o), 2), "rmse": round(float(np.sqrt(best[0])), 4)}
+
+
+def effective_spring(damping, stiffness, mass, duration, fps):
+    """Remotion spring stretched by durationInFrames == an unstretched spring with time scaled by
+    c = natural/duration: stiffness * c^2, damping * c (zeta unchanged)."""
+    c = measure_spring(fps, damping, stiffness, mass) / duration
+    return damping * c, stiffness * c * c
 
 
 def bezier_y_of_x(x, x1, y1, x2, y2):

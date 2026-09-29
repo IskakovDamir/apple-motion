@@ -195,7 +195,7 @@ def cap_height(mask):
 # ---------------------------------------------------------------------------------------------
 # Template tracker on text-likeness (alpha) maps: robust to moving footage behind the text.
 # ---------------------------------------------------------------------------------------------
-BLUR_GRID = np.array([0, 0.75, 1.5, 2.5, 4, 6, 9, 13, 18, 25], np.float32)
+BLUR_GRID = np.array([0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 7.5, 9, 11, 13, 15.5, 18, 21, 25], np.float32)
 
 
 def _ncc(a, b):
@@ -276,6 +276,16 @@ class TextTracker:
             (v, l), ss = self._match(A, s * fs), s * fs
             if v > best:
                 best, loc, s = v, l, ss
+        # sub-step scale: parabola through NCC at s/1.0125, s, s*1.0125 (log-scale)
+        (vm, _), (vp, _) = self._match(A, s / 1.0125), self._match(A, s * 1.0125)
+        den = vm - 2 * best + vp
+        if den < 0 and vm > -1 and vp > -1:
+            off = 0.5 * (vm - vp) / den
+            if abs(off) <= 1:
+                s_ref = s * (1.0125 ** off)
+                (v2, l2) = self._match(A, s_ref)
+                if v2 >= best - 0.002:
+                    best, loc, s = v2, l2, s_ref
         t = self._tmpl(s)
         th, tw = t.shape
         gm, cm, rm = self._masks(s)
